@@ -1,0 +1,8 @@
+# Carpeta de subidas del panel: nunca se ejecuta código aquí.
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php|phtml|phar|php[0-9]|pl|py|cgi|sh)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
