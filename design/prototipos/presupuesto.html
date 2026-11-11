@@ -1,0 +1,90 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pide tu presupuesto · Guanaco Viajes</title>
+<link rel="stylesheet" href="site.css"><link rel="stylesheet" href="page.css"><link rel="stylesheet" href="page2.css"><link rel="stylesheet" href="page3.css"></head><body><nav class="snav"><img class="logo" src="../../brand/logo/guanaco-completo-oscuro.svg" alt="Guanaco Viajes"><div class="links"><a href="#">Tipos de viaje</a><a href="#">Destinos</a><a href="#">Quiénes somos</a><a href="#">Blog</a><a href="#">Contacto</a><a class="btn" href="#">Pide tu presupuesto</a></div><button class="burger" aria-label="Abrir menú"><i></i></button></nav>
+<main class="pr"><div class="wrap"><div class="pr-grid">
+<aside class="pr-side"><div class="kick">Pide tu presupuesto</div><h1>Cuéntanos tu idea. <em>Del resto, nos encargamos.</em></h1><p>Cinco pasos cortos. Con lo que nos cuentes, diseñamos tu viaje a medida.</p>
+<ol class="vsteps"><li class="on" data-v="1"><b>1</b>Destino</li><li data-v="2"><b>2</b>Fechas</li><li data-v="3"><b>3</b>Viajeros</li><li data-v="4"><b>4</b>Tu idea</li><li data-v="5"><b>5</b>Contacto</li></ol></aside>
+<section class="pr-card" aria-live="polite">
+<div class="pr-m"><div class="kick">Pide tu presupuesto</div><h1>Cuéntanos tu idea. <em>Del resto, nos encargamos.</em></h1></div>
+<div class="seg" id="seg"><i class="on"></i><i></i><i></i><i></i><i></i></div><div class="cnt" id="cnt">Paso 1 de 5</div>
+
+<div class="step on" data-s="1"><div class="q">¿A dónde te gustaría ir?</div><div class="hint">Puedes elegir más de uno.</div>
+<div class="grp">Sudamérica</div><div class="chips"><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Argentina</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Brasil</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Chile</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Perú</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Uruguay</span></div><div class="grp">Europa</div><div class="chips"><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Alemania</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Bosnia y Herzegovina</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Croacia</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Francia</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Italia</span></div>
+<div class="chips" style="margin-top:22px"><span class="chip n" role="checkbox" aria-checked="false" tabindex="0">Aún no lo sé</span></div><div class="err" role="alert" id="e1">Elige al menos una opción para continuar.</div></div>
+
+<div class="step" data-s="2"><div class="q">¿Cuándo te gustaría viajar?</div><div class="hint">Un mes aproximado nos basta. Puedes elegir más de uno.</div>
+<div class="grp">Mes</div><div class="chips"><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Dic 2026</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Ene 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Feb 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Mar 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Abr 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">May 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Jun 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Jul 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Ago 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Sep 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Oct 2027</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Nov 2027</span></div><div class="grp">Duración aproximada</div><div class="chips" data-single="1"><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Un fin de semana largo</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Una semana</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Dos semanas</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Tres semanas o más</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Aún no lo sé</span></div>
+<div class="tg" id="flex" role="switch" aria-checked="false" tabindex="0"><i></i>Soy flexible con las fechas</div><div class="err" role="alert" id="e2">Elige un mes o marca que eres flexible.</div></div>
+
+<div class="step" data-s="3"><div class="q">¿Quiénes viajáis?</div><div class="hint">Cuéntanos cuántos sois.</div>
+<div class="cnt-row"><div class="l">Adultos<small>Desde 18 años</small></div><div class="sp"><button type="button" data-d="a-1" aria-label="Quitar adulto">−</button><span id="na">2</span><button type="button" data-d="a+1" aria-label="Añadir adulto">+</button></div></div>
+<div class="cnt-row"><div class="l">Menores<small>De 0 a 17 años</small></div><div class="sp"><button type="button" data-d="m-1" aria-label="Quitar menor">−</button><span id="nm">0</span><button type="button" data-d="m+1" aria-label="Añadir menor">+</button></div></div>
+<div class="fld ages" id="ages" style="display:none"><label>Edades de los menores</label><div class="in"><input placeholder="Por ejemplo: 4 y 9 años"></div></div></div>
+
+<div class="step" data-s="4"><div class="q">Cuéntanos tu idea</div><div class="hint">Un lugar, una inquietud, una idea a medias. Puedes dejarlo en blanco y lo hablamos después.</div>
+<div class="grp">¿Qué te apetece? (opcional)</div><div class="chips"><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Naturaleza</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Cultura</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Gastronomía</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Ciudades</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Playas</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Montaña</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Descanso</span><span class="chip " role="checkbox" aria-checked="false" tabindex="0">Fuera de lo habitual</span></div>
+<div class="fld" style="margin-top:26px"><label>Cuéntanos más</label><div class="in ta"><textarea placeholder="Escribe aquí lo que tengas en la cabeza"></textarea></div></div></div>
+
+<div class="step" data-s="5"><div class="q">¿Cómo te escribimos?</div><div class="hint">Para enviarte tu propuesta a medida.</div>
+<div class="fld"><label>Nombre</label><div class="in" id="fn"><input id="vn" placeholder="Tu nombre"></div><div class="err" role="alert" id="e5a">Escribe tu nombre.</div></div>
+<div class="fld"><label>Correo electrónico</label><div class="in" id="fe"><input id="ve" placeholder="tu@correo.com"></div><div class="err" role="alert" id="e5b">Revisa el correo: parece que falta algo.</div></div>
+<div class="fld"><label>Teléfono (opcional)</label><div class="in"><input placeholder="+34 600 00 00 00"></div></div>
+<div class="grp" style="margin-top:6px">Prefiero que me escribáis por</div><div class="chips" data-single="1"><span class="chip on" role="checkbox" aria-checked="true" tabindex="0">Correo</span><span class="chip" role="checkbox" aria-checked="false" tabindex="0">WhatsApp</span><span class="chip" role="checkbox" aria-checked="false" tabindex="0">Llamada</span></div>
+<div class="chk" id="cons" style="margin-top:26px"><i></i><span>He leído y acepto la <a href="#">política de privacidad</a>. Responsable del tratamiento: NADIDU SL, agencia de viajes con registro C.IAN-118115-2. Tus datos se usan para preparar tu propuesta y responderte.</span></div><div class="err" role="alert" id="e5c">Necesitamos tu consentimiento para poder responderte.</div></div>
+
+<div class="step thanks" data-s="6"><div class="kick">Recibido</div><h2>Gracias, <span id="tn">Ana</span>. <em>Ya tenemos tu idea.</em></h2><p>Te escribiremos por <b id="tc">correo</b> para empezar a darle forma.</p>
+<dl class="resumen"><div><dt>Destino</dt><dd id="r1"></dd></div><div><dt>Fechas</dt><dd id="r2"></dd></div><div><dt>Viajeros</dt><dd id="r3"></dd></div></dl><a class="btn b2" href="#">Volver al inicio</a></div>
+
+<div class="pr-nav" id="prnav"><button class="back hide" id="back" type="button">Anterior</button><button class="btn b1" id="next" type="button">Siguiente</button></div>
+</section></div></div></main><footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><img class="flogo" src="../../brand/logo/guanaco-completo-oscuro.svg" alt="Guanaco Viajes"><p style="max-width:30ch;opacity:.75">Viaja con curiosidad. Muévete con libertad. Vuelve con historias.</p></div>
+      <div><h5>Destinos</h5><a href="#">Sudamérica</a><a href="#">Europa</a></div>
+      <div><h5>Viajes</h5><a href="#">Viajes a medida</a><a href="#">Viajes en grupo</a></div>
+      <div><h5>Guanaco</h5><a href="#">Quiénes somos</a><a href="#">Blog</a><a href="#">Contacto</a><a href="#">Pide tu presupuesto</a></div>
+      <div><h5>Contacto</h5><a href="#">+34 600 53 88 85</a><a href="#">hola@guanacoviajes.es</a></div>
+    </div>
+    <div class="legal">
+      Guanaco Viajes es la marca comercial de Daniel Conti, agente de viajes colaborador de NADIDU SL (agencia de viajes · registro C.IAN-118115-2).<br>
+      <a href="#" style="display:inline;opacity:1">Aviso legal</a> · <a href="#" style="display:inline;opacity:1">Política de privacidad</a> · <a href="#" style="display:inline;opacity:1">Política de cookies</a> · <a href="#" style="display:inline;opacity:1">Condiciones generales</a>
+    </div>
+  </div>
+</footer>
+<script>
+(function(){
+var cur=1,N=5;
+function $(s,r){return (r||document).querySelector(s)}function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function show(n){cur=n;$$('.step').forEach(function(s){s.classList.toggle('on',+s.dataset.s===n)});
+ $$('.seg i').forEach(function(i,k){i.classList.toggle('on',k<n)});$('#cnt').textContent=n<=N?('Paso '+n+' de '+N):'';
+ $$('.vsteps li').forEach(function(l){var v=+l.dataset.v;l.classList.toggle('on',v===n);l.classList.toggle('done',v<n)});
+ $('#back').classList.toggle('hide',n===1||n>N);$('#next').textContent=n===N?'Enviar mi idea':'Siguiente';$('#prnav').style.display=n>N?'none':'flex';
+ if(n>N){$('#seg').style.display='none';$('#cnt').style.display='none'}}
+function sel(step){return $$('.chip.on',$('[data-s="'+step+'"]')).map(function(c){return c.textContent})}
+$$('.chip').forEach(function(c){function tg(){var grp=c.parentNode,single=grp.dataset.single;
+ if(c.classList.contains('n')){$$('.chip',$('[data-s="1"]')).forEach(function(x){if(x!==c)x.classList.remove('on')})}
+ else if($('.chip.n',c.closest('.step'))&&c.closest('[data-s="1"]')){$('.chip.n').classList.remove('on')}
+ if(single){$$('.chip',grp).forEach(function(x){if(x!==c){x.classList.remove('on');x.setAttribute('aria-checked','false')}})}
+ c.classList.toggle('on');c.setAttribute('aria-checked',c.classList.contains('on'))}
+ c.addEventListener('click',tg);c.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();tg()}})});
+var fx=$('#flex');fx.addEventListener('click',function(){fx.classList.toggle('on');fx.setAttribute('aria-checked',fx.classList.contains('on'))});
+var na=2,nm=0;$$('.sp button').forEach(function(b){b.addEventListener('click',function(){var d=b.dataset.d;
+ if(d==='a-1'&&na>1)na--;if(d==='a+1'&&na<20)na++;if(d==='m-1'&&nm>0)nm--;if(d==='m+1'&&nm<10)nm++;
+ $('#na').textContent=na;$('#nm').textContent=nm;$('#ages').style.display=nm>0?'block':'none'})});
+var cons=$('#cons');cons.addEventListener('click',function(){cons.querySelector('i').style.background=cons.dataset.on?'':'var(--carbon)';cons.dataset.on=cons.dataset.on?'':'1'});
+function err(id,on){$(id).classList.toggle('on',on)}
+function valid(){var ok=true;
+ if(cur===1){ok=sel(1).length>0;err('#e1',!ok)}
+ if(cur===2){var ms=$$('.chip.on',$$('.chips',$('[data-s="2"]'))[0]).length>0;ok=ms||fx.classList.contains('on');err('#e2',!ok)}
+ if(cur===5){var n=$('#vn').value.trim(),e=$('#ve').value.trim(),c=!!cons.dataset.on;
+  var a=n.length>0,b=/^\S+@\S+\.\S+$/.test(e);err('#e5a',!a);err('#e5b',!b);err('#e5c',!c);$('#fn').classList.toggle('bad',!a);$('#fe').classList.toggle('bad',!b);ok=a&&b&&c}
+ return ok}
+$('#next').addEventListener('click',function(){if(!valid())return;if(cur===N){
+  $('#tn').textContent=$('#vn').value.trim().split(' ')[0];$('#tc').textContent=(sel(5)[0]||'correo').toLowerCase();
+  $('#r1').textContent=sel(1).join(', ')||'—';var m=$$('.chip.on',$$('.chips',$('[data-s="2"]'))[0]).map(function(c){return c.textContent}).join(', ');$('#r2').textContent=(m||'Flexible')+(fx.classList.contains('on')&&m?' · flexible':'');
+  $('#r3').textContent=na+' adulto'+(na>1?'s':'')+(nm?' y '+nm+' menor'+(nm>1?'es':''):'');show(6)}else show(cur+1)});
+$('#back').addEventListener('click',function(){if(cur>1)show(cur-1)});
+document.querySelector('.pr-card').addEventListener('click',function(){setTimeout(function(){if($('.err.on'))valid()},0)});
+document.querySelector('.pr-card').addEventListener('input',function(){setTimeout(function(){if($('.err.on'))valid()},0)});
+window.__show=show;
+})();
+</script></body></html>
