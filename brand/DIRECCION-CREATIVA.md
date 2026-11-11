@@ -10,7 +10,7 @@ Frase de cierre: *Viaja con curiosidad. Muévete con libertad. Vuelve con histor
 
 ## Logo
 
-Archivos en `brand/logo/`. El animal es el trazado original recibido; solo se ha cambiado el wordmark (Newsreader 600 para «guanaco», Manrope 600 en minúsculas y espaciado para «viajes»), convertido a curvas.
+Archivos en `brand/logo/`. El animal es el trazado original recibido; solo se ha cambiado el wordmark (Newsreader 600 para «guanaco», Manrope 600 en minúsculas y espaciado para «viajes», este último ampliado de 22 a 30 unidades para que se lea en el menú), convertido a curvas.
 
 | Ancho del logo | Versión |
 |---|---|
@@ -18,7 +18,7 @@ Archivos en `brand/logo/`. El animal es el trazado original recibido; solo se ha
 | Menos de 60 px | Compacta: animal + «guanaco» centrado sobre el cuerpo, sin «viajes» |
 | Favicon / avatar | Solo el animal |
 
-Aviso aceptado: entre 60 y 220 px «viajes» queda por debajo de 5 px de altura de letra y se lee mal.
+Con «viajes» ampliado, el logo completo se lee bien desde unos 150 px de ancho (≈ 5 px de altura de letra). Logo del menú: 70 px de alto en escritorio y 60 px en móvil (≈ 150 y 128 px de ancho).
 
 ## Color
 
