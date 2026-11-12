@@ -79,7 +79,7 @@ $quienFoto = $S('home.quien.foto');
 <?php endif; ?>
 
 <!-- 3 · Destinos -->
-<section class="sec sec-tight" aria-labelledby="dest-t">
+<section class="sec sec-tight sec-dest" aria-labelledby="dest-t">
   <div class="wrap">
     <div class="kick"><?= e($S('home.destinos.kicker', 'Destinos')) ?></div>
     <h2 id="dest-t"><?= e($S('home.destinos.titulo', 'Elige por dónde')) ?> <em><?= e($S('home.destinos.enfasis', 'empezar')) ?></em></h2>
