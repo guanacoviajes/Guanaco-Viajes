@@ -683,3 +683,14 @@ label.chip input:focus-visible + span,.tg input:focus-visible + i,.chk input:foc
 .art-cta p{font:400 18px/1.6 var(--sans);margin:0 0 18px;max-width:56ch}
 .art-cta a:not(.btn){color:var(--acento);text-decoration:underline;text-underline-offset:3px}
 .art .meta a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+/* Inicio: «Tipos de viaje» más compacto y pegado al carrusel y a «Destinos» */
+section.sec-tipos{padding:72px 0 56px}
+.sec-tipos .tv{align-items:start;margin-top:32px}
+.sec-tipos .tv-img{aspect-ratio:3/2}
+@media (max-width:820px){
+  section.sec-tipos{padding:44px 0 36px}
+  .sec-tipos .tv{margin-top:24px;gap:24px}
+  .sec-tipos .tv-img{aspect-ratio:4/3}
+  .sec-tipos .tv-tabs{margin-bottom:24px}
+}

@@ -44,7 +44,7 @@ $quienFoto = $S('home.quien.foto');
 
 <!-- 2 · Tipos de viaje -->
 <?php if ($tipos): ?>
-<section class="sec" aria-labelledby="tipos-t">
+<section class="sec sec-tipos" aria-labelledby="tipos-t">
   <div class="wrap">
     <div class="kick"><?= e($S('home.tipos.kicker', 'Tipos de viaje')) ?></div>
     <h2 id="tipos-t"><?= e($S('home.tipos.titulo', 'El viaje,')) ?> <em><?= e($S('home.tipos.enfasis', 'a tu manera')) ?></em></h2>
