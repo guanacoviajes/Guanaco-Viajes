@@ -110,3 +110,38 @@ CREATE TABLE IF NOT EXISTS interests (
   activo  TINYINT(1)   NOT NULL DEFAULT 1,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Páginas de texto editables (Quiénes somos y páginas legales)
+CREATE TABLE IF NOT EXISTS pages (
+  id          INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  slug        VARCHAR(80)   NOT NULL,
+  titulo      VARCHAR(200)  NOT NULL,
+  cuerpo      MEDIUMTEXT    NOT NULL,
+  seo_title   VARCHAR(160)  NULL,
+  seo_desc    VARCHAR(255)  NULL,
+  updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_pages_slug (slug)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Salidas de viajes en grupo
+CREATE TABLE IF NOT EXISTS departures (
+  id            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  country_id    INT UNSIGNED  NULL,
+  titulo        VARCHAR(160)  NOT NULL,
+  descripcion   TEXT          NOT NULL,
+  fecha_inicio  DATE          NULL,
+  fecha_fin     DATE          NULL,
+  plazas_texto  VARCHAR(80)   NOT NULL DEFAULT '',
+  precio_desde  VARCHAR(40)   NOT NULL DEFAULT '',
+  senal_texto   VARCHAR(160)  NOT NULL DEFAULT '',
+  foto          VARCHAR(255)  NOT NULL DEFAULT '',
+  foto_alt      VARCHAR(200)  NOT NULL DEFAULT '',
+  publicada     TINYINT(1)    NOT NULL DEFAULT 0,
+  orden         SMALLINT      NOT NULL DEFAULT 0,
+  created_at    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_dep_pub (publicada, fecha_inicio),
+  KEY idx_dep_country (country_id),
+  CONSTRAINT fk_dep_country FOREIGN KEY (country_id) REFERENCES countries (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -50,6 +50,15 @@ final class Countries
         );
     }
 
+    /** @return list<array> fotos de la galería (0 a 6) */
+    public static function gallery(int $countryId): array
+    {
+        return Database::all(
+            'SELECT archivo, alt FROM country_photos WHERE country_id = ? ORDER BY orden, id LIMIT 6',
+            [$countryId]
+        );
+    }
+
     public static function continentLabel(string $c): string
     {
         return $c === 'sudamerica' ? 'Sudamérica' : 'Europa';

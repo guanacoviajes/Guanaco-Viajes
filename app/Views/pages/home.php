@@ -81,65 +81,13 @@ $quienFoto = $S('home.quien.foto');
   <div class="wrap">
     <div class="kick"><?= e($S('home.destinos.kicker', 'Destinos')) ?></div>
     <h2 id="dest-t"><?= e($S('home.destinos.titulo', 'Elige por dónde')) ?> <em><?= e($S('home.destinos.enfasis', 'empezar')) ?></em></h2>
-    <div class="tabs" role="tablist" aria-label="Continentes" data-tabs="destinos">
-      <?php $first = true; foreach ($continentes as $key => $label): ?>
-      <button type="button" class="tab<?= $first ? ' on' : '' ?>" role="tab" id="dtab-<?= $key ?>"
-              aria-selected="<?= $first ? 'true' : 'false' ?>" aria-controls="dset-<?= $key ?>" data-s="<?= $key ?>"<?= $first ? '' : ' tabindex="-1"' ?>><?= e($label) ?></button>
-      <?php $first = false; endforeach; ?>
-    </div>
-    <?php $first = true; foreach ($continentes as $key => $label): ?>
-    <div class="set<?= $first ? ' on' : '' ?>" role="tabpanel" id="dset-<?= $key ?>" aria-labelledby="dtab-<?= $key ?>" data-s="<?= $key ?>"<?= $first ? '' : ' hidden' ?>>
-      <div class="rail">
-        <button type="button" class="arr l hide" aria-label="Destinos anteriores"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <button type="button" class="arr r" aria-label="Más destinos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-        <div class="cards">
-          <?php foreach ($paises[$key] as $j => $p): ?>
-          <a class="card<?= $j === 0 ? ' x' : '' ?>" href="/destinos/<?= e($key) ?>/<?= e($p['slug']) ?>">
-            <span class="ph"><?= img($p['foto'], $p['foto_alt'], ['pos' => $p['foto_pos']]) ?></span>
-            <span class="cn"><?= e($p['nombre']) ?></span>
-            <span class="cp"><?= e($p['resumen']) ?></span>
-          </a>
-          <?php endforeach; ?>
-        </div>
-      </div>
-    </div>
-    <?php $first = false; endforeach; ?>
+    <?= \App\Core\View::partial('partials/destinos-rail', ['paises' => $paises]) ?>
     <div class="todos"><a class="btn b2" href="/destinos"><?= e($S('home.destinos.boton', 'Ver todos los destinos')) ?></a></div>
   </div>
 </section>
 
 <!-- 4 · Cómo funciona + primer paso del formulario -->
-<section class="sec como" aria-labelledby="como-t">
-  <div class="wrap grid2">
-    <div>
-      <div class="kick"><?= e($S('home.como.kicker', 'Cómo funciona')) ?></div>
-      <h2 id="como-t"><?= e($S('home.como.titulo', 'Cuéntanos tu idea.')) ?> <em><?= e($S('home.como.enfasis', 'Del resto, nos encargamos.')) ?></em></h2>
-      <ol class="pasos">
-        <?php for ($n = 1; $n <= 3; $n++): ?>
-        <li><span class="n"><?= $n ?></span><div>
-          <h3><?= e($S("home.paso$n.titulo")) ?></h3>
-          <p><?= e($S("home.paso$n.texto")) ?></p>
-        </div></li>
-        <?php endfor; ?>
-      </ol>
-    </div>
-    <form class="form" id="home-form" action="/presupuesto" method="get" novalidate>
-      <div class="seg" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
-      <fieldset class="fs">
-        <legend class="q"><?= e($S('form.paso1.pregunta', '¿A dónde te gustaría ir?')) ?></legend>
-        <div class="hint" id="hf-hint"><?= e($S('form.paso1.ayuda', 'Puedes elegir más de uno.')) ?></div>
-        <div class="chips" role="group" aria-describedby="hf-hint">
-          <?php foreach ($continentes as $key => $label): foreach ($paises[$key] as $p): ?>
-          <button type="button" class="chip" aria-pressed="false" data-pais="<?= e($p['slug']) ?>"><?= e($p['nombre']) ?></button>
-          <?php endforeach; endforeach; ?>
-          <button type="button" class="chip n" aria-pressed="false" data-pais="aun-no-lo-se">Aún no lo sé</button>
-        </div>
-      </fieldset>
-      <p class="err" id="hf-err" role="alert">Elige al menos una opción para continuar.</p>
-      <button type="submit" class="btn b1">Continuar</button>
-    </form>
-  </div>
-</section>
+<?= \App\Core\View::partial('partials/como', ['paises' => $paises]) ?>
 
 <!-- 5 · Quién está detrás -->
 <section class="sec" aria-labelledby="quien-t">
@@ -177,3 +125,17 @@ $quienFoto = $S('home.quien.foto');
   </div>
 </section>
 <?php endif; ?>
+
+<?php
+$ld = [
+    '@context' => 'https://schema.org',
+    '@type'    => 'TravelAgency',
+    'name'     => 'Guanaco Viajes',
+    'url'      => rtrim((string) config('app.url'), '/') . '/',
+    'logo'     => rtrim((string) config('app.url'), '/') . '/assets/img/logo/guanaco-completo-claro.svg',
+    'email'    => Settings::get('site.email'),
+    'telephone'=> Settings::get('site.telefono'),
+    'description' => Settings::get('seo.home.description'),
+];
+?>
+<script type="application/ld+json"><?= json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
