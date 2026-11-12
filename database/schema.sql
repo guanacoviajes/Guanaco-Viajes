@@ -134,7 +134,6 @@ CREATE TABLE IF NOT EXISTS departures (
   fecha_fin     DATE          NULL,
   plazas_texto  VARCHAR(80)   NOT NULL DEFAULT '',
   precio_desde  VARCHAR(40)   NOT NULL DEFAULT '',
-  senal_texto   VARCHAR(160)  NOT NULL DEFAULT '',
   foto          VARCHAR(255)  NOT NULL DEFAULT '',
   foto_alt      VARCHAR(200)  NOT NULL DEFAULT '',
   publicada     TINYINT(1)    NOT NULL DEFAULT 0,

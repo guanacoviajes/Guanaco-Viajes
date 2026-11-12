@@ -15,7 +15,7 @@ final class DeparturesController extends CrudController
             'table' => 'departures', 'section' => 'salidas', 'path' => '/admin/salidas', 'singular' => 'salida', 'plural' => 'Viajes en grupo',
             'create' => 'Añadir una salida', 'delete' => true, 'order' => 'publicada DESC, fecha_inicio IS NULL, fecha_inicio, orden, id',
             'intro' => 'Las salidas publicadas sustituyen a los huecos «Próximamente» de la página de viajes en grupo (siempre se muestran al menos tres). Las que ya han terminado dejan de mostrarse solas.',
-            'help' => 'Datos de referencia que dijiste: <b>grupos de 10 a 12 personas</b>, señal inicial al reservar y precio «desde». Escríbelos aquí en cada salida cuando estén confirmados.',
+            'help' => 'Datos de referencia que dijiste: <b>grupos de 10 a 12 personas</b> y precio «desde». Las condiciones de reserva se explican cuando la persona contacta. Escríbelos aquí en cada salida cuando estén confirmados.',
             'deleteConfirm' => '¿Eliminar esta salida? No se puede deshacer.',
             'deleteHint' => 'Para ocultarla sin borrarla, desmarca «Publicada».',
             'columns' => [
@@ -34,7 +34,7 @@ final class DeparturesController extends CrudController
 
     protected function defaults(): array
     {
-        return ['plazas_texto' => 'Grupo de 10 a 12 personas', 'senal_texto' => 'Señal inicial al reservar'];
+        return ['plazas_texto' => 'Grupo de 10 a 12 personas'];
     }
 
     protected function fields(?array $row): array
@@ -51,7 +51,6 @@ final class DeparturesController extends CrudController
             ['name' => 'fecha_fin', 'label' => 'Último día', 'type' => 'date'],
             ['name' => 'plazas_texto', 'label' => 'Tamaño del grupo', 'max' => 80, 'help' => 'Por ejemplo: «Grupo de 10 a 12 personas».'],
             ['name' => 'precio_desde', 'label' => 'Precio «desde»', 'max' => 40, 'help' => 'Escríbelo con el símbolo, por ejemplo: «2.450 €». Se muestra como «Desde 2.450 €».'],
-            ['name' => 'senal_texto', 'label' => 'Señal / condiciones de reserva', 'max' => 160, 'help' => 'Por ejemplo: «Señal inicial al reservar».'],
             ['name' => 'foto', 'label' => 'Foto', 'type' => 'image'],
             ['name' => 'foto_alt', 'label' => 'Descripción de la foto', 'max' => 200],
             ['name' => 'publicada', 'label' => 'Publicada (visible en la web)', 'type' => 'check'],

@@ -12,7 +12,7 @@ $label = Countries::continentLabel($pais['continente']);
 <header class="phero">
   <?= img($pais['foto'], $pais['foto_alt'], ['pos' => $pais['foto_pos'], 'eager' => true]) ?>
   <div class="blk">
-    <div class="kick"><?= e($label) ?></div>
+    <div class="kick">Viajes a medida · <?= e($label) ?></div>
     <h1><?= e($pais['nombre']) ?></h1>
     <p><?= e($pais['resumen']) ?></p>
   </div>

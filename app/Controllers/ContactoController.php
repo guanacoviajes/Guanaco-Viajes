@@ -30,8 +30,7 @@ final class ContactoController
             'csrf'      => Csrf::field(),
             'timeToken' => FormGuard::timeToken(),
         ], [
-            'title'       => 'Contacto · Guanaco Viajes',
-            'description' => 'Escríbenos por WhatsApp o correo, o déjanos un mensaje. Para un viaje a medida, pide tu presupuesto.',
+            ...\App\Core\Seo::page('contacto', 'Contacto · Guanaco Viajes', 'Escríbenos por WhatsApp o correo, o déjanos un mensaje. Para un viaje a medida, pide tu presupuesto.'),
             'franja'      => false,
         ]);
     }

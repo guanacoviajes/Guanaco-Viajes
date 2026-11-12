@@ -125,17 +125,3 @@ $quienFoto = $S('home.quien.foto');
   </div>
 </section>
 <?php endif; ?>
-
-<?php
-$ld = [
-    '@context' => 'https://schema.org',
-    '@type'    => 'TravelAgency',
-    'name'     => 'Guanaco Viajes',
-    'url'      => rtrim((string) config('app.url'), '/') . '/',
-    'logo'     => rtrim((string) config('app.url'), '/') . '/assets/img/logo/guanaco-completo-claro.svg',
-    'email'    => Settings::get('site.email'),
-    'telephone'=> Settings::get('site.telefono'),
-    'description' => Settings::get('seo.home.description'),
-];
-?>
-<script type="application/ld+json"><?= json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>

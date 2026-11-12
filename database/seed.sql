@@ -16,7 +16,7 @@ INSERT INTO settings (clave, valor) VALUES
 ('social.x',               ''),
 ('footer.lema',            'Viaja con curiosidad. Muévete con libertad. Vuelve con historias.'),
 ('footer.agencia',         'Guanaco Viajes es la marca comercial de Daniel Conti, agente de viajes colaborador de NADIDU SL (agencia de viajes · registro C.IAN-118115-2).'),
-('seo.home.title',         'Guanaco Viajes · Viajes a medida y en grupo'),
+('seo.home.title',         'Viajes a medida por Sudamérica y Europa · Guanaco Viajes'),
 ('seo.home.description',   'Diseñamos viajes a medida y en grupo por Sudamérica y Europa. Cuéntanos tu idea y la convertimos en un viaje pensado para ti.'),
 ('home.tipos.kicker',      'Tipos de viaje'),
 ('home.tipos.titulo',      'El viaje,'),

@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Http;
 use App\Core\Request;
+use App\Core\Seo;
 use App\Core\View;
 use App\Repositories\Content;
 use App\Repositories\Countries;
@@ -30,9 +31,18 @@ final class PagesController
     {
         $tipo = self::tipo('viajes-a-medida');
         echo View::render('pages/a-medida', ['tipo' => $tipo, 'paises' => Countries::byContinent()], [
-            'title'       => 'Viajes a medida · Guanaco Viajes',
-            'description' => 'Diseñamos viajes a medida por Sudamérica y Europa. Tú traes la idea, aunque sea solo una inquietud, y la convertimos en un viaje pensado para ti.',
+            ...Seo::page('medida', 'Viajes personalizados a medida · Guanaco Viajes', 'Diseñamos viajes a medida por Sudamérica y Europa. Tú traes la idea, aunque sea solo una inquietud, y la convertimos en un viaje pensado para ti.'),
             'og_image'    => $tipo['foto'],
+            'og_alt'      => $tipo['foto_alt'],
+            'schema'      => [[
+                '@type'       => 'Service',
+                'name'        => 'Viajes a medida',
+                'serviceType' => 'Diseño y organización de viajes a medida',
+                'description' => Seo::clip((string) $tipo['descripcion'], 300),
+                'provider'    => ['@id' => Seo::base() . '/#organizacion'],
+                'areaServed'  => [['@type' => 'Place', 'name' => 'Sudamérica'], ['@type' => 'Place', 'name' => 'Europa']],
+                'url'         => Seo::base() . '/viajes-a-medida',
+            ]],
         ]);
     }
 
@@ -45,9 +55,9 @@ final class PagesController
             'salidas' => $salidas,
             'huecos'  => max(0, 3 - count($salidas)),
         ], [
-            'title'       => 'Viajes en grupo · Guanaco Viajes',
-            'description' => 'Salidas en grupo con propuestas diferentes, cuidadas y con personalidad, para compartir el camino con otras personas.',
+            ...Seo::page('grupo', 'Viajes en grupo con personalidad · Guanaco Viajes', 'Salidas en grupo con propuestas diferentes, cuidadas y con personalidad, para compartir el camino con otras personas.'),
             'og_image'    => $tipo['foto'],
+            'og_alt'      => $tipo['foto_alt'],
         ]);
     }
 
@@ -69,7 +79,7 @@ final class PagesController
         $p = Pages::find($slug) ?? Http::notFound();
         echo View::render('pages/legal', ['pagina' => $p], [
             'title'       => $p['titulo'] . ' · Guanaco Viajes',
-            'description' => $p['seo_desc'] ?: ('Consulta el texto de ' . mb_strtolower($p['titulo']) . ' de Guanaco Viajes.'),
+            'description' => $p['seo_desc'] ?: ('Consulta el texto de ' . mb_strtolower($p['titulo']) . ' de Guanaco Viajes, marca comercial de Daniel Conti, agente de viajes colaborador de NADIDU SL.'),
             'franja'      => false,
         ]);
     }

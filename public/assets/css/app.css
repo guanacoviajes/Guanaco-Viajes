@@ -585,7 +585,6 @@ a.mini:hover .ph img{transform:scale(1.03)}
 .pub .px .ph img{width:100%;height:100%;object-fit:cover}
 .pub .px h3{font:600 26px/1.2 var(--serif)}
 .pub .px .dsc{font:400 15px/1.55 var(--sans);opacity:.85;max-width:38ch}
-.pub .px .senal{font:500 14px var(--sans);opacity:.75}
 .pub .px .btn{align-self:flex-start;margin-top:14px}
 /* texto editable */
 .qtext h2,.art h2,.doc h2{font-weight:400}
@@ -678,3 +677,9 @@ label.chip input:focus-visible + span,.tg input:focus-visible + i,.chk input:foc
   .pr-side h1{font:400 32px/1.1 var(--serif);margin:10px 0 6px}
   .pr-grid{gap:18px}
 }
+
+/* Cierre de artículo: enlace a la ficha del país y al formulario */
+.art-cta{margin:56px 0 0;padding:28px 30px;background:rgba(122,128,100,.12);border-radius:3px}
+.art-cta p{font:400 18px/1.6 var(--sans);margin:0 0 18px;max-width:56ch}
+.art-cta a:not(.btn){color:var(--acento);text-decoration:underline;text-underline-offset:3px}
+.art .meta a{color:inherit;text-decoration:underline;text-underline-offset:3px}

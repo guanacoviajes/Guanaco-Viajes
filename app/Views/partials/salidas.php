@@ -13,7 +13,6 @@ use App\Core\Text;
     </div>
     <?php if ($d['descripcion'] !== ''): ?><p class="dsc"><?= e($d['descripcion']) ?></p><?php endif; ?>
     <?php if ($d['precio_desde'] !== ''): ?><div class="precio">Desde <?= e($d['precio_desde']) ?></div><?php endif; ?>
-    <?php if ($d['senal_texto'] !== ''): ?><div class="senal"><?= e($d['senal_texto']) ?></div><?php endif; ?>
     <a class="btn b2" href="/presupuesto?pais=<?= e($d['pais_slug'] ?? '') ?>">Consultar esta salida</a>
   </article>
   <?php endforeach; ?>

@@ -20,7 +20,7 @@ final class HomeController
             'paises'    => Countries::byContinent(),
             'posts'     => Content::latestPosts(3),
         ], [
-            'title'       => Settings::get('seo.home.title', 'Guanaco Viajes'),
+            'title'       => Settings::get('seo.home.title', 'Viajes a medida por Sudamérica y Europa · Guanaco Viajes'),
             'description' => Settings::get('seo.home.description'),
             'overlay'     => count($slides) > 0,
             'og_image'    => $slides[0]['foto'] ?? '/assets/img/seed/foto-5.jpg',

@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Http;
 use App\Core\Request;
+use App\Core\Seo;
 use App\Core\View;
 use App\Repositories\Content;
 use App\Repositories\Countries;
@@ -25,10 +26,12 @@ final class DestinosController
             'paises' => Countries::byContinent(),
             'activo' => $continente ?? 'sudamerica',
         ], [
-            'title'       => ($label ? "Destinos en $label" : 'Destinos') . ' · Guanaco Viajes',
-            'description' => $label
-                ? "Países de $label para viajar con Guanaco Viajes: el viaje se diseña a medida contigo."
-                : 'Destinos de Sudamérica y Europa. Elige un país y diseñamos el viaje a medida contigo.',
+            ...($label
+                ? [
+                    'title'       => "Viajes a medida por $label · Guanaco Viajes",
+                    'description' => "Países de $label para viajar a medida con Guanaco Viajes: eliges el destino y diseñamos el viaje contigo, sin rutas cerradas.",
+                ]
+                : Seo::page('destinos', 'Destinos: Sudamérica y Europa a medida · Guanaco Viajes', 'Destinos de Sudamérica y Europa para viajar a medida. Elige un país y diseñamos el viaje contigo.')),
         ]);
     }
 
@@ -50,9 +53,18 @@ final class DestinosController
             'otros'   => Countries::others($pais['continente'], $id),
             'paises'  => Countries::byContinent(),
         ], [
-            'title'       => $pais['seo_title'] ?: ($pais['nombre'] . ' · Viajes a medida · Guanaco Viajes'),
-            'description' => $pais['seo_desc'] ?: mb_substr((string) $pais['resumen'], 0, 155),
+            'title'       => $pais['seo_title'] ?: ('Viajes a medida a ' . $pais['nombre'] . ' · Guanaco Viajes'),
+            'description' => $pais['seo_desc'] ?: Seo::clip('Diseñamos tu viaje a medida a ' . $pais['nombre'] . '. ' . $pais['resumen'], 155),
             'og_image'    => $pais['foto'],
+            'og_alt'      => $pais['foto_alt'],
+            'schema'      => [[
+                '@type'         => 'TouristDestination',
+                'name'          => $pais['nombre'],
+                'description'   => Seo::clip((string) $pais['resumen'], 300),
+                'url'           => Seo::base() . '/destinos/' . $pais['continente'] . '/' . $pais['slug'],
+                'image'         => Seo::abs((string) $pais['foto']),
+                'containedInPlace' => ['@type' => 'Continent', 'name' => Countries::continentLabel($pais['continente'])],
+            ]],
         ]);
     }
 }

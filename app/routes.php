@@ -29,6 +29,7 @@ $router->post('/presupuesto/enviar', [PresupuestoController::class, 'send']);
 $router->get('/presupuesto/gracias', [PresupuestoController::class, 'thanks']);
 
 $router->get('/blog', [BlogController::class, 'index']);
+$router->get('/blog/feed.xml', [\App\Controllers\FeedController::class, 'blog']);
 $router->get('/blog/{slug}', [BlogController::class, 'show']);
 
 foreach (['aviso-legal', 'politica-de-privacidad', 'politica-de-cookies', 'condiciones-generales'] as $legal) {

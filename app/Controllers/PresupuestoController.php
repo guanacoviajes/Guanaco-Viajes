@@ -77,8 +77,7 @@ final class PresupuestoController
             'csrf'       => Csrf::field(),
             'timeToken'  => FormGuard::timeToken(),
         ], [
-            'title'       => 'Pide tu presupuesto · Guanaco Viajes',
-            'description' => 'Cuéntanos tu idea en cinco pasos cortos y diseñamos tu viaje a medida por Sudamérica o Europa.',
+            ...\App\Core\Seo::page('presupuesto', 'Pide tu presupuesto de viaje a medida · Guanaco Viajes', 'Cuéntanos tu idea en cinco pasos cortos y diseñamos tu viaje a medida por Sudamérica o Europa.'),
             'franja'      => false,
             'bubble'      => false,
             'scripts'     => ['assets/js/presupuesto.js'],
