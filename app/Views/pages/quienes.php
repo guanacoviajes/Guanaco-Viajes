@@ -21,6 +21,6 @@ $foto = $S('home.quien.foto');
 <section class="signoff">
   <div class="wrap">
     <p><?= e($S('quienes.cierre', 'Viaja con curiosidad. Muévete con libertad.')) ?> <em><?= e($S('quienes.cierre.enfasis', 'Vuelve con historias.')) ?></em></p>
-    <a class="btn b1" href="/presupuesto"><?= e($S('quienes.boton', 'Comienza tu aventura')) ?></a>
+    <a class="btn b1" href="<?= e($S('site.cta_url', '/contacto')) ?>"><?= e($S('quienes.boton', 'Cuéntanos tu viaje')) ?></a>
   </div>
 </section>

@@ -1,8 +1,10 @@
 <?php
 /** @var bool $overlay */
 use App\Repositories\Countries;
+use App\Repositories\Settings;
 
 $paises = Countries::byContinent();
+$cta    = Settings::get('site.cta_url', '/contacto');
 $path   = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/', '/') ?: '/';
 $is = static fn(string $prefix): bool => $path === $prefix || str_starts_with($path, $prefix . '/');
 $cls = 'site-header ' . ($overlay ? 'is-overlay at-top' : 'is-solid');
@@ -43,7 +45,7 @@ $cls = 'site-header ' . ($overlay ? 'is-overlay at-top' : 'is-solid');
         <li><a href="/quienes-somos"<?= $is('/quienes-somos') ? ' aria-current="page"' : '' ?>>Quiénes somos</a></li>
         <li><a href="/blog"<?= $is('/blog') ? ' aria-current="page"' : '' ?>>Blog</a></li>
         <li><a href="/contacto"<?= $is('/contacto') ? ' aria-current="page"' : '' ?>>Contacto</a></li>
-        <li><a class="btn btn-cta" href="/presupuesto">Pide tu presupuesto</a></li>
+        <li><a class="btn btn-cta" href="<?= e($cta) ?>">Pide tu presupuesto</a></li>
       </ul>
     </nav>
 
@@ -74,6 +76,6 @@ $cls = 'site-header ' . ($overlay ? 'is-overlay at-top' : 'is-solid');
     <a class="m-link" href="/quienes-somos">Quiénes somos</a>
     <a class="m-link" href="/blog">Blog</a>
     <a class="m-link" href="/contacto">Contacto</a>
-    <a class="btn btn-cta m-cta" href="/presupuesto">Pide tu presupuesto</a>
+    <a class="btn btn-cta m-cta" href="<?= e($cta) ?>">Pide tu presupuesto</a>
   </div>
 </div>

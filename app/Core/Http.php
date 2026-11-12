@@ -40,7 +40,7 @@ final class Http
             'title'  => 'Página no encontrada',
             'robots' => 'noindex',
             'franja' => false,
-            'bubble' => false,
+            'bubble' => true,
         ]);
         exit;
     }
