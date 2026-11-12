@@ -198,13 +198,41 @@
       play();
     };
 
-    dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i); setPaused(true); }); });
+    // Elegir una diapositiva (punto o gesto) no detiene el carrusel: solo reinicia la cuenta atrás.
+    // Solo el botón de pausa lo detiene de forma permanente.
+    dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i); play(); }); });
     if (pauseBtn) { pauseBtn.addEventListener('click', function () { setPaused(!paused); }); }
-    car.addEventListener('mouseenter', function () { hover = true; stop(); });
-    car.addEventListener('mouseleave', function () { hover = false; play(); });
-    car.addEventListener('focusin', function () { hover = true; stop(); });
+    // La pausa al pasar el ratón solo cuenta con ratón: en el móvil un toque no debe dejar el carrusel parado.
+    car.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { hover = true; stop(); } });
+    car.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') { hover = false; play(); } });
+    // Con teclado, el foco dentro del carrusel lo pausa (para poder leer); con toque o ratón no.
+    var byKeyboard = false;
+    document.addEventListener('keydown', function () { byKeyboard = true; }, true);
+    document.addEventListener('pointerdown', function () { byKeyboard = false; }, true);
+    car.addEventListener('focusin', function () { if (byKeyboard) { hover = true; stop(); } });
     car.addEventListener('focusout', function () { hover = false; play(); });
     document.addEventListener('visibilitychange', play);
+
+    // Deslizar con el dedo: izquierda = siguiente, derecha = anterior. El carrusel es infinito.
+    var sx = 0, sy = 0, tracking = false, swiped = false;
+    car.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') { return; }
+      tracking = true; swiped = false; sx = e.clientX; sy = e.clientY;
+    });
+    car.addEventListener('pointerup', function (e) {
+      if (!tracking) { return; }
+      tracking = false;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+        swiped = true;
+        show(idx + (dx < 0 ? 1 : -1));
+        play();
+      }
+    });
+    car.addEventListener('pointercancel', function () { tracking = false; });
+    car.addEventListener('click', function (e) {
+      if (swiped) { e.preventDefault(); e.stopPropagation(); swiped = false; }
+    }, true);
 
     show(0);
     setPaused(paused);

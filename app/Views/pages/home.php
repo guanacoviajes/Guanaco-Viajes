@@ -21,10 +21,12 @@ $quienFoto = $S('home.quien.foto');
        <?= $i === 0 ? '' : 'inert aria-hidden="true"' ?>>
     <?= img($s['foto'], $s['foto_alt'], ['class' => 'slide-img', 'pos' => $s['foto_pos'], 'eager' => $i === 0]) ?>
     <div class="blk">
-      <?php if ($s['kicker'] !== ''): ?><div class="kick"><?= e($s['kicker']) ?></div><?php endif; ?>
-      <?php if ($i === 0): ?><h1><?php else: ?><p class="h1"><?php endif; ?>
-        <?= e($s['titular']) ?><?php if ($s['titular_enfasis'] !== ''): ?> <em><?= e($s['titular_enfasis']) ?></em><?php endif; ?>
-      <?= $i === 0 ? '</h1>' : '</p>' ?>
+      <div class="blk-txt">
+        <?php if ($s['kicker'] !== ''): ?><div class="kick"><?= e($s['kicker']) ?></div><?php endif; ?>
+        <?php if ($i === 0): ?><h1><?php else: ?><p class="h1"><?php endif; ?>
+          <?= e($s['titular']) ?><?php if ($s['titular_enfasis'] !== ''): ?> <em><?= e($s['titular_enfasis']) ?></em><?php endif; ?>
+        <?= $i === 0 ? '</h1>' : '</p>' ?>
+      </div>
       <?php if ($s['cta_texto'] !== ''): ?>
       <a class="btn bm" href="<?= e($s['cta_url']) ?>"><?= e($s['cta_texto']) ?></a>
       <?php endif; ?>

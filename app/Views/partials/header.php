@@ -77,5 +77,6 @@ $cls = 'site-header ' . ($overlay ? 'is-overlay at-top' : 'is-solid');
     <a class="m-link" href="/blog">Blog</a>
     <a class="m-link" href="/contacto">Contacto</a>
     <a class="btn btn-cta m-cta" href="<?= e($cta) ?>">Pide tu presupuesto</a>
+    <?= \App\Core\View::partial('partials/social') ?>
   </div>
 </div>
