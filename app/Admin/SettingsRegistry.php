@@ -36,7 +36,8 @@ final class SettingsRegistry
                 'franja.boton'    => $t('Franja inferior: texto del botón', 'Comienza tu aventura'),
             ]],
             'inicio' => ['title' => 'Página de inicio', 'intro' => 'Los títulos y textos de cada bloque. El carrusel y los dos tipos de viaje se editan en «Inicio y carrusel».', 'items' => [
-                'home.carrusel.segundos' => ['Segundos entre diapositivas del carrusel', 'number', '4', 'Entre 2 y 15. Recomendado: 4.', false],
+                'home.carrusel.segundos' => ['Segundos entre diapositivas (ordenador y tableta grande)', 'number', '3', 'Entre 2 y 15. Recomendado: 3.', false],
+                'home.carrusel.segundos_movil' => ['Segundos entre diapositivas (móvil)', 'number', '4', 'Entre 2 y 15. Recomendado: 4: en el móvil también se puede deslizar con el dedo.', false],
                 'home.tipos.kicker'      => $t('Tipos de viaje: etiqueta pequeña', 'Tipos de viaje'),
                 'home.tipos.titulo'      => $t('Tipos de viaje: título', 'El viaje,'),
                 'home.tipos.enfasis'     => $t('Tipos de viaje: parte en cursiva', 'a tu manera'),

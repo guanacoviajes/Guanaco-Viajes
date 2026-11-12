@@ -122,7 +122,7 @@ Debe terminar con **«0 fallos»**. Los avisos de `upload_max_filesize` y `post_
 - [ ] La portada carga con candado verde. `http://guanacoviajes.es` y `https://www.guanacoviajes.es` te llevan a `https://guanacoviajes.es`.
 - [ ] **Pide un presupuesto de prueba** desde `/presupuesto` con tu propio correo: debe llegarte el aviso a `hola@guanacoviajes.es` y el acuse a tu correo, y aparecer en *Panel → Solicitudes*. Si no llega el correo, mira el paso «Problemas habituales».
 - [ ] Haz lo mismo desde `/contacto`.
-- [ ] En el panel, **sube tu foto** en *Quiénes somos* y repasa los textos de *Ajustes* (redes sociales cuando existan).
+- [ ] En el panel, **sube tu foto** en *Quiénes somos* y repasa los textos de *Ajustes*. **Los iconos de Instagram, Facebook y X solo aparecen cuando escribes la dirección completa (con `https://`) de cada perfil en *Ajustes → Contacto y redes*;** si los dejas vacíos no se muestran, a propósito, para no enlazar a perfiles que no existen.
 - [ ] Sube una foto de ≥ 5 MB a un destino para comprobar los límites de PHP.
 - [ ] Abre `/sitemap.xml` y `/robots.txt`.
 - [ ] Textos legales: **no los des por buenos** hasta que Nadidú los revise (ver `docs/REVISION-LEGAL-NADIDU.md`). Cuando lo hagan, marca la casilla «revisado» en *Páginas*.

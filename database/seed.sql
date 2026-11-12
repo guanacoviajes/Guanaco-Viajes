@@ -44,7 +44,8 @@ INSERT INTO settings (clave, valor) VALUES
 ('franja.texto',           '¿Tienes una idea de viaje?'),
 ('franja.enfasis',         'Cuéntanosla.'),
 ('franja.boton',            'Comienza tu aventura'),
-('home.carrusel.segundos', '4'),
+('home.carrusel.segundos', '3'),
+('home.carrusel.segundos_movil', '4'),
 ('form.paso1.pregunta',    '¿A dónde te gustaría ir?'),
 ('form.paso1.ayuda',       'Puedes elegir más de uno.');
 

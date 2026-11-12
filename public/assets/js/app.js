@@ -167,8 +167,15 @@
     var dots = $$('.cdots button:not(.cpause)', car);
     var pauseBtn = $('.cpause', car);
     var idx = 0, timer = null, paused = reduce, hover = false;
-    var secs = parseFloat(car.getAttribute('data-interval')) || 4;
-    var ms = Math.max(2, secs) * 1000;
+    // Un ritmo para ordenador y otro para móvil (se eligen en el panel).
+    var mq = window.matchMedia('(max-width: 820px)');
+    var msFor = function () {
+      var s = parseFloat(car.getAttribute(mq.matches ? 'data-interval-mobile' : 'data-interval')) || (mq.matches ? 4 : 3);
+      return Math.max(2, Math.min(15, s)) * 1000;
+    };
+    var ms = msFor();
+    var onMq = function () { ms = msFor(); play(); };
+    if (mq.addEventListener) { mq.addEventListener('change', onMq); } else if (mq.addListener) { mq.addListener(onMq); }
 
     var show = function (n) {
       idx = (n + slides.length) % slides.length;

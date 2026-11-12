@@ -33,6 +33,7 @@ SQL
   cat database/seed.sql
 } > "$STAGE/database/instalacion.sql"
 cp database/.htaccess "$STAGE/database/"
+[ -d database/actualizaciones ] && cp -r database/actualizaciones "$STAGE/database/"
 # Documentación
 cp docs/INSTALACION.md docs/SEO-Y-BLOG.md docs/REVISION-LEGAL-NADIDU.md docs/.htaccess "$STAGE/docs/"
 cp README.md comprobar.php "$STAGE/"
