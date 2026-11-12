@@ -176,3 +176,32 @@ CREATE TABLE IF NOT EXISTS requests (
   KEY idx_req_estado (estado, created_at),
   KEY idx_req_ip (ip_hash, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Usuario del panel de administración
+CREATE TABLE IF NOT EXISTS admin_users (
+  id               INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  email            VARCHAR(150)  NOT NULL,
+  password_hash    VARCHAR(255)  NOT NULL,
+  totp_secret      VARCHAR(255)  NULL,
+  totp_enabled     TINYINT(1)    NOT NULL DEFAULT 0,
+  totp_last_step   BIGINT        NOT NULL DEFAULT 0,
+  recovery_codes   TEXT          NULL,
+  session_version  INT UNSIGNED  NOT NULL DEFAULT 1,
+  last_login       DATETIME      NULL,
+  created_at       TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_admin_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Intentos de acceso (para frenar la fuerza bruta). Solo hashes, nunca contraseñas ni IPs.
+CREATE TABLE IF NOT EXISTS auth_attempts (
+  id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  scope       ENUM('login','totp') NOT NULL,
+  ip_hash     CHAR(64)  NOT NULL,
+  subject     CHAR(64)  NOT NULL,
+  ok          TINYINT(1) NOT NULL,
+  created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_att_ip (scope, ip_hash, created_at),
+  KEY idx_att_subject (scope, subject, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

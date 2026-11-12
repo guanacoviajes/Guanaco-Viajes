@@ -11,18 +11,22 @@ if (!defined('PUBLIC_PATH')) {
     define('PUBLIC_PATH', ROOT . '/public');
 }
 
+// Cargador de clases: prefijo del espacio de nombres → carpeta
 spl_autoload_register(static function (string $class): void {
-    // Código propio: App\Carpeta\Clase → app/Carpeta/Clase.php
-    if (strncmp($class, 'App\\', 4) === 0) {
-        $file = ROOT . '/app/' . str_replace('\\', '/', substr($class, 4)) . '.php';
-    // Biblioteca de correo incluida: PHPMailer\PHPMailer\X → app/Vendor/PHPMailer/src/X.php
-    } elseif (strncmp($class, 'PHPMailer\\PHPMailer\\', 20) === 0) {
-        $file = ROOT . '/app/Vendor/PHPMailer/src/' . substr($class, 20) . '.php';
-    } else {
-        return;
-    }
-    if (is_file($file)) {
-        require $file;
+    static $map = [
+        'App\\'                 => '/app/',                          // código propio
+        'PHPMailer\\PHPMailer\\' => '/app/Vendor/PHPMailer/src/',    // correo (incluido en el proyecto)
+        'BaconQrCode\\'         => '/app/Vendor/BaconQrCode/src/',    // códigos QR del panel
+        'DASPRiD\\Enum\\'       => '/app/Vendor/DASPRID/src/',        // dependencia de los QR
+    ];
+    foreach ($map as $prefix => $dir) {
+        if (str_starts_with($class, $prefix)) {
+            $file = ROOT . $dir . str_replace('\\', '/', substr($class, strlen($prefix))) . '.php';
+            if (is_file($file)) {
+                require $file;
+            }
+            return;
+        }
     }
 });
 

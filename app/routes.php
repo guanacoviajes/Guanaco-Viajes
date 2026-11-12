@@ -36,3 +36,31 @@ foreach (['aviso-legal', 'politica-de-privacidad', 'politica-de-cookies', 'condi
 }
 
 $router->get('/sitemap.xml', [SitemapController::class, 'index']);
+
+// ---------- Panel de administración ----------
+$router->get('/admin/instalar', [\App\Admin\AuthController::class, 'installForm']);
+$router->post('/admin/instalar', [\App\Admin\AuthController::class, 'install']);
+$router->get('/admin/entrar', [\App\Admin\AuthController::class, 'loginForm']);
+$router->post('/admin/entrar', [\App\Admin\AuthController::class, 'login']);
+$router->get('/admin/verificar', [\App\Admin\AuthController::class, 'verifyForm']);
+$router->post('/admin/verificar', [\App\Admin\AuthController::class, 'verify']);
+$router->get('/admin/activar', [\App\Admin\AuthController::class, 'enrollForm']);
+$router->post('/admin/activar', [\App\Admin\AuthController::class, 'enroll']);
+$router->post('/admin/salir', [\App\Admin\AuthController::class, 'logout']);
+
+$router->get('/admin', [\App\Admin\DashboardController::class, 'index']);
+
+$router->get('/admin/solicitudes', [\App\Admin\RequestsController::class, 'index']);
+$router->get('/admin/solicitudes/exportar.csv', [\App\Admin\RequestsController::class, 'exportar']);
+$router->get('/admin/solicitudes/{id}', [\App\Admin\RequestsController::class, 'show']);
+$router->post('/admin/solicitudes/{id}/estado', [\App\Admin\RequestsController::class, 'estado']);
+$router->post('/admin/solicitudes/{id}/notas', [\App\Admin\RequestsController::class, 'notas']);
+$router->post('/admin/solicitudes/{id}/eliminar', [\App\Admin\RequestsController::class, 'eliminar']);
+$router->post('/admin/solicitudes/{id}/reenviar', [\App\Admin\RequestsController::class, 'reenviar']);
+
+$router->get('/admin/seguridad', [\App\Admin\SecurityController::class, 'index']);
+$router->get('/admin/codigos-de-recuperacion', [\App\Admin\SecurityController::class, 'recoveryCodes']);
+$router->post('/admin/seguridad/contrasena', [\App\Admin\SecurityController::class, 'password']);
+$router->post('/admin/seguridad/recuperacion', [\App\Admin\SecurityController::class, 'newRecovery']);
+$router->post('/admin/seguridad/reiniciar-2fa', [\App\Admin\SecurityController::class, 'resetTotp']);
+$router->post('/admin/seguridad/cerrar-sesiones', [\App\Admin\SecurityController::class, 'closeSessions']);

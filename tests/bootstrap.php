@@ -6,7 +6,7 @@ define('ROOT', dirname(__DIR__));
 define('PUBLIC_PATH', ROOT . '/public');
 
 spl_autoload_register(static function (string $class): void {
-    if (strncmp($class, 'App\\', 4) === 0) {
+    if (str_starts_with($class, 'App\\')) {
         $f = ROOT . '/app/' . str_replace('\\', '/', substr($class, 4)) . '.php';
         if (is_file($f)) {
             require $f;

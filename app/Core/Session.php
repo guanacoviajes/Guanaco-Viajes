@@ -9,20 +9,33 @@ namespace App\Core;
  */
 final class Session
 {
+    /** 'public' (formularios) o 'admin' (panel): cookies distintas para que no se mezclen. */
+    private static string $scope = 'public';
+
+    /** Debe llamarse antes de iniciar ninguna sesión en esa petición. */
+    public static function useAdmin(): void
+    {
+        if (session_status() === PHP_SESSION_ACTIVE && self::$scope !== 'admin') {
+            throw new \LogicException('La sesión pública ya estaba iniciada.');
+        }
+        self::$scope = 'admin';
+    }
+
     public static function start(): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
             return;
         }
+        $admin = self::$scope === 'admin';
         $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
             || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
-        session_name('gvsid');
+        session_name($admin ? 'gvadm' : 'gvsid');
         session_set_cookie_params([
             'lifetime' => 0,
-            'path'     => '/',
+            'path'     => $admin ? '/admin' : '/',
             'secure'   => $secure,
             'httponly' => true,
-            'samesite' => 'Lax',
+            'samesite' => $admin ? 'Strict' : 'Lax',
         ]);
         ini_set('session.use_strict_mode', '1');
         ini_set('session.use_only_cookies', '1');

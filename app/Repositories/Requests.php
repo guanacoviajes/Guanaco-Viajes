@@ -42,4 +42,97 @@ final class Requests
     {
         Database::run('UPDATE requests SET aviso_enviado = ?, acuse_enviado = ? WHERE id = ?', [$aviso ? 1 : 0, $acuse ? 1 : 0, $id]);
     }
+
+    // ---------- panel de administración ----------
+
+    public const ESTADOS = ['nueva' => 'Nueva', 'leida' => 'Leída', 'respondida' => 'Respondida', 'archivada' => 'Archivada'];
+
+    public static function countNew(): int
+    {
+        return (int) Database::value("SELECT COUNT(*) FROM requests WHERE estado = 'nueva'");
+    }
+
+    /** @param array{estado?:string,origen?:string,q?:string} $f */
+    private static function where(array $f): array
+    {
+        $w = [];
+        $a = [];
+        if (!empty($f['estado']) && isset(self::ESTADOS[$f['estado']])) {
+            $w[] = 'estado = ?';
+            $a[] = $f['estado'];
+        }
+        if (!empty($f['origen']) && in_array($f['origen'], ['presupuesto', 'contacto'], true)) {
+            $w[] = 'origen = ?';
+            $a[] = $f['origen'];
+        }
+        if (!empty($f['q'])) {
+            $like = '%' . addcslashes(mb_substr($f['q'], 0, 80), '%_\\') . '%';
+            $w[] = '(nombre LIKE ? OR email LIKE ? OR mensaje LIKE ? OR destinos LIKE ?)';
+            array_push($a, $like, $like, $like, $like);
+        }
+        return [$w ? 'WHERE ' . implode(' AND ', $w) : '', $a];
+    }
+
+    /** @param array<string,string> $f @return array{rows: list<array>, total: int} */
+    public static function search(array $f, int $page, int $per): array
+    {
+        [$where, $args] = self::where($f);
+        $total = (int) Database::value("SELECT COUNT(*) FROM requests $where", $args);
+        $rows = Database::all(
+            "SELECT * FROM requests $where ORDER BY created_at DESC, id DESC LIMIT " . (int) $per . ' OFFSET ' . (int) max(0, ($page - 1) * $per),
+            $args
+        );
+        return ['rows' => $rows, 'total' => $total];
+    }
+
+    /** @param array<string,string> $f @return list<array> */
+    public static function export(array $f): array
+    {
+        [$where, $args] = self::where($f);
+        return Database::all("SELECT * FROM requests $where ORDER BY created_at DESC, id DESC LIMIT 5000", $args);
+    }
+
+    public static function find(int $id): ?array
+    {
+        return Database::one('SELECT * FROM requests WHERE id = ?', [$id]);
+    }
+
+    public static function setEstado(int $id, string $estado): void
+    {
+        if (isset(self::ESTADOS[$estado])) {
+            Database::run('UPDATE requests SET estado = ? WHERE id = ?', [$estado, $id]);
+        }
+    }
+
+    public static function setNotas(int $id, string $notas): void
+    {
+        Database::run('UPDATE requests SET notas = ? WHERE id = ?', [$notas === '' ? null : mb_substr($notas, 0, 4000), $id]);
+    }
+
+    public static function delete(int $id): void
+    {
+        Database::run('DELETE FROM requests WHERE id = ?', [$id]);
+    }
+
+    /** Datos de una fila en la forma que usan los correos. @return array<string,mixed> */
+    public static function toData(array $r): array
+    {
+        $dec = static fn($v): array => $v ? (json_decode((string) $v, true) ?: []) : [];
+        return [
+            'nombre' => $r['nombre'], 'email' => $r['email'], 'telefono' => $r['telefono'], 'canal' => $r['canal'],
+            'destinos' => $dec($r['destinos']), 'meses' => $dec($r['meses']), 'flexible' => (bool) $r['flexible'],
+            'duracion' => $r['duracion'], 'adultos' => (int) $r['adultos'], 'menores' => (int) $r['menores'],
+            'edades_menores' => $r['edades_menores'], 'intereses' => $dec($r['intereses']), 'mensaje' => (string) $r['mensaje'],
+        ];
+    }
+
+    public static function pendingNotices(): int
+    {
+        return (int) Database::value('SELECT COUNT(*) FROM requests WHERE aviso_enviado = 0');
+    }
+
+    public static function countSince(int $days): int
+    {
+        return (int) Database::value('SELECT COUNT(*) FROM requests WHERE created_at >= (NOW() - INTERVAL ' . (int) $days . ' DAY)');
+    }
 }
