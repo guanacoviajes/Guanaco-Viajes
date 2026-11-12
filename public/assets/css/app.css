@@ -730,3 +730,11 @@ section.sec-tipos{padding:72px 0 72px}
   .slide .blk h1,.slide .blk .h1{font-size:clamp(34px,10vw,44px);margin:12px 0 0}
   .slide .blk .btn.bm{position:absolute;z-index:4;left:var(--gut);bottom:68px;padding:14px 22px;box-shadow:0 2px 12px rgba(0,0,0,.28)}
 }
+
+/* Carrusel (ordenador): caja y texto ~12 % más pequeños para que tape menos la foto */
+@media (min-width:821px){
+  .slide .blk{width:min(565px,51vw);padding:39px 49px 42px var(--gut)}
+  .slide .blk h1,.slide .blk .h1{font-size:clamp(39px,5.3vw,74px);margin:18px 0 26px}
+  .slide .blk .kick{font-size:11px}
+  .slide .blk .btn.bm{padding:15px 25px;font-size:14px}
+}

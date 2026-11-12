@@ -166,7 +166,7 @@
     var slides = $$('.slide', car);
     var dots = $$('.cdots button:not(.cpause)', car);
     var pauseBtn = $('.cpause', car);
-    var idx = 0, timer = null, paused = reduce, hover = false;
+    var idx = 0, timer = null, paused = reduce, hover = false, visible = true;
     // Un ritmo para ordenador y otro para móvil (se eligen en el panel).
     var mq = window.matchMedia('(max-width: 820px)');
     var msFor = function () {
@@ -193,7 +193,7 @@
     var stop = function () { if (timer) { clearInterval(timer); timer = null; } };
     var play = function () {
       stop();
-      if (paused || hover || slides.length < 2 || document.hidden) { return; }
+      if (paused || hover || !visible || slides.length < 2 || document.hidden) { return; }
       timer = setInterval(function () { show(idx + 1); }, ms);
     };
     var setPaused = function (p) {
@@ -209,9 +209,14 @@
     // Solo el botón de pausa lo detiene de forma permanente.
     dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i); play(); }); });
     if (pauseBtn) { pauseBtn.addEventListener('click', function () { setPaused(!paused); }); }
-    // La pausa al pasar el ratón solo cuenta con ratón: en el móvil un toque no debe dejar el carrusel parado.
-    car.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { hover = true; stop(); } });
-    car.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') { hover = false; play(); } });
+    // Sin pausa por ratón: si el cursor se queda encima al volver a subir, el carrusel no debe quedarse parado.
+    // Se detiene solo mientras no se ve en pantalla y se reanuda al volver a verlo.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        play();
+      }, { threshold: 0.25 }).observe(car);
+    }
     // Con teclado, el foco dentro del carrusel lo pausa (para poder leer); con toque o ratón no.
     var byKeyboard = false;
     document.addEventListener('keydown', function () { byKeyboard = true; }, true);
