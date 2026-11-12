@@ -28,8 +28,8 @@ final class DestinosController
         ], [
             ...($label
                 ? [
-                    'title'       => "Viajes a medida por $label · Guanaco Viajes",
-                    'description' => "Países de $label para viajar a medida con Guanaco Viajes: eliges el destino y diseñamos el viaje contigo, sin rutas cerradas.",
+                    'title'       => "Viajes a medida a $label · Guanaco Viajes",
+                    'description' => "Viajes a medida por $label: eliges el país y diseñamos el viaje contigo, sin rutas cerradas. Descubre los destinos de $label con Guanaco Viajes.",
                 ]
                 : Seo::page('destinos', 'Destinos: Sudamérica y Europa a medida · Guanaco Viajes', 'Destinos de Sudamérica y Europa para viajar a medida. Elige un país y diseñamos el viaje contigo.')),
         ]);

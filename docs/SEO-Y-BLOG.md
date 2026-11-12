@@ -22,7 +22,7 @@ El blog **no compite** con las páginas de país: las alimenta. Cada artículo e
 - Inicio: «Viajes a medida por Sudamérica y Europa · Guanaco Viajes».
 - Viajes a medida: «Viajes personalizados a medida · Guanaco Viajes».
 - Cada país: «Viajes a medida a **{País}** · Guanaco Viajes», con descripción que empieza por «Diseñamos tu viaje a medida a {País}…».
-- Cada continente: «Viajes a medida por Sudamérica / Europa».
+- Cada continente: «Viajes a medida a Sudamérica» / «a Europa», con «viajes a medida por Sudamérica» en la descripción para cubrir las dos formas de buscar.
 - Todos únicos (comprobado: ninguna página repite título ni descripción) y dentro de longitud (título ≤ 70, descripción 70–165).
 - **Los de las páginas principales los puedes cambiar tú** en *Textos y ajustes → Buscadores (SEO)*. Los de cada país y artículo, en su propia ficha.
 
@@ -64,7 +64,7 @@ El blog **no compite** con las páginas de país: las alimenta. Cada artículo e
 
 - **«Viajes a medida»**: inicio y `/viajes-a-medida`. En artículos úsala como enlace natural, no la metas a la fuerza.
 - **«Viaje a medida a {País}»**: solo la ficha de ese país. Un artículo sobre ese país **no** debe intentar posicionar esa misma frase (competiría con su ficha): apunta a una búsqueda informativa distinta.
-- **«Viajes a medida por Sudamérica / Europa»**: páginas de continente.
+- **«Viajes a medida a / por Sudamérica»** y **«a / por Europa»**: páginas de continente. Es una de las apuestas prioritarias: enlaza a `/destinos/sudamerica` desde los artículos sobre países sudamericanos.
 - **Variantes** que puedes mezclar con naturalidad: viajes personalizados, viaje a la carta, diseñar tu viaje, agencia de viajes a medida, viaje sin rutas cerradas.
 
 ## 5. Guía para escribir cada artículo

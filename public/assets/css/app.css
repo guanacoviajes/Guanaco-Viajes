@@ -155,7 +155,7 @@
 .snav .links a.on{border-bottom:2px solid var(--terracota);padding-bottom:3px}
 .snav .links .btn{background:var(--marfil);color:var(--carbon);border-color:var(--marfil);padding:13px 20px;font-size:14px}
 .snav .burger i,.snav .burger i:before,.snav .burger i:after{background:var(--marfil)}
-.crumbs{font:500 13px var(--sans);opacity:.75;padding:20px var(--gut) 0;max-width:1440px;margin:0 auto}
+.crumbs{font:500 13px var(--sans);padding:20px var(--gut) 0;max-width:1440px;margin:0 auto}
 .crumbs a{color:var(--carbon)}
 .phero{position:relative;height:min(74vh,600px);min-height:460px;overflow:hidden;background:#222}
 .phero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -308,14 +308,14 @@
 .pr-side h1 em{font-style:italic}
 .pr-side p{font:400 17px/1.6 var(--sans);opacity:.8;max-width:30ch}
 .vsteps{list-style:none;padding:0;margin:40px 0 0}
-.vsteps li{display:flex;gap:14px;align-items:center;padding:14px 0;border-top:1px solid rgba(31,45,40,.16);font:600 15px var(--sans);opacity:.45}
+.vsteps li{display:flex;gap:14px;align-items:center;padding:14px 0;border-top:1px solid rgba(31,45,40,.16);font:600 15px var(--sans);opacity:.7}
 .vsteps li:last-child{border-bottom:1px solid rgba(31,45,40,.16)}
 .vsteps li b{width:30px;height:30px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font:600 13px var(--sans)}
 .vsteps li.on{opacity:1}.vsteps li.on b{background:var(--carbon);color:var(--marfil);border-color:var(--carbon)}
-.vsteps li.done{opacity:.8}.vsteps li.done b{background:var(--terracota);border-color:var(--terracota);color:var(--carbon)}
+.vsteps li.done{opacity:1}.vsteps li.done b{background:var(--terracota);border-color:var(--terracota);color:var(--carbon)}
 .pr-card{background:#fff;border-radius:4px;border:1px solid rgba(31,45,40,.12);padding:48px 52px 40px;min-height:520px;display:flex;flex-direction:column}
 .pr-card .seg{margin-bottom:10px}
-.pr-card .cnt{font:600 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-bottom:26px}
+.pr-card .cnt{font:600 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;opacity:.78;margin-bottom:26px}
 .step{display:none;flex:1;animation:fade .4s ease}.step.on{display:block}
 .step .q{font:400 clamp(30px,3.2vw,42px)/1.12 var(--serif);letter-spacing:-.008em}
 .step .hint{font:500 15px var(--sans);opacity:.7;margin:10px 0 28px}
@@ -560,7 +560,7 @@ button.chip:hover{border-color:var(--carbon)}
 
 /* ================= segunda entrega: páginas interiores ================= */
 .crumbs{padding:20px var(--gut) 0;max-width:1440px;margin:0 auto;font:500 13px var(--sans)}
-.crumbs-l{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 0;opacity:.8}
+.crumbs-l{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 0;color:#4f5a54}
 .crumbs-l li+li:before{content:"/";margin:0 8px;opacity:.6}
 .crumbs a{color:var(--carbon)}
 /* franja del título de página: no se pisan el menú fijo y las migas */
