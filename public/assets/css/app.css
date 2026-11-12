@@ -68,7 +68,7 @@
   @media (prefers-reduced-motion:reduce){.tv-panel.on{animation:none}.tv-img img{transition:none}.card{transition:none}}
   /* flechas del carril de destinos (móvil) */
   .rail{position:relative}
-  .arr{display:none;position:absolute;top:150px;z-index:5;width:44px;height:44px;border-radius:50%;border:0;background:var(--marfil);box-shadow:0 2px 10px rgba(31,45,40,.3);cursor:pointer;align-items:center;justify-content:center}
+  .arr{display:flex;position:absolute;top:220px;z-index:5;width:44px;height:44px;border-radius:50%;border:0;background:var(--marfil);box-shadow:0 2px 10px rgba(31,45,40,.3);cursor:pointer;align-items:center;justify-content:center}
   .arr svg{width:20px;height:20px;fill:none;stroke:var(--carbon);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .arr.r{right:8px}.arr.l{left:8px}
   /* destinos */
@@ -406,7 +406,6 @@ body.menu-open .site-header .logo-dark{display:block}
 .btn-cta{padding:13px 20px;font-size:14px;background:var(--carbon);color:var(--marfil);border-color:var(--carbon)}
 .site-header.is-solid .btn-cta,.site-header.is-overlay.at-top[data-tone="claro"] .btn-cta{background:var(--marfil);color:var(--carbon);border-color:var(--marfil)}
 .btn-cta:hover,.site-header .btn-cta:hover{background:var(--terracota);border-color:var(--terracota);color:var(--carbon)}
-.mainnav a.btn-cta{border-bottom:1.5px solid}
 .burger{display:none;align-self:center;width:46px;height:46px;border:0;background:transparent;position:relative;cursor:pointer;color:inherit}
 .burger i,.burger i:before,.burger i:after{position:absolute;left:10px;right:10px;height:2px;background:currentColor;content:"";transition:transform .25s,opacity .25s}
 .burger i{top:22px}.burger i:before{top:-7px;left:0;right:0}.burger i:after{top:7px;left:0;right:0}
@@ -459,7 +458,7 @@ a.card{color:inherit;text-decoration:none}
 .card:focus-visible{flex:2.1}
 .cards:hover .card.x:not(:hover){flex:1}
 .cards:hover .card.x:not(:hover) .cp{opacity:0}
-.arr{display:none;position:absolute;top:150px;z-index:5;width:46px;height:46px;border-radius:50%;border:0;background:var(--marfil);box-shadow:0 2px 10px rgba(31,45,40,.3);cursor:pointer;align-items:center;justify-content:center}
+.arr{display:flex;position:absolute;top:220px;z-index:5;width:46px;height:46px;border-radius:50%;border:0;background:var(--marfil);box-shadow:0 2px 10px rgba(31,45,40,.3);cursor:pointer;align-items:center;justify-content:center}
 .arr svg{width:20px;height:20px;fill:none;stroke:var(--carbon);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .arr.r{right:8px}.arr.l{left:8px}
 
@@ -512,8 +511,7 @@ button.chip:hover{border-color:var(--carbon)}
   .slide .blk{top:calc(var(--hdr-h) + 14px);bottom:auto}
   .slide-img{object-position:14% 82%}
   .cards:hover .card.x:not(:hover){flex:0 0 74%}
-  .arr{display:flex}
-  .arr.l.hide,.arr.r.hide{display:none}
+  .arr{top:150px}
   .fgrid{grid-template-columns:1fr 1fr}
   .bubble-wrap{right:16px;bottom:16px}
   .bubble{width:56px;height:56px}
@@ -522,3 +520,40 @@ button.chip:hover{border-color:var(--carbon)}
 @media (prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none !important;transition:none !important}
 }
+
+/* ---------- ajustes tras la primera revisión ---------- */
+/* Cabecera: opaca al pasar el cursor o enfocar con teclado (también con el desplegable abierto) */
+.site-header{transition:transform .3s ease-in-out,background-color .25s ease,border-color .25s ease,color .25s ease}
+.site-header.is-overlay.at-top:hover,
+.site-header.is-overlay.at-top:focus-within{background:var(--carbon);color:var(--marfil);border-bottom-color:transparent}
+.site-header.is-overlay.at-top:hover .logo-light,
+.site-header.is-overlay.at-top:focus-within .logo-light{display:none}
+.site-header.is-overlay.at-top:hover .logo-dark,
+.site-header.is-overlay.at-top:focus-within .logo-dark{display:block}
+
+/* Botón «Pide tu presupuesto» del menú: cuadrado cerrado y con aire a los lados */
+.site-header .mainnav a.btn-cta{padding:14px 26px;line-height:1;border:1.5px solid var(--carbon);border-radius:3px;background:var(--carbon);color:var(--marfil);white-space:nowrap}
+.site-header.is-solid .mainnav a.btn-cta,
+.site-header.is-overlay.at-top[data-tone="claro"] .mainnav a.btn-cta,
+.site-header.is-overlay.at-top:hover .mainnav a.btn-cta,
+.site-header.is-overlay.at-top:focus-within .mainnav a.btn-cta{background:var(--marfil);color:var(--carbon);border-color:var(--marfil)}
+.site-header .mainnav a.btn-cta:hover{background:var(--terracota);border-color:var(--terracota);color:var(--carbon)}
+.site-header .mainnav a.btn-cta[aria-current]{border-bottom:1.5px solid}
+
+/* Carril de destinos: en escritorio y tablet se desliza cuando los países no caben */
+.arr.hide{display:none}
+@media (min-width:821px){
+  .cards{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x proximity}
+  .cards::-webkit-scrollbar{display:none}
+  .card{min-width:190px;scroll-snap-align:start}
+}
+
+/* Redes sociales del pie */
+.social{display:flex;gap:12px;margin-top:14px}
+.site-footer .social a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1.5px solid rgba(243,238,228,.5);border-radius:50%;opacity:1;line-height:1}
+.site-footer .social a:hover{background:var(--marfil);border-color:var(--marfil);text-decoration:none}
+.site-footer .social a:hover svg{fill:var(--carbon)}
+.social svg{width:20px;height:20px;fill:var(--marfil)}
+
+/* La burbuja se distingue también sobre el pie de página (ambos son carbón) */
+.bubble{box-shadow:0 0 0 2px var(--marfil),0 4px 14px rgba(31,45,40,.35)}

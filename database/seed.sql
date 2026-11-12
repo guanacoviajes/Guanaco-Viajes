@@ -41,6 +41,8 @@ INSERT INTO settings (clave, valor) VALUES
 ('home.blog.enfasis',      'viaje'),
 ('franja.texto',           '¿Tienes una idea de viaje?'),
 ('franja.enfasis',         'Cuéntanosla.'),
+('franja.boton',            'Comienza tu aventura'),
+('home.carrusel.segundos', '4'),
 ('form.paso1.pregunta',    '¿A dónde te gustaría ir?'),
 ('form.paso1.ayuda',       'Puedes elegir más de uno.');
 
@@ -62,7 +64,7 @@ INSERT INTO carousel_slides (orden, kicker, titular, titular_enfasis, foto, foto
 (3, 'Viajes en grupo',  'Vuelve con',    'historias',  'assets/img/seed/foto-27.jpg', '50% 46%', 'Pico de roca iluminado por el sol del atardecer en los Dolomitas',    'oscuro', 'Ver viajes en grupo',  '/viajes-en-grupo');
 
 INSERT INTO trip_types (slug, titulo, descripcion, cta_texto, cta_url, foto, foto_pos, foto_alt, orden) VALUES
-('viajes-a-medida', 'Viajes a medida', 'Tú traes la idea, aunque sea solo una inquietud. Diseñamos un viaje pensado para ti, y no tú para el viaje.', 'Pide tu presupuesto', '/presupuesto', 'assets/img/seed/foto-29.jpg', '50% 45%', 'Persona de espaldas con chaqueta roja frente a una montaña nevada', 1),
+('viajes-a-medida', 'Viajes a medida', 'Tú traes la idea, aunque sea solo una inquietud. Diseñamos un viaje pensado para ti, y no tú para el viaje.', 'Cuéntanos tu idea', '/presupuesto', 'assets/img/seed/foto-29.jpg', '50% 45%', 'Persona de espaldas con chaqueta roja frente a una montaña nevada', 1),
 ('viajes-en-grupo', 'Viajes en grupo', 'Salidas con propuestas diferentes, cuidadas y con personalidad, para compartir el camino con otras personas.', 'Ver viajes en grupo', '/viajes-en-grupo', 'assets/img/seed/foto-3.jpg', '50% 60%', 'Proa de una barca de madera sobre un lago de montaña', 2);
 
 INSERT INTO interests (nombre, orden) VALUES

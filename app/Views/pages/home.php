@@ -14,7 +14,7 @@ $quienFoto = $S('home.quien.foto');
 
 <?php if ($slides): ?>
 <!-- 1 · Carrusel -->
-<section class="carousel" id="carousel" aria-roledescription="carrusel" aria-label="Destacados">
+<section class="carousel" id="carousel" aria-roledescription="carrusel" aria-label="Destacados" data-interval="<?= e($S('home.carrusel.segundos', '4')) ?>">
   <?php foreach ($slides as $i => $s): ?>
   <div class="slide<?= $i === 0 ? ' is-active' : '' ?>" data-tone="<?= e($s['tono_menu']) ?>"
        role="group" aria-roledescription="diapositiva" aria-label="<?= $i + 1 ?> de <?= count($slides) ?>"

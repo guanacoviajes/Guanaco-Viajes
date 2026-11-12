@@ -147,8 +147,9 @@
     var c = $('.cards', rail), l = $('.arr.l', rail), n = $('.arr.r', rail);
     if (!c || !l || !n) { return; }
     function upd() {
-      l.classList.toggle('hide', c.scrollLeft < 30);
-      n.classList.toggle('hide', c.scrollLeft + c.clientWidth >= c.scrollWidth - 8);
+      var over = c.scrollWidth > c.clientWidth + 2;
+      l.classList.toggle('hide', !over || c.scrollLeft < 30);
+      n.classList.toggle('hide', !over || c.scrollLeft + c.clientWidth >= c.scrollWidth - 8);
     }
     function go(d) { c.scrollBy({ left: d * c.clientWidth * 0.74, behavior: reduce ? 'auto' : 'smooth' }); }
     l.addEventListener('click', function () { go(-1); });
@@ -166,6 +167,8 @@
     var dots = $$('.cdots button:not(.cpause)', car);
     var pauseBtn = $('.cpause', car);
     var idx = 0, timer = null, paused = reduce, hover = false;
+    var secs = parseFloat(car.getAttribute('data-interval')) || 4;
+    var ms = Math.max(2, secs) * 1000;
 
     var show = function (n) {
       idx = (n + slides.length) % slides.length;
@@ -184,7 +187,7 @@
     var play = function () {
       stop();
       if (paused || hover || slides.length < 2 || document.hidden) { return; }
-      timer = setInterval(function () { show(idx + 1); }, 7000);
+      timer = setInterval(function () { show(idx + 1); }, ms);
     };
     var setPaused = function (p) {
       paused = p;
