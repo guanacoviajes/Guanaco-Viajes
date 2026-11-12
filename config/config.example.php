@@ -7,6 +7,8 @@ return [
         'debug'    => false,                  // true solo en desarrollo
         'url'      => 'https://guanacoviajes.es',
         'timezone' => 'Europe/Madrid',
+        // Cadena larga y aleatoria (32 caracteres o más). Protege los formularios. No la compartas.
+        'secret'   => 'CAMBIA-ESTO-POR-UNA-CADENA-LARGA-Y-ALEATORIA',
     ],
     'db' => [
         'host'    => 'localhost',

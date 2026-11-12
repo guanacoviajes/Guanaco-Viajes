@@ -32,6 +32,8 @@ $desc      = (string) $meta['description'];
 <link rel="preload" href="/assets/fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?= e(asset('assets/css/app.css')) ?>">
 <script src="<?= e(asset('assets/js/app.js')) ?>" defer></script>
+<?php foreach ((array) ($meta['scripts'] ?? []) as $js): ?><script src="<?= e(asset($js)) ?>" defer></script>
+<?php endforeach; ?>
 </head>
 <body class="<?= $meta['overlay'] ? 'has-overlay' : 'has-solid' ?>">
 <a class="skip-link" href="#contenido">Saltar al contenido</a>

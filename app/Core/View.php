@@ -21,6 +21,7 @@ final class View
             'bubble'      => true,
             'og_image'    => '/assets/img/seed/foto-5.jpg',
             'canonical'   => null,
+            'scripts'     => [],
         ];
         $content = self::partial($view, $data);
         return self::partial('layouts/main', ['content' => $content, 'meta' => $meta]);

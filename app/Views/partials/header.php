@@ -4,7 +4,7 @@ use App\Repositories\Countries;
 use App\Repositories\Settings;
 
 $paises = Countries::byContinent();
-$cta    = Settings::get('site.cta_url', '/contacto');
+$cta    = Settings::get('site.cta_url', '/presupuesto');
 $path   = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/', '/') ?: '/';
 $is = static fn(string $prefix): bool => $path === $prefix || str_starts_with($path, $prefix . '/');
 $cls = 'site-header ' . ($overlay ? 'is-overlay at-top' : 'is-solid');

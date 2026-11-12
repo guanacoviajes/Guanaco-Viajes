@@ -2,9 +2,11 @@
 declare(strict_types=1);
 
 use App\Controllers\BlogController;
+use App\Controllers\ContactoController;
 use App\Controllers\DestinosController;
 use App\Controllers\HomeController;
 use App\Controllers\PagesController;
+use App\Controllers\PresupuestoController;
 use App\Controllers\SitemapController;
 
 /** @var \App\Core\Router $router */
@@ -19,7 +21,12 @@ $router->get('/destinos/{continente}', [DestinosController::class, 'index']);
 $router->get('/destinos/{continente}/{pais}', [DestinosController::class, 'pais']);
 
 $router->get('/quienes-somos', [PagesController::class, 'quienes']);
-$router->get('/contacto', [PagesController::class, 'contacto']);
+$router->get('/contacto', [ContactoController::class, 'show']);
+$router->post('/contacto/enviar', [ContactoController::class, 'send']);
+
+$router->get('/presupuesto', [PresupuestoController::class, 'show']);
+$router->post('/presupuesto/enviar', [PresupuestoController::class, 'send']);
+$router->get('/presupuesto/gracias', [PresupuestoController::class, 'thanks']);
 
 $router->get('/blog', [BlogController::class, 'index']);
 $router->get('/blog/{slug}', [BlogController::class, 'show']);

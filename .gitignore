@@ -158,3 +158,8 @@ vite.config.ts.timestamp-*
 /public/uploads/*
 !/public/uploads/.gitkeep
 !/public/uploads/.htaccess
+
+# Dependencias de desarrollo (no van al ZIP de instalación)
+/vendor/
+.phpunit.result.cache
+/storage/cache/phpunit/

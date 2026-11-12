@@ -145,3 +145,34 @@ CREATE TABLE IF NOT EXISTS departures (
   KEY idx_dep_country (country_id),
   CONSTRAINT fk_dep_country FOREIGN KEY (country_id) REFERENCES countries (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Solicitudes recibidas (formulario de presupuesto y formulario de contacto)
+CREATE TABLE IF NOT EXISTS requests (
+  id              INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  origen          ENUM('presupuesto','contacto') NOT NULL,
+  estado          ENUM('nueva','leida','respondida','archivada') NOT NULL DEFAULT 'nueva',
+  nombre          VARCHAR(100)  NOT NULL,
+  email           VARCHAR(150)  NOT NULL,
+  telefono        VARCHAR(30)   NOT NULL DEFAULT '',
+  canal           ENUM('correo','whatsapp','llamada') NOT NULL DEFAULT 'correo',
+  destinos        TEXT          NULL,
+  meses           TEXT          NULL,
+  flexible        TINYINT(1)    NOT NULL DEFAULT 0,
+  duracion        VARCHAR(30)   NOT NULL DEFAULT '',
+  adultos         TINYINT UNSIGNED NULL,
+  menores         TINYINT UNSIGNED NULL,
+  edades_menores  VARCHAR(120)  NOT NULL DEFAULT '',
+  intereses       TEXT          NULL,
+  mensaje         TEXT          NULL,
+  consent_texto   VARCHAR(400)  NOT NULL,
+  consent_at      DATETIME      NOT NULL,
+  ip_hash         CHAR(64)      NOT NULL,
+  aviso_enviado   TINYINT(1)    NOT NULL DEFAULT 0,
+  acuse_enviado   TINYINT(1)    NOT NULL DEFAULT 0,
+  notas           TEXT          NULL,
+  created_at      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_req_estado (estado, created_at),
+  KEY idx_req_ip (ip_hash, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

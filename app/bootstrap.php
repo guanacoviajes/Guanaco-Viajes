@@ -12,11 +12,15 @@ if (!defined('PUBLIC_PATH')) {
 }
 
 spl_autoload_register(static function (string $class): void {
-    $prefix = 'App\\';
-    if (strncmp($class, $prefix, strlen($prefix)) !== 0) {
+    // Código propio: App\Carpeta\Clase → app/Carpeta/Clase.php
+    if (strncmp($class, 'App\\', 4) === 0) {
+        $file = ROOT . '/app/' . str_replace('\\', '/', substr($class, 4)) . '.php';
+    // Biblioteca de correo incluida: PHPMailer\PHPMailer\X → app/Vendor/PHPMailer/src/X.php
+    } elseif (strncmp($class, 'PHPMailer\\PHPMailer\\', 20) === 0) {
+        $file = ROOT . '/app/Vendor/PHPMailer/src/' . substr($class, 20) . '.php';
+    } else {
         return;
     }
-    $file = ROOT . '/app/' . str_replace('\\', '/', substr($class, strlen($prefix))) . '.php';
     if (is_file($file)) {
         require $file;
     }

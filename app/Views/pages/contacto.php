@@ -1,8 +1,20 @@
 <?php
+/**
+ * @var array<string,mixed> $old  @var array<string,string> $errors  @var ?string $aviso
+ * @var bool $enviado  @var string $csrf  @var string $timeToken
+ */
 use App\Repositories\Settings;
+
 $S = static fn(string $k, string $d = ''): string => Settings::get($k, $d);
-$tel = $S('site.telefono'); $wa = preg_replace('/\D+/', '', $S('site.whatsapp')); $mail = $S('site.email');
+$tel = $S('site.telefono');
+$wa = preg_replace('/\D+/', '', $S('site.whatsapp'));
+$mail = $S('site.email');
 $msg = $S('site.whatsapp_mensaje', 'Hola, me gustaría información sobre un viaje.');
+$val = static fn(string $k): string => is_string($old[$k] ?? null) ? $old[$k] : '';
+$err = static fn(string $k): string => isset($errors[$k])
+    ? '<p class="err on" role="alert" id="e-' . e($k) . '">' . e($errors[$k]) . '</p>'
+    : '';
+$bad = static fn(string $k): string => isset($errors[$k]) ? ' aria-invalid="true"' : '';
 ?>
 <?= \App\Core\View::partial('partials/crumbs', ['items' => [['Contacto', null]]]) ?>
 <section class="pagehead">
@@ -24,11 +36,34 @@ $msg = $S('site.whatsapp_mensaje', 'Hola, me gustaría información sobre un via
     </div>
   </div>
 </section>
-<section class="sec sec-tight">
-  <div class="wrap">
-    <div class="cierre">
-      <p>¿Quieres que diseñemos un viaje para ti? <em>Cuéntanos tu idea.</em></p>
-      <a class="btn b1" href="/presupuesto">Pide tu presupuesto</a>
+
+<section class="sec sec-tight" id="formulario">
+  <div class="wrap cform">
+    <div>
+      <div class="kick">Mensaje</div>
+      <h2>Cuéntanos <em>qué necesitas</em></h2>
+      <p class="lead2">Respondemos en cuanto podemos. Si lo que buscas es un viaje a medida, el formulario de presupuesto te hace las preguntas justas.</p>
+      <a class="btn b2" href="/presupuesto" style="margin-top:26px">Pide tu presupuesto</a>
     </div>
+
+    <?php if ($enviado): ?>
+    <div class="sent" id="mensaje-enviado" role="status" tabindex="-1">
+      <p class="t">Mensaje enviado.</p>
+      <p>Gracias. Te responderemos en cuanto podamos. Te hemos enviado un correo de confirmación.</p>
+    </div>
+    <?php else: ?>
+    <form id="cform" action="/contacto/enviar" method="post" novalidate>
+      <?= $csrf ?>
+      <input type="hidden" name="t" value="<?= e($timeToken) ?>">
+      <div class="hp" aria-hidden="true"><label>Sitio web <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"></label></div>
+      <?php if ($aviso): ?><p class="aviso-form" role="alert"><?= e($aviso) ?></p><?php endif; ?>
+      <div class="fld"><label for="c-nombre">Nombre</label><div class="in<?= isset($errors['nombre']) ? ' bad' : '' ?>"><input id="c-nombre" name="nombre" maxlength="100" autocomplete="name" value="<?= e($val('nombre')) ?>"<?= $bad('nombre') ?> required></div><?= $err('nombre') ?></div>
+      <div class="fld"><label for="c-email">Correo electrónico</label><div class="in<?= isset($errors['email']) ? ' bad' : '' ?>"><input id="c-email" type="email" name="email" maxlength="150" autocomplete="email" value="<?= e($val('email')) ?>"<?= $bad('email') ?> required></div><?= $err('email') ?></div>
+      <div class="fld"><label for="c-mensaje">Mensaje</label><div class="in ta<?= isset($errors['mensaje']) ? ' bad' : '' ?>"><textarea id="c-mensaje" name="mensaje" maxlength="2000"<?= $bad('mensaje') ?> required><?= e($val('mensaje')) ?></textarea></div><?= $err('mensaje') ?></div>
+      <label class="chk"><input type="checkbox" name="consentimiento" value="1"<?= !empty($old['consentimiento']) ? ' checked' : '' ?><?= $bad('consentimiento') ?>><i></i><span>He leído y acepto la <a href="/politica-de-privacidad" target="_blank" rel="noopener">política de privacidad</a>. Responsable del tratamiento: NADIDU SL, agencia de viajes con registro C.IAN-118115-2. Mis datos se usarán para responder a mi mensaje.</span></label>
+      <?= $err('consentimiento') ?>
+      <button type="submit" class="btn b1" id="csend" style="margin-top:22px">Enviar mensaje</button>
+    </form>
+    <?php endif; ?>
   </div>
 </section>

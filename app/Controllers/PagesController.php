@@ -60,15 +60,6 @@ final class PagesController
         ]);
     }
 
-    public function contacto(Request $r): void
-    {
-        echo View::render('pages/contacto', [], [
-            'title'       => 'Contacto · Guanaco Viajes',
-            'description' => 'Escríbenos por WhatsApp o correo. Para un viaje a medida, pide tu presupuesto.',
-            'franja'      => false,
-        ]);
-    }
-
     public function legal(Request $r, string $slug = ''): void
     {
         $slug = $slug !== '' ? $slug : ltrim($r->path(), '/');

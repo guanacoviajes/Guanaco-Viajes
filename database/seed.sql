@@ -8,7 +8,8 @@ INSERT INTO settings (clave, valor) VALUES
 ('site.whatsapp',          '34600538885'),
 ('site.whatsapp_mensaje',  'Hola, me gustaría información sobre un viaje.'),
 ('site.email',             'hola@guanacoviajes.es'),
-('site.cta_url',            '/contacto'),
+('site.cta_url',            '/presupuesto'),
+('franja.url',               '/contacto'),
 ('site.email_reservas',    'reservas@guanacoviajes.es'),
 ('social.instagram',       ''),
 ('social.facebook',        ''),
@@ -60,8 +61,8 @@ INSERT INTO countries (slug, nombre, continente, orden, resumen, foto, foto_pos,
 ('croacia',   'Croacia',   'europa',     5, 'Costa de islas, pueblos de piedra frente al mar y parques naturales de lagos y cascadas.', 'assets/img/seed/foto-11.jpg', '50% 50%', 'Faro de piedra en una punta con una barca y montañas al fondo');
 
 INSERT INTO carousel_slides (orden, kicker, titular, titular_enfasis, foto, foto_pos, foto_alt, tono_menu, cta_texto, cta_url) VALUES
-(1, 'Viajes a medida',  'Viaja con',     'curiosidad', 'assets/img/seed/foto-5.jpg',  '40% 58%', 'Senderista caminando por una duna al atardecer con montañas al fondo', 'oscuro', 'Pide tu presupuesto',  '/contacto'),
-(2, 'Sudamérica',       'Muévete con',   'libertad',   'assets/img/seed/foto-4.jpg',  '50% 62%', 'Carretera recta entre campos dorados con volcanes al fondo',         'oscuro', 'Pide tu presupuesto',  '/contacto'),
+(1, 'Viajes a medida',  'Viaja con',     'curiosidad', 'assets/img/seed/foto-5.jpg',  '40% 58%', 'Senderista caminando por una duna al atardecer con montañas al fondo', 'oscuro', 'Pide tu presupuesto',  '/presupuesto'),
+(2, 'Sudamérica',       'Muévete con',   'libertad',   'assets/img/seed/foto-4.jpg',  '50% 62%', 'Carretera recta entre campos dorados con volcanes al fondo',         'oscuro', 'Pide tu presupuesto',  '/presupuesto'),
 (3, 'Viajes en grupo',  'Vuelve con',    'historias',  'assets/img/seed/foto-27.jpg', '50% 46%', 'Pico de roca iluminado por el sol del atardecer en los Dolomitas',    'oscuro', 'Ver viajes en grupo',  '/viajes-en-grupo');
 
 INSERT INTO trip_types (slug, titulo, descripcion, cta_texto, cta_url, foto, foto_pos, foto_alt, orden) VALUES

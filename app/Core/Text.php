@@ -44,7 +44,7 @@ final class Text
         $s = e($s);
         $s = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $s) ?? $s;
         $s = preg_replace('/(?<![\*\w])\*(?!\s)(.+?)(?<!\s)\*(?!\*)/s', '<em>$1</em>', $s) ?? $s;
-        $s = preg_replace_callback('/\[([^\]]+)\]\(((?:https?:\/\/|\/|mailto:)[^\s)]*)\)/', static function (array $m): string {
+        $s = preg_replace_callback('/\[([^\]]+)\]\(((?:https?:\/\/|\/(?!\/)|mailto:)[^\s)]*)\)/', static function (array $m): string {
             $ext = str_starts_with($m[2], 'http');
             return '<a href="' . $m[2] . '"' . ($ext ? ' rel="noopener" target="_blank"' : '') . '>' . $m[1] . '</a>';
         }, $s) ?? $s;
