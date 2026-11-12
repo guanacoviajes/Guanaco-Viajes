@@ -64,3 +64,37 @@ $router->post('/admin/seguridad/contrasena', [\App\Admin\SecurityController::cla
 $router->post('/admin/seguridad/recuperacion', [\App\Admin\SecurityController::class, 'newRecovery']);
 $router->post('/admin/seguridad/reiniciar-2fa', [\App\Admin\SecurityController::class, 'resetTotp']);
 $router->post('/admin/seguridad/cerrar-sesiones', [\App\Admin\SecurityController::class, 'closeSessions']);
+
+// Gestión de contenidos
+$crud = static function (string $path, string $class) use ($router): void {
+    $router->get($path, [$class, 'index']);
+    $router->get($path . '/nuevo', [$class, 'create']);
+    $router->post($path . '/nuevo', [$class, 'store']);
+    $router->get($path . '/{id}', [$class, 'edit']);
+    $router->post($path . '/{id}', [$class, 'update']);
+    $router->post($path . '/{id}/eliminar', [$class, 'destroy']);
+};
+$A = 'App\\Admin\\';
+
+$router->post('/admin/destinos/{id}/fotos', [$A . 'CountriesController', 'addPhoto']);
+$router->post('/admin/destinos/{id}/fotos/{fid}/eliminar', [$A . 'CountriesController', 'removePhoto']);
+$crud('/admin/destinos', $A . 'CountriesController');
+$crud('/admin/salidas', $A . 'DeparturesController');
+$crud('/admin/blog', $A . 'PostsController');
+
+$router->get('/admin/inicio', [$A . 'HubController', 'inicio']);
+$crud('/admin/inicio/carrusel', $A . 'SlidesController');
+$crud('/admin/inicio/tipos', $A . 'TripTypesController');
+
+$router->get('/admin/formulario', [$A . 'HubController', 'formulario']);
+$crud('/admin/formulario/opciones', $A . 'InterestsController');
+
+$router->post('/admin/paginas/revision', [$A . 'PagesAdminController', 'revision']);
+$crud('/admin/paginas', $A . 'PagesAdminController');
+
+$router->get('/admin/ajustes', [$A . 'SettingsController', 'index']);
+$router->get('/admin/ajustes/{grupo}', [$A . 'SettingsController', 'show']);
+$router->post('/admin/ajustes/{grupo}', [$A . 'SettingsController', 'save']);
+
+$router->get('/admin/imagenes', [$A . 'MediaController', 'index']);
+$router->post('/admin/imagenes/borrar', [$A . 'MediaController', 'delete']);

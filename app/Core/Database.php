@@ -24,6 +24,10 @@ final class Database
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ]);
+            // La base de datos usa la MISMA hora que PHP (Europe/Madrid, con su cambio de horario).
+            // Sin esto, NOW() y CURDATE() irían con la hora del servidor de MySQL y las fechas de
+            // publicación y de las salidas se desajustarían una o dos horas.
+            self::$pdo->exec("SET time_zone = '" . date('P') . "'");
         }
         return self::$pdo;
     }

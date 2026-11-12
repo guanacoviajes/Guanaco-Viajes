@@ -4,6 +4,7 @@ declare(strict_types=1);
 // Arranque mínimo para las pruebas unitarias: no abre base de datos ni sesión.
 define('ROOT', dirname(__DIR__));
 define('PUBLIC_PATH', ROOT . '/public');
+define('IMAGE_TEST_MODE', true); // permite probar subidas sin pasar por el servidor web
 
 spl_autoload_register(static function (string $class): void {
     if (str_starts_with($class, 'App\\')) {

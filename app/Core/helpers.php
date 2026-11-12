@@ -48,7 +48,14 @@ function img(string $src, string $alt = '', array $attrs = []): string
     if (!empty($attrs['pos'])) {
         $out .= ' style="object-position:' . e($attrs['pos']) . '"';
     }
-    if (!empty($attrs['sizes'])) {
+    // Fotos subidas desde el panel: se ofrece también la versión pequeña (800 px) para móviles
+    if (str_starts_with(ltrim($src, '/'), 'uploads/') && preg_match('/\.jpg$/', $src)) {
+        $small = preg_replace('/\.jpg$/', '-800.jpg', ltrim($src, '/'));
+        if ($w && is_file(PUBLIC_PATH . '/' . $small)) {
+            $out .= ' srcset="' . e('/' . $small) . ' 800w, ' . e('/' . ltrim($src, '/')) . ' ' . $w . 'w"'
+                . ' sizes="' . e($attrs['sizes'] ?? '(max-width: 820px) 100vw, 60vw') . '"';
+        }
+    } elseif (!empty($attrs['sizes'])) {
         $out .= ' sizes="' . e($attrs['sizes']) . '"';
     }
     $out .= $eager ? ' fetchpriority="high" decoding="async"' : ' loading="lazy" decoding="async"';
