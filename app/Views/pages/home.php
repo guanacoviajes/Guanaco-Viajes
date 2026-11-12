@@ -46,10 +46,12 @@ $quienFoto = $S('home.quien.foto');
 <?php if ($tipos): ?>
 <section class="sec sec-tipos" aria-labelledby="tipos-t">
   <div class="wrap">
-    <div class="kick"><?= e($S('home.tipos.kicker', 'Tipos de viaje')) ?></div>
-    <h2 id="tipos-t"><?= e($S('home.tipos.titulo', 'El viaje,')) ?> <em><?= e($S('home.tipos.enfasis', 'a tu manera')) ?></em></h2>
     <div class="tv" data-tabs="tipos">
       <div class="tv-text">
+        <div class="tv-head">
+          <div class="kick"><?= e($S('home.tipos.kicker', 'Tipos de viaje')) ?></div>
+          <h2 id="tipos-t"><?= e($S('home.tipos.titulo', 'El viaje,')) ?> <em><?= e($S('home.tipos.enfasis', 'a tu manera')) ?></em></h2>
+        </div>
         <div class="tv-tabs" role="tablist" aria-label="Tipos de viaje">
           <?php foreach ($tipos as $i => $t): ?>
           <button type="button" class="tv-tab<?= $i === 0 ? ' on' : '' ?>" role="tab" id="tab-<?= e($t['slug']) ?>"

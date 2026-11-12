@@ -684,13 +684,22 @@ label.chip input:focus-visible + span,.tg input:focus-visible + i,.chk input:foc
 .art-cta a:not(.btn){color:var(--acento);text-decoration:underline;text-underline-offset:3px}
 .art .meta a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 
-/* Inicio: «Tipos de viaje» más compacto y pegado al carrusel y a «Destinos» */
+/* Inicio: «Tipos de viaje». Título, pestañas y texto forman una columna a la altura de la foto */
 section.sec-tipos{padding:72px 0 56px}
-.sec-tipos .tv{align-items:start;margin-top:32px}
-.sec-tipos .tv-img{aspect-ratio:3/2}
+.sec-tipos .tv{align-items:stretch;margin-top:0;gap:64px}
+.sec-tipos .tv-text{display:flex;flex-direction:column}
+.sec-tipos .tv-tabs{margin:36px 0 28px}
+.sec-tipos .tv-panel.on{display:flex;flex-direction:column;flex:1}
+.sec-tipos .tv-panel.on .btn{margin-top:auto;align-self:flex-start}
+.sec-tipos .tv-panel p{margin-bottom:28px}
+.sec-tipos .tv-img{aspect-ratio:16/10}
 @media (max-width:820px){
   section.sec-tipos{padding:44px 0 36px}
-  .sec-tipos .tv{margin-top:24px;gap:24px}
-  .sec-tipos .tv-img{aspect-ratio:4/3}
-  .sec-tipos .tv-tabs{margin-bottom:24px}
+  .sec-tipos .tv{gap:24px}
+  .sec-tipos .tv-text{display:contents}
+  .sec-tipos .tv-head{order:0}
+  .sec-tipos .tv-img{order:1;aspect-ratio:4/3}
+  .sec-tipos .tv-tabs{order:2;margin:0}
+  .sec-tipos .tv-panel.on{order:3;display:block}
+  .sec-tipos .tv-panel.on .btn{margin-top:0}
 }
