@@ -59,10 +59,28 @@ final class RequestMail
         return $rows;
     }
 
+    /**
+     * Asunto del aviso interno: «Nueva solicitud de presupuesto · Ana Pérez · Chile, Perú».
+     * @param array<string,mixed>  $d
+     * @param array<string,string> $names slug => nombre del país
+     */
+    public static function subject(string $origen, array $d, array $names): string
+    {
+        if ($origen !== 'presupuesto') {
+            return 'Nuevo mensaje de contacto · ' . $d['nombre'];
+        }
+        $dest = array_map(
+            static fn($s) => $s === 'aun-no-lo-se' ? 'destino por decidir' : ($names[$s] ?? $s),
+            $d['destinos'] ?? []
+        );
+        $subject = 'Nueva solicitud de presupuesto · ' . $d['nombre'] . ($dest ? ' · ' . implode(', ', $dest) : '');
+        return mb_strlen($subject) > 120 ? mb_substr($subject, 0, 117) . '…' : $subject;
+    }
+
     public static function notify(int $id, string $origen, array $d, array $names): bool
     {
         $to = (string) Config::get('mail.notify_to', Config::get('mail.from'));
-        $subject = ($origen === 'presupuesto' ? 'Nueva solicitud de presupuesto' : 'Nuevo mensaje de contacto') . ' · ' . $d['nombre'];
+        $subject = self::subject($origen, $d, $names);
         $rows = self::contactRows($d) + self::summary($origen, $d, $names);
         $head = $origen === 'presupuesto' ? 'Nueva solicitud de presupuesto' : 'Nuevo mensaje desde la página de contacto';
         $text = $head . " (n.º $id)\n\n" . self::asText($rows) . "\nResponde a este correo para escribir directamente a " . $d['nombre'] . ".\n";
