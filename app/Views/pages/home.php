@@ -19,7 +19,7 @@ $quienFoto = $S('home.quien.foto');
   <div class="slide<?= $i === 0 ? ' is-active' : '' ?>" data-tone="<?= e($s['tono_menu']) ?>"
        role="group" aria-roledescription="diapositiva" aria-label="<?= $i + 1 ?> de <?= count($slides) ?>"
        <?= $i === 0 ? '' : 'inert aria-hidden="true"' ?>>
-    <?= img($s['foto'], $s['foto_alt'], ['class' => 'slide-img', 'pos' => $s['foto_pos'], 'eager' => $i === 0]) ?>
+    <?= img($s['foto'], $s['foto_alt'], ['class' => 'slide-img', 'pos' => $s['foto_pos'], 'eager' => $i === 0, 'sizes' => '100vw']) ?>
     <div class="blk">
       <div class="blk-txt">
         <?php if ($s['kicker'] !== ''): ?><div class="kick"><?= e($s['kicker']) ?></div><?php endif; ?>
@@ -72,7 +72,7 @@ $quienFoto = $S('home.quien.foto');
       </div>
       <div class="tv-img">
         <?php foreach ($tipos as $i => $t): ?>
-        <?= img($t['foto'], $t['foto_alt'], ['class' => $i === 0 ? 'on' : '', 'pos' => $t['foto_pos']]) ?>
+        <?= img($t['foto'], $t['foto_alt'], ['class' => $i === 0 ? 'on' : '', 'pos' => $t['foto_pos'], 'sizes' => '(max-width: 820px) 100vw, 57vw']) ?>
         <?php endforeach; ?>
       </div>
     </div>
@@ -97,7 +97,7 @@ $quienFoto = $S('home.quien.foto');
 <section class="sec" aria-labelledby="quien-t">
   <div class="wrap quien<?= $quienFoto === '' && !config('app.debug') ? ' sin-foto' : '' ?>">
     <?php if ($quienFoto !== ''): ?>
-    <div class="foto-real"><?= img($quienFoto, 'Daniel Conti viajando') ?></div>
+    <div class="foto-real"><?= img($quienFoto, 'Daniel Conti viajando', ['sizes' => '(max-width: 820px) 100vw, 45vw']) ?></div>
     <?php elseif (config('app.debug')): ?>
     <div class="foto">Aquí irá tu foto viajando.<br>Solo tú.<br><small>(solo se ve en desarrollo)</small></div>
     <?php endif; ?>
@@ -119,7 +119,7 @@ $quienFoto = $S('home.quien.foto');
       <?php foreach ($posts as $p): ?>
       <article class="bc">
         <a href="/blog/<?= e($p['slug']) ?>">
-          <?php if ($p['portada'] !== ''): ?><span class="bph"><?= img($p['portada'], $p['portada_alt']) ?></span><?php endif; ?>
+          <?php if ($p['portada'] !== ''): ?><span class="bph"><?= img($p['portada'], $p['portada_alt'], ['sizes' => '(max-width: 820px) 100vw, 33vw']) ?></span><?php endif; ?>
           <?php if (!empty($p['pais'])): ?><span class="tag"><?= e($p['pais']) ?></span><?php endif; ?>
           <h3><?= e($p['titulo']) ?></h3>
         </a>

@@ -5,7 +5,7 @@ use App\Core\Text;
 <div class="proximo pub">
   <?php foreach ($salidas as $d): ?>
   <article class="px">
-    <?php if ($d['foto'] !== ''): ?><div class="ph"><?= img($d['foto'], $d['foto_alt']) ?></div><?php endif; ?>
+    <?php if ($d['foto'] !== ''): ?><div class="ph"><?= img($d['foto'], $d['foto_alt'], ['sizes' => '(max-width: 820px) 100vw, 33vw']) ?></div><?php endif; ?>
     <h3><?= e($d['titulo']) ?></h3>
     <div class="meta">
       <?php $r = Text::rangeEs($d['fecha_inicio'], $d['fecha_fin']); ?>

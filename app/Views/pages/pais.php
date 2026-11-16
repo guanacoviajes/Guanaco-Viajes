@@ -10,7 +10,7 @@ $label = Countries::continentLabel($pais['continente']);
 ?>
 <?= \App\Core\View::partial('partials/crumbs', ['items' => [['Destinos', '/destinos'], [$label, '/destinos/' . $pais['continente']], [$pais['nombre'], null]]]) ?>
 <header class="phero">
-  <?= img($pais['foto'], $pais['foto_alt'], ['pos' => $pais['foto_pos'], 'eager' => true]) ?>
+  <?= img($pais['foto'], $pais['foto_alt'], ['pos' => $pais['foto_pos'], 'eager' => true, 'sizes' => '100vw']) ?>
   <div class="blk">
     <div class="kick">Viajes a medida · <?= e($label) ?></div>
     <h1><?= e($pais['nombre']) ?></h1>
@@ -25,7 +25,7 @@ $label = Countries::continentLabel($pais['continente']);
     <h2 id="gal-t"><?= e($pais['nombre']) ?>, <em>en imágenes</em></h2>
     <div class="gal gal-<?= count($galeria) ?>">
       <?php foreach ($galeria as $g): ?>
-      <figure><?= img($g['archivo'], $g['alt']) ?></figure>
+      <figure><?= img($g['archivo'], $g['alt'], ['sizes' => '(max-width: 820px) 100vw, 50vw']) ?></figure>
       <?php endforeach; ?>
     </div>
   </div>
@@ -67,7 +67,7 @@ $label = Countries::continentLabel($pais['continente']);
     <div class="minis">
       <?php foreach ($otros as $o): ?>
       <a class="mini" href="/destinos/<?= e($o['continente']) ?>/<?= e($o['slug']) ?>">
-        <span class="ph"><?= img($o['foto'], $o['foto_alt'], ['pos' => $o['foto_pos']]) ?></span>
+        <span class="ph"><?= img($o['foto'], $o['foto_alt'], ['pos' => $o['foto_pos'], 'sizes' => '(max-width: 820px) 74vw, 25vw']) ?></span>
         <h3><?= e($o['nombre']) ?></h3>
       </a>
       <?php endforeach; ?>

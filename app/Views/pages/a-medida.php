@@ -5,7 +5,7 @@ $S = static fn(string $k, string $d = ''): string => Settings::get($k, $d);
 ?>
 <?= \App\Core\View::partial('partials/crumbs', ['items' => [['Tipos de viaje', null], ['Viajes a medida', null]]]) ?>
 <header class="phero">
-  <?= img($tipo['foto'], $tipo['foto_alt'], ['pos' => $tipo['foto_pos'], 'eager' => true]) ?>
+  <?= img($tipo['foto'], $tipo['foto_alt'], ['pos' => $tipo['foto_pos'], 'eager' => true, 'sizes' => '100vw']) ?>
   <div class="blk">
     <div class="kick">Tipos de viaje</div>
     <h1>Viajes a medida</h1>

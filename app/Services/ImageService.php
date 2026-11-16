@@ -15,9 +15,11 @@ final class ImageService
     public const MAX_BYTES = 12 * 1024 * 1024;
     public const MAX_SIDE_IN = 8000;          // lado máximo permitido al subir
     public const MAX_PIXELS_IN = 40_000_000;  // 40 megapíxeles
-    public const MAIN = 1800;                 // lado largo de la imagen principal
+    public const MAIN = 2560;                 // lado largo de la imagen principal (nunca se amplía una foto menor)
+    public const MEDIUM = 1400;               // versión intermedia: portátiles y tabletas de densidad normal
     public const SMALL = 800;                 // versión pequeña para móviles
-    public const QUALITY = 82;
+    public const QUALITY = 90;                // a partir de 90 el color se guarda a resolución completa (4:4:4)
+    public const QUALITY_SMALL = 86;
 
     private const ALLOWED = ['image/jpeg' => 'jpeg', 'image/png' => 'png', 'image/webp' => 'webp'];
 
@@ -42,12 +44,17 @@ final class ImageService
         }
         if ($type === 'image/jpeg') {
             $img = self::orient($img, $tmp);
+        } else {
+            $img = self::flatten($img); // PNG/WebP con transparencia: sobre fondo blanco
         }
         $main = self::fit($img, self::MAIN);
         imagedestroy($img);
         if ($grade) {
             self::grade($main);
         }
+        $long = max(imagesx($main), imagesy($main));
+        // las versiones menores se hacen siempre desde la principal ya tratada
+        $medium = $long > self::MEDIUM + 50 ? self::fit($main, self::MEDIUM) : null;
         $small = self::fit($main, self::SMALL);
 
         $dir = $root . '/uploads/' . date('Y') . '/' . date('m');
@@ -55,9 +62,14 @@ final class ImageService
             return ['path' => null, 'error' => 'No se puede escribir en la carpeta de subidas.'];
         }
         $name = bin2hex(random_bytes(12));
-        $ok = self::saveJpeg($main, "$dir/$name.jpg") && self::saveJpeg($small, "$dir/$name-" . self::SMALL . '.jpg');
+        $ok = self::saveJpeg($main, "$dir/$name.jpg")
+            && self::saveJpeg($small, "$dir/$name-" . self::SMALL . '.jpg', self::QUALITY_SMALL)
+            && ($medium === null || self::saveJpeg($medium, "$dir/$name-" . self::MEDIUM . '.jpg'));
         imagedestroy($main);
         imagedestroy($small);
+        if ($medium !== null) {
+            imagedestroy($medium);
+        }
         if (!$ok) {
             return ['path' => null, 'error' => 'No se ha podido guardar la imagen.'];
         }
@@ -110,7 +122,7 @@ final class ImageService
             return true; // sin límite
         }
         // GD usa ~4 bytes/píxel; se necesitan la original, la principal y la reducida
-        $need = (int) ($w * $h * 4 * 1.8) + 12 * 1048576;
+        $need = (int) ($w * $h * 4 * 2.2) + 16 * 1048576;
         return $need < $limit - memory_get_usage(true);
     }
 
@@ -148,25 +160,49 @@ final class ImageService
         return $img;
     }
 
-    /** Reduce (nunca amplía) para que el lado largo no pase de $max. */
+    /** Pone la imagen sobre fondo blanco (para PNG/WebP con transparencia, que en JPG saldrían negros). */
+    private static function flatten(\GdImage $src): \GdImage
+    {
+        $w = imagesx($src);
+        $h = imagesy($src);
+        $dst = imagecreatetruecolor($w, $h);
+        imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+        imagealphablending($dst, true);
+        imagecopy($dst, $src, 0, 0, 0, 0, $w, $h);
+        imagedestroy($src);
+        return $dst;
+    }
+
+    /**
+     * Reduce (nunca amplía) para que el lado largo no pase de $max.
+     * Usa el filtro Catmull-Rom: conserva mucha más nitidez que el reescalado por defecto de GD y no necesita
+     * retoques de nitidez. Si no hay que reducir, devuelve la misma imagen.
+     */
     private static function fit(\GdImage $src, int $max): \GdImage
     {
         $w = imagesx($src);
         $h = imagesy($src);
         $scale = min(1.0, $max / max($w, $h));
+        if ($scale >= 1.0) {
+            // no hay que reducir: copia independiente para poder destruirla por separado
+            $copy = imagecreatetruecolor($w, $h);
+            imagecopy($copy, $src, 0, 0, 0, 0, $w, $h);
+            return $copy;
+        }
         $nw = max(1, (int) round($w * $scale));
         $nh = max(1, (int) round($h * $scale));
-        $dst = imagecreatetruecolor($nw, $nh);
-        imagealphablending($dst, true);
-        imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255)); // los PNG con transparencia quedan sobre blanco
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+        $dst = function_exists('imagescale') ? @imagescale($src, $nw, $nh, IMG_CATMULLROM) : false;
+        if ($dst === false) {
+            $dst = imagecreatetruecolor($nw, $nh);
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+        }
         return $dst;
     }
 
-    private static function saveJpeg(\GdImage $img, string $path): bool
+    private static function saveJpeg(\GdImage $img, string $path, int $quality = self::QUALITY): bool
     {
         imageinterlace($img, true);
-        $ok = imagejpeg($img, $path, self::QUALITY);
+        $ok = imagejpeg($img, $path, $quality);
         if ($ok) {
             @chmod($path, 0644);
         }
@@ -246,13 +282,15 @@ final class ImageService
         return $v <= 0 ? 0 : ($v >= 1 ? 255 : (int) round($v * 255));
     }
 
-    /** Rutas de los archivos (principal y pequeño) de una imagen subida. @return list<string> */
+    /** Rutas de todos los archivos (principal, intermedio y pequeño) de una imagen subida. @return list<string> */
     public static function files(string $path): array
     {
         $out = [PUBLIC_PATH . '/' . $path];
-        $small = preg_replace('/\.jpg$/', '-' . self::SMALL . '.jpg', $path);
-        if ($small !== null && $small !== $path) {
-            $out[] = PUBLIC_PATH . '/' . $small;
+        foreach ([self::SMALL, self::MEDIUM] as $size) {
+            $v = preg_replace('/\.jpg$/', '-' . $size . '.jpg', $path);
+            if ($v !== null && $v !== $path) {
+                $out[] = PUBLIC_PATH . '/' . $v;
+            }
         }
         return $out;
     }

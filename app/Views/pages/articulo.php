@@ -10,7 +10,7 @@ use App\Core\Text;
       <h1><?= e($post['titulo']) ?></h1>
       <?php $mins = max(1, (int) ceil(str_word_count(strip_tags((string) $post['cuerpo']), 0, 'áéíóúüñÁÉÍÓÚÜÑ') / 200)); ?>
       <div class="meta"><time datetime="<?= e(date('Y-m-d', (int) strtotime((string) ($post['publicado_en'] ?: $post['created_at'])))) ?>"><?= e(Text::dateEs($post['publicado_en'] ?: $post['created_at'])) ?></time> · <a href="/quienes-somos">Daniel Conti</a> · <?= $mins ?> min de lectura</div>
-      <?php if ($post['portada'] !== ''): ?><div class="cover"><?= img($post['portada'], $post['portada_alt'], ['eager' => true]) ?></div><?php endif; ?>
+      <?php if ($post['portada'] !== ''): ?><div class="cover"><?= img($post['portada'], $post['portada_alt'], ['eager' => true, 'sizes' => '(max-width: 1100px) 100vw, 1000px']) ?></div><?php endif; ?>
       <div class="body"><?= Text::render($post['cuerpo']) ?></div>
       <aside class="art-cta" aria-label="Diseñemos tu viaje">
         <?php if (!empty($post['pais'])): ?>

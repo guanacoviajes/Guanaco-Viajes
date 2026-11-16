@@ -37,7 +37,7 @@ final class MediaController extends AdminController
         $use = $this->usage();
         $files = [];
         foreach (glob(PUBLIC_PATH . '/uploads/*/*/*.jpg') ?: [] as $f) {
-            if (str_contains($f, '-' . ImageService::SMALL . '.jpg')) {
+            if (preg_match('/-\d+\.jpg$/', $f)) {
                 continue;
             }
             $rel = ltrim(substr($f, strlen(PUBLIC_PATH)), '/');

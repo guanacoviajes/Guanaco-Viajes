@@ -14,7 +14,7 @@ $foto = $S('home.quien.foto');
 </section>
 <section class="sec sec-tight">
   <div class="wrap split<?= $foto === '' ? ' sin-foto' : '' ?>">
-    <?php if ($foto !== ''): ?><div class="foto-real"><?= img($foto, 'Daniel Conti viajando') ?></div><?php endif; ?>
+    <?php if ($foto !== ''): ?><div class="foto-real"><?= img($foto, 'Daniel Conti viajando', ['sizes' => '(max-width: 820px) 100vw, 45vw']) ?></div><?php endif; ?>
     <div class="qtext"><?= Text::render($pagina['cuerpo']) ?></div>
   </div>
 </section>

@@ -87,7 +87,7 @@ final class FormKit
                 $grade = '<label class="check" style="margin:8px 0 0"><input type="hidden" name="grade_' . e($n) . '" value="0"><input type="checkbox" name="grade_' . e($n) . '" value="1" checked> Aplicar el tratamiento de color de la marca</label>';
                 return '<div class="' . $cls . '"><label for="' . $id . '">' . $label . '</label>' . $help . '<div class="imgbox"><img id="prev-' . e($n) . '" src="' . e($src) . '" alt=""' . ($has ? '' : ' hidden') . '>'
                     . '<div class="ctl"><input type="file" id="' . $id . '" name="' . e($n) . '" accept="image/jpeg,image/png,image/webp" data-preview="#prev-' . e($n) . '"' . (!empty($f['required']) && !$has ? ' required' : '') . '>'
-                    . '<p class="hint">JPG, PNG o WebP, hasta 12 MB. Se reduce y optimiza automáticamente.' . ($has ? ' Si no eliges otra, se conserva la actual.' : '') . '</p>' . $grade . '</div></div>' . $e . '</div>';
+                    . '<p class="hint">JPG, PNG o WebP, hasta 12 MB. <strong>Sube la foto original, sin reducirla antes</strong>: se guarda con calidad alta hasta 2560 px de ancho y se preparan versiones más ligeras para móviles. Una foto más pequeña nunca se amplía.' . ($has ? ' Si no eliges otra, se conserva la actual.' : '') . '</p>' . $grade . '</div></div>' . $e . '</div>';
             case 'number':
                 $min = isset($f['min']) ? ' min="' . (int) $f['min'] . '"' : '';
                 $max = isset($f['max']) ? ' max="' . (int) $f['max'] . '"' : '';

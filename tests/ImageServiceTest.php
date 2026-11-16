@@ -82,15 +82,18 @@ final class ImageServiceTest extends TestCase
 
     public function testStoreCreatesMainAndSmallJpegWithRandomName(): void
     {
-        $r = ImageService::store($this->file('foto original con ñ.jpg', $this->jpeg(3000, 2000)), true, $this->dir);
+        $r = ImageService::store($this->file('foto original con ñ.jpg', $this->jpeg(4000, 2000)), true, $this->dir);
         $this->assertNull($r['error']);
         $this->assertMatchesRegularExpression('#^uploads/\d{4}/\d{2}/[a-f0-9]{24}\.jpg$#', (string) $r['path']);
         $main = $this->dir . '/' . $r['path'];
         $small = preg_replace('/\.jpg$/', '-800.jpg', $main);
+        $medium = preg_replace('/\.jpg$/', '-1400.jpg', $main);
         $this->assertFileExists($main);
         $this->assertFileExists($small);
-        $this->assertSame([1800, 1200], array_slice(getimagesize($main), 0, 2));
-        $this->assertSame([800, 533], array_slice(getimagesize($small), 0, 2));
+        $this->assertFileExists($medium);
+        $this->assertSame([2560, 1280], array_slice(getimagesize($main), 0, 2));
+        $this->assertSame([1400, 700], array_slice(getimagesize($medium), 0, 2));
+        $this->assertSame([800, 400], array_slice(getimagesize($small), 0, 2));
         $this->assertSame('image/jpeg', getimagesize($main)['mime']);
         $this->assertStringNotContainsString('original', $r['path']);
     }
@@ -154,8 +157,62 @@ final class ImageServiceTest extends TestCase
     public function testFilesHelperReturnsMainAndSmall(): void
     {
         $f = ImageService::files('uploads/2026/11/abc.jpg');
-        $this->assertCount(2, $f);
+        $this->assertCount(3, $f);
         $this->assertStringEndsWith('/uploads/2026/11/abc.jpg', $f[0]);
         $this->assertStringEndsWith('/uploads/2026/11/abc-800.jpg', $f[1]);
+        $this->assertStringEndsWith('/uploads/2026/11/abc-1400.jpg', $f[2]);
+    }
+
+    public function testMainKeepsHighResolutionUpTo2560(): void
+    {
+        $r = ImageService::store($this->file('g.jpg', $this->jpeg(2200, 1400)), false, $this->dir);
+        $this->assertNull($r['error']);
+        $this->assertSame([2200, 1400], array_slice(getimagesize($this->dir . '/' . $r['path']), 0, 2), 'una foto de 2200 px no se reduce a 1800');
+    }
+
+    public function testNoMediumVariantWhenPhotoIsNotBiggerThanIt(): void
+    {
+        $r = ImageService::store($this->file('m.jpg', $this->jpeg(1400, 900)), false, $this->dir);
+        $this->assertFileDoesNotExist($this->dir . '/' . preg_replace('/\.jpg$/', '-1400.jpg', $r['path']));
+        $this->assertFileExists($this->dir . '/' . preg_replace('/\.jpg$/', '-800.jpg', $r['path']));
+    }
+
+    public function testFullResolutionColorAndNoLossOfDetail(): void
+    {
+        // tablero de líneas finas rojas sobre blanco: con color submuestreado (4:2:0) se emborronan
+        $im = imagecreatetruecolor(1600, 1000);
+        imagefill($im, 0, 0, imagecolorallocate($im, 255, 255, 255));
+        $red = imagecolorallocate($im, 200, 20, 20);
+        for ($x = 0; $x < 1600; $x += 6) {
+            imagefilledrectangle($im, $x, 0, $x + 1, 999, $red);
+        }
+        ob_start();
+        imagejpeg($im, null, 100);
+        $bytes = (string) ob_get_clean();
+        $r = ImageService::store($this->file('l.jpg', $bytes), false, $this->dir);
+        $out = imagecreatefromjpeg($this->dir . '/' . $r['path']);
+        $c = imagecolorat($out, 600, 500); // una línea roja
+        $this->assertGreaterThan(150, ($c >> 16) & 255);
+        $this->assertLessThan(90, $c & 255, 'el rojo no se desvanece hacia el blanco');
+        // 4:4:4 = submuestreo 1×1 en la cabecera JPEG (componentes Y, Cb, Cr con factor 0x11)
+        $head = file_get_contents($this->dir . '/' . $r['path'], false, null, 0, 4096);
+        $this->assertSame(1, preg_match('/\xFF[\xC0\xC2]\x00\x11.{5}\x03\x01\x11/s', $head), 'el color se guarda a resolución completa');
+    }
+
+    public function testTransparentPngGoesOnWhite(): void
+    {
+        $im = imagecreatetruecolor(300, 200);
+        imagealphablending($im, false);
+        imagesavealpha($im, true);
+        imagefill($im, 0, 0, imagecolorallocatealpha($im, 0, 0, 0, 127));
+        ob_start();
+        imagepng($im);
+        $png = (string) ob_get_clean();
+        $file = $this->file('t.png', $png);
+        $file['type'] = 'image/png';
+        $r = ImageService::store($file, false, $this->dir);
+        $this->assertNull($r['error']);
+        $c = imagecolorat(imagecreatefromjpeg($this->dir . '/' . $r['path']), 150, 100);
+        $this->assertGreaterThan(240, ($c >> 16) & 255, 'la transparencia queda blanca, no negra');
     }
 }

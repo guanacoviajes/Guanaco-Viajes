@@ -17,7 +17,7 @@ $cont = ['sudamerica' => 'Sudamérica', 'europa' => 'Europa'];
     <div class="cards">
       <?php foreach ($paises[$key] as $j => $p): ?>
       <a class="card<?= $j === 0 ? ' x' : '' ?>" href="/destinos/<?= e($key) ?>/<?= e($p['slug']) ?>">
-        <span class="ph"><?= img($p['foto'], $p['foto_alt'], ['pos' => $p['foto_pos']]) ?></span>
+        <span class="ph"><?= img($p['foto'], $p['foto_alt'], ['pos' => $p['foto_pos'], 'sizes' => '(max-width: 820px) 74vw, 33vw']) ?></span>
         <span class="cn"><?= e($p['nombre']) ?></span>
         <span class="cp"><?= e($p['resumen']) ?></span>
       </a>

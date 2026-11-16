@@ -34,7 +34,7 @@ final class SlidesController extends CrudController
             ['name' => 'kicker', 'label' => 'Etiqueta pequeña sobre el titular', 'max' => 80, 'help' => 'Por ejemplo: «Viajes a medida».'],
             ['name' => 'titular', 'label' => 'Titular', 'required' => true, 'max' => 120, 'help' => 'Por ejemplo: «Viaja con».'],
             ['name' => 'titular_enfasis', 'label' => 'Titular: palabra en cursiva', 'max' => 80, 'help' => 'Por ejemplo: «curiosidad».'],
-            ['name' => 'foto', 'label' => 'Foto', 'type' => 'image', 'required' => true, 'help' => 'Horizontal, de al menos 1800 px de ancho si puede ser.'],
+            ['name' => 'foto', 'label' => 'Foto', 'type' => 'image', 'required' => true, 'help' => 'Horizontal y lo más grande posible: 2560 px de ancho o más para que se vea nítida en pantallas de alta definición.'],
             ['name' => 'foto_pos', 'label' => 'Encuadre de la foto', 'type' => 'pos'],
             ['name' => 'foto_alt', 'label' => 'Descripción de la foto', 'max' => 200],
             ['name' => 'tono_menu', 'label' => 'Color del texto del menú sobre esta foto', 'type' => 'select', 'required' => true, 'options' => ['oscuro' => 'Oscuro (para fotos claras arriba)', 'claro' => 'Claro (para fotos oscuras arriba)']],
