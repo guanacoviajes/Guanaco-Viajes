@@ -15,7 +15,7 @@ final class CountryContentTest extends TestCase
             ['nombre' => '', 'descripcion' => '', 'dias' => ''],
         ]);
         $this->assertNull($err);
-        $this->assertSame([['nombre' => 'Norte', 'dias' => '4-6 días', 'descripcion' => 'Desierto', 'epoca' => '']], $out);
+        $this->assertSame([['nombre' => 'Norte', 'dias' => '4-6 días', 'descripcion' => 'Desierto', 'epoca' => '', 'foto' => '']], $out);
     }
 
     public function testNothingFilledMeansNoContentAndNullInDatabase(): void
@@ -46,6 +46,26 @@ final class CountryContentTest extends TestCase
         $this->assertCount(1, $ok2);
     }
 
+    public function testZonePhotoOnlyAcceptsUploadedImagePaths(): void
+    {
+        $ok = 'uploads/2026/11/' . str_repeat('ab', 12) . '.jpg';
+        [$out] = CountryContent::clean('zonas', [['nombre' => 'Norte', 'foto' => $ok]]);
+        $this->assertSame($ok, $out[0]['foto']);
+        foreach (['../../config/config.php', '/etc/passwd', 'https://evil.example/x.jpg', 'uploads/2026/11/x.php', 'uploads/../app/x.jpg', "uploads/2026/11/{$ok}"] as $bad) {
+            [$out] = CountryContent::clean('zonas', [['nombre' => 'Norte', 'foto' => $bad]]);
+            $this->assertSame('', $out[0]['foto'], 'debe descartar: ' . $bad);
+            $json = json_encode([['nombre' => 'Norte', 'foto' => $bad]]);
+            $this->assertSame('', CountryContent::decode('zonas', $json)[0]['foto'], 'al leer, debe descartar: ' . $bad);
+        }
+    }
+
+    public function testAPhotoAloneDoesNotMakeABlock(): void
+    {
+        [$out, $err] = CountryContent::clean('zonas', [['nombre' => '', 'foto' => 'uploads/2026/11/' . str_repeat('ab', 12) . '.jpg']]);
+        $this->assertNull($err);
+        $this->assertSame([], $out);
+    }
+
     public function testZoneSeasonIsOptionalAndCapped(): void
     {
         [$ok, $err] = CountryContent::clean('zonas', [['nombre' => 'Norte', 'epoca' => str_repeat('e', 80)]]);
@@ -61,8 +81,8 @@ final class CountryContentTest extends TestCase
     public function testMaximumNumberOfBlocksPerList(): void
     {
         $mk = static fn(int $n, array $row): array => array_fill(0, $n, $row);
-        $this->assertNull(CountryContent::clean('zonas', $mk(5, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
-        $this->assertNotNull(CountryContent::clean('zonas', $mk(6, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
+        $this->assertNull(CountryContent::clean('zonas', $mk(4, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
+        $this->assertNotNull(CountryContent::clean('zonas', $mk(5, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
         $this->assertNull(CountryContent::clean('faqs', $mk(6, ['pregunta' => 'P', 'respuesta' => 'R']))[1]);
         $this->assertNotNull(CountryContent::clean('faqs', $mk(7, ['pregunta' => 'P', 'respuesta' => 'R']))[1]);
     }
@@ -77,7 +97,7 @@ final class CountryContentTest extends TestCase
 
     public function testRoundTripThroughJson(): void
     {
-        $blocks = [['nombre' => 'Norte', 'dias' => '4-6 días', 'descripcion' => 'Con «comillas» y ñ', 'epoca' => 'Todo el año']];
+        $blocks = [['nombre' => 'Norte', 'dias' => '4-6 días', 'descripcion' => 'Con «comillas» y ñ', 'epoca' => 'Todo el año', 'foto' => 'uploads/2026/11/' . str_repeat('a1', 12) . '.jpg']];
         $this->assertSame($blocks, CountryContent::decode('zonas', CountryContent::encode($blocks)));
     }
 
@@ -88,13 +108,13 @@ final class CountryContentTest extends TestCase
         }
         // bloque sin lo obligatorio: no se enseña; campos de otro tipo: se ignoran
         $json = json_encode([['nombre' => '', 'descripcion' => 'x'], ['nombre' => 'Bien', 'descripcion' => 5, 'dias' => null]]);
-        $this->assertSame([['nombre' => 'Bien', 'dias' => '', 'descripcion' => '', 'epoca' => '']], CountryContent::decode('zonas', $json));
+        $this->assertSame([['nombre' => 'Bien', 'dias' => '', 'descripcion' => '', 'epoca' => '', 'foto' => '']], CountryContent::decode('zonas', $json));
     }
 
     public function testDecodeNeverReturnsMoreThanTheMaximum(): void
     {
         $many = array_fill(0, 12, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']);
-        $this->assertCount(5, CountryContent::decode('zonas', json_encode($many)));
+        $this->assertCount(4, CountryContent::decode('zonas', json_encode($many)));
     }
 
     public function testFaqPageStructuredData(): void

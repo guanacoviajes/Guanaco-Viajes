@@ -138,6 +138,16 @@ final class FormKit
             $o .= '<div class="blk-slot" data-slot data-filled="' . ($filled ? '1' : '0') . '"><div class="blk-title">' . e(ucfirst((string) ($f['noun'] ?? $spec['singular']))) . ' ' . ($i + 1) . '</div><div class="blk-cols">';
             foreach ($spec['cols'] as $k => [$label, $max, $req]) {
                 $id = 'f-' . $n . '-' . $i . '-' . $k;
+                if ($k === 'foto') {
+                    $cur = is_string($b['foto'] ?? null) && preg_match(CountryContent::FOTO_PATTERN, $b['foto']) ? $b['foto'] : '';
+                    $nm = e($n) . '[' . $i . ']';
+                    $o .= '<div class="f2 f2-foto"><label for="' . $id . '"><span>Foto de la zona <em>(opcional)</em></span></label><div class="imgbox"><img id="prev-' . $id . '" src="' . e($cur === '' ? '' : '/' . $cur) . '" alt=""' . ($cur === '' ? ' hidden' : '') . '>'
+                        . '<div class="ctl"><input type="file" id="' . $id . '" name="' . $nm . '[foto]" accept="image/jpeg,image/png,image/webp" data-preview="#prev-' . $id . '">'
+                        . '<input type="hidden" name="' . $nm . '[foto_actual]" value="' . e($cur) . '">'
+                        . ($cur !== '' ? '<label class="check" style="margin:6px 0 0"><input type="checkbox" name="' . $nm . '[foto_quitar]" value="1"> Quitar la foto actual</label>' : '')
+                        . '<p class="hint">Mejor horizontal: se muestra en formato 3:2. JPG, PNG o WebP, hasta 12 MB. Sube la original, sin reducirla.</p></div></div></div>';
+                    continue;
+                }
                 $name = e($n) . '[' . $i . '][' . e($k) . ']';
                 $v = is_string($b[$k] ?? null) ? $b[$k] : '';
                 $count = ($k === 'descripcion') ? ' data-count="' . $max . '"' : '';
@@ -150,6 +160,9 @@ final class FormKit
                 $o .= '</label>';
             }
             $o .= '</div></div>';
+        }
+        if (isset($spec['cols']['foto'])) {
+            $o .= '<label class="check" style="margin:12px 0 0"><input type="hidden" name="grade_' . e($n) . '" value="0"><input type="checkbox" name="grade_' . e($n) . '" value="1" checked> Aplicar el tratamiento de color de la marca a las fotos nuevas</label>';
         }
         $o .= '<button type="button" class="btn-add" data-add hidden>Añadir otra ' . e((string) ($f['noun'] ?? $spec['singular'])) . '</button>';
         if ($err) {
@@ -186,6 +199,23 @@ final class FormKit
     }
 
     /**
+     * Archivo subido en el campo «campo» del bloque número $i (PHP lo guarda como $_FILES['lista']['name'][$i]['campo']).
+     * @return array<string,mixed>|null null si en ese bloque no se eligió ningún archivo
+     */
+    private static function slotFile(mixed $files, int $i, string $campo): ?array
+    {
+        if (!is_array($files)) {
+            return null;
+        }
+        $pick = static fn(string $attr) => $files[$attr][$i][$campo] ?? null;
+        $error = $pick('error');
+        if ($error === null || $error === UPLOAD_ERR_NO_FILE) {
+            return null;
+        }
+        return ['name' => $pick('name'), 'type' => $pick('type'), 'tmp_name' => $pick('tmp_name'), 'error' => $error, 'size' => $pick('size')];
+    }
+
+    /**
      * Valida y limpia lo enviado.
      * @param list<array<string,mixed>> $fields
      * @param array<string,mixed> $post  $_POST
@@ -207,8 +237,45 @@ final class FormKit
 
             switch ($type) {
                 case 'blocks':
-                    [$list, $msg] = CountryContent::clean((string) $f['list'], $raw);
-                    if ($msg !== null) {
+                    $rawBlocks = is_array($raw) ? $raw : [];
+                    $withPhoto = isset(CountryContent::spec((string) $f['list'])['cols']['foto']);
+                    if ($withPhoto) {
+                        $fotoErr = null;
+                        foreach ($rawBlocks as $i => $blk) {
+                            if (!is_array($blk)) {
+                                continue;
+                            }
+                            $text = '';
+                            foreach ($blk as $kk => $vv) {
+                                if (!in_array($kk, ['foto', 'foto_actual', 'foto_quitar'], true) && is_string($vv)) {
+                                    $text .= trim($vv);
+                                }
+                            }
+                            $up = self::slotFile($files[$n] ?? null, (int) $i, 'foto');
+                            if ($text === '' && $up === null) {
+                                $rawBlocks[$i]['foto'] = '';   // casilla vacía: no se guarda ni su foto
+                                continue;
+                            }
+                            if ($up !== null) {
+                                $r = ImageService::store($up, ($post['grade_' . $n] ?? '1') === '1');
+                                if ($r['error'] !== null) {
+                                    $fotoErr ??= 'Foto de la zona ' . ((int) $i + 1) . ': ' . $r['error'];
+                                    $rawBlocks[$i]['foto'] = '';
+                                } else {
+                                    $rawBlocks[$i]['foto'] = $r['path'];
+                                }
+                            } elseif (($blk['foto_quitar'] ?? '') === '1') {
+                                $rawBlocks[$i]['foto'] = '';
+                            } else {
+                                $rawBlocks[$i]['foto'] = is_string($blk['foto_actual'] ?? null) ? $blk['foto_actual'] : '';
+                            }
+                        }
+                        if ($fotoErr !== null) {
+                            $err[$n] = $fotoErr;
+                        }
+                    }
+                    [$list, $msg] = CountryContent::clean((string) $f['list'], $rawBlocks);
+                    if ($msg !== null && !isset($err[$n])) {
                         $err[$n] = $msg;
                     }
                     $data[$n] = CountryContent::encode($list);

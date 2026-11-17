@@ -64,7 +64,6 @@ $quienFoto = $S('home.quien.foto');
         <?php foreach ($tipos as $i => $t): ?>
         <div class="tv-panel<?= $i === 0 ? ' on' : '' ?>" role="tabpanel" id="panel-<?= e($t['slug']) ?>"
              aria-labelledby="tab-<?= e($t['slug']) ?>" data-p="<?= e($t['slug']) ?>"<?= $i === 0 ? '' : ' hidden' ?>>
-          <h3><?= e($t['titulo']) ?></h3>
           <p><?= e($t['descripcion']) ?></p>
           <a class="btn b1" href="<?= e($t['cta_url']) ?>"><?= e($t['cta_texto']) ?></a>
         </div>

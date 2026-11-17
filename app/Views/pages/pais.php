@@ -5,10 +5,14 @@
  */
 use App\Core\Text;
 use App\Repositories\Countries;
+use App\Repositories\Settings;
 use App\Services\CountryContent;
 
 $label = Countries::continentLabel($pais['continente']);
 $n = e($pais['nombre']);
+// Título y subtítulo del apartado de zonas (editables en «Textos y ajustes → Fichas de país»); {País} se sustituye por el nombre.
+$zonTitulo = (string) preg_replace_callback('/\{pa[ií]s\}/iu', static fn() => '<em>' . $n . '</em>', e(Settings::get('pais.zonas.titulo', 'Zonas y cuándo ir a {País}')));
+$zonSub    = (string) preg_replace_callback('/\{pa[ií]s\}/iu', static fn() => $n, e(Settings::get('pais.zonas.subtitulo', 'Elige las zonas que te apetezcan y nosotros las unimos en tu viaje.')));
 ?>
 <?= \App\Core\View::partial('partials/crumbs', ['items' => [['Destinos', '/destinos'], [$label, '/destinos/' . $pais['continente']], [$pais['nombre'], null]]]) ?>
 <header class="phero phero-pais">
@@ -40,11 +44,12 @@ $n = e($pais['nombre']);
 <section class="sec sec-tight sec-pais" aria-labelledby="zon-t">
   <div class="wrap">
     <div class="kick">Zonas</div>
-    <h2 id="zon-t">Zonas y cuándo ir a <em><?= $n ?></em></h2>
-    <p class="zon-intro">Elige las zonas que te apetezcan y nosotros las unimos en tu viaje.</p>
+    <h2 id="zon-t"><?= $zonTitulo ?></h2>
+    <p class="zon-intro"><?= $zonSub ?></p>
     <div class="zon-row" role="region" aria-label="Zonas de <?= $n ?>" tabindex="0" style="--n:<?= count($c['zonas']) ?>">
       <?php foreach ($c['zonas'] as $z): ?>
-      <article class="zona">
+      <article class="zona<?= $z['foto'] !== '' ? ' con-foto' : '' ?>">
+        <?php if ($z['foto'] !== ''): ?><div class="zfoto"><?= img($z['foto'], $z['nombre'] . ', ' . $pais['nombre'], ['sizes' => '(max-width: 1000px) 72vw, 25vw']) ?></div><?php endif; ?>
         <h3><?= e($z['nombre']) ?></h3>
         <?php if ($z['descripcion'] !== ''): ?><p class="zdesc"><?= e($z['descripcion']) ?></p><?php endif; ?>
         <?php if ($z['dias'] !== ''): ?><p class="zdias"><span class="sr-only">Días recomendados: </span><?= e($z['dias']) ?></p><?php endif; ?>

@@ -1,5 +1,13 @@
 # Actualizar la web en Hostinger (hPanel) · guía paso a paso
 
+> **Actualización de diseño de noviembre (solo archivos, sin SQL):** foto en cada tarjeta de zona (máximo 4 zonas), título y subtítulo de las zonas editables, formulario sin los 3 pasos, «Quiénes somos» con foto + texto y texto + foto, texto de «Tipos de viaje» sin título repetido y carrusel más pequeño. **No hay nada que importar** y tus textos y fotos (que viven en la base de datos y en `uploads`) no se tocan: el ZIP solo cambia código, estilos y las fotos de ejemplo. Después de subirlo:
+> 1. *Destinos → Chile*: si tenías 5 zonas, la web ya solo enseña las 4 primeras. Al guardar el país desde el panel, la quinta («Patagonia chilena») se elimina para siempre.
+> 2. *Destinos → cada país → Zonas*: sube la foto de cada zona (opcional).
+> 3. *Textos y ajustes → Fichas de país*: cambia el título y el subtítulo de las zonas (escribe `{País}` donde quieras el nombre).
+> 4. *Textos y ajustes → Quiénes somos*: sube la segunda foto (y su descripción). La primera sigue siendo «Tu foto viajando» de la página de inicio.
+>
+> Archivos que cambian: `app/Views/pages/home.php`, `pais.php`, `quienes.php`, `app/Views/partials/como.php`, `app/Services/CountryContent.php`, `app/Admin/FormKit.php`, `CrudController.php`, `CountriesController.php`, `MediaController.php`, `SettingsRegistry.php`, `app/Core/Text.php` y `public_html/assets/css/app.css`, `admin.css`.
+
 > **Actualización de seguimiento (solo archivos, sin SQL):** la ficha de país pasó a tener un único bloque «Zonas y cuándo ir» (cada zona lleva su época) y se quitó el texto de entrada. **No hay que importar nada.** Se sube el ZIP (pasos 1 a 3) y se comprueba (paso 5). Archivos: `app/Services/CountryContent.php`, `app/Repositories/Countries.php`, `app/Controllers/DestinosController.php`, `app/Admin/CountriesController.php`, `app/Views/pages/pais.php`, `public_html/assets/css/app.css` y `public_html/assets/css/admin.css`. Lo que hubieras escrito en «Entrada» o en el antiguo «Cuándo ir» sigue guardado en la base de datos pero ya no se muestra: pasa la época a cada zona.
 
 Esta guía sirve para **cualquier actualización** y está escrita con la de **2026-11-17** (plantilla ampliada de las páginas de país y artículos con varios países) como ejemplo.

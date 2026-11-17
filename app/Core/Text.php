@@ -84,4 +84,23 @@ final class Text
         }
         return self::dateEs($a) . ' – ' . self::dateEs($b);
     }
+
+    /**
+     * Divide un texto en secciones: cada una empieza en una línea «## Título». Lo que haya antes del primer título
+     * se queda con la primera sección.
+     * @return list<string>
+     */
+    public static function sections(string $text): array
+    {
+        $text = str_replace(["\r\n", "\r"], "\n", trim($text));
+        if ($text === '') {
+            return [];
+        }
+        $parts = preg_split('/\n(?=## )/', $text) ?: [$text];
+        if (count($parts) > 1 && !str_starts_with($parts[0], '## ')) {
+            $parts[1] = $parts[0] . "\n\n" . $parts[1];
+            array_shift($parts);
+        }
+        return array_values(array_map('trim', $parts));
+    }
 }

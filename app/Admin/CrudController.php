@@ -115,8 +115,12 @@ abstract class CrudController extends AdminController
         $err += $this->validate($data, $row);
         if ($err) {
             $keep = $_POST;
-            foreach (array_keys($_FILES) as $k) {
-                unset($keep[$k]);
+            foreach ($_FILES as $k => $file) {
+                // los archivos sueltos no se pueden volver a rellenar; pero un campo con archivos DENTRO de bloques
+                // (por ejemplo las fotos de las zonas) comparte nombre con sus textos, que sí se conservan
+                if (!is_array($file['name'] ?? null)) {
+                    unset($keep[$k]);
+                }
             }
             Flash::put('old_form', array_map(static fn($v) => is_string($v) ? $v : (is_array($v) ? self::keepStrings($v) : ''), $keep));
             Flash::put('form_errors', $err);

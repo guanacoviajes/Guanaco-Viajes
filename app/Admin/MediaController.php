@@ -6,6 +6,8 @@ namespace App\Admin;
 use App\Core\Csrf;
 use App\Core\Database;
 use App\Core\Request;
+use App\Core\Schema;
+use App\Services\CountryContent;
 use App\Services\ImageService;
 
 /** Biblioteca de imágenes subidas: dónde se usa cada una y borrado de las que sobran. */
@@ -23,6 +25,13 @@ final class MediaController extends AdminController
             }
         };
         foreach (Database::all('SELECT nombre, foto FROM countries') as $r) { $add($r['foto'], 'Destino: ' . $r['nombre']); }
+        if (Schema::hasColumn('countries', 'zonas')) {
+            foreach (Database::all("SELECT nombre, zonas FROM countries WHERE zonas IS NOT NULL AND zonas <> ''") as $r) {
+                foreach (CountryContent::decode('zonas', $r['zonas']) as $z) {
+                    $add($z['foto'], 'Zona «' . $z['nombre'] . '» de ' . $r['nombre']);
+                }
+            }
+        }
         foreach (Database::all('SELECT c.nombre, p.archivo FROM country_photos p JOIN countries c ON c.id = p.country_id') as $r) { $add($r['archivo'], 'Galería de ' . $r['nombre']); }
         foreach (Database::all('SELECT titular, foto FROM carousel_slides') as $r) { $add($r['foto'], 'Carrusel: ' . $r['titular']); }
         foreach (Database::all('SELECT titulo, foto FROM trip_types') as $r) { $add($r['foto'], 'Tipo de viaje: ' . $r['titulo']); }

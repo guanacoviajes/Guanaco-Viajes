@@ -4,15 +4,17 @@ declare(strict_types=1);
 namespace App\Services;
 
 /**
- * Contenido ampliado de la página de país: zonas (cada una con su época recomendada) y preguntas frecuentes.
+ * Contenido ampliado de la página de país: zonas (cada una con su época recomendada y, si se quiere, una foto) y preguntas frecuentes.
  * Se guarda como JSON en columnas de texto. Aquí se valida lo que llega del panel (con topes) y se lee de forma
  * tolerante lo guardado (si el JSON está roto o falta la columna, simplemente no hay contenido).
  */
 final class CountryContent
 {
-    public const MAX_ZONAS = 5;
+    public const MAX_ZONAS = 4;
     public const MAX_FAQ = 6;
     public const ZONA_DESC_MAX = 120;
+    /** Forma de las rutas de las fotos que guarda el panel. */
+    public const FOTO_PATTERN = '#^uploads/\d{4}/\d{2}/[a-f0-9]{24}\.jpg$#';
 
     /** Definición de cada lista: columnas (clave => [etiqueta, máximo, obligatoria]) y número máximo de bloques. */
     public static function spec(string $list): array
@@ -23,6 +25,7 @@ final class CountryContent
                 'dias'        => ['Días recomendados', 30, false],
                 'descripcion' => ['Descripción breve', self::ZONA_DESC_MAX, false],
                 'epoca'       => ['Cuándo ir (época recomendada)', 80, false],
+                'foto'        => ['Foto', 255, false],   // ruta de una imagen ya subida (la sube el panel, no se escribe a mano)
             ]],
             'faqs' => ['max' => self::MAX_FAQ, 'singular' => 'pregunta', 'cols' => [
                 'pregunta'  => ['Pregunta', 160, true],
@@ -53,10 +56,13 @@ final class CountryContent
                 $v = $k === 'respuesta'
                     ? trim((string) preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/u', '', $v))
                     : trim((string) preg_replace('/[\x00-\x1F\x7F]+/u', ' ', $v));
+                if ($k === 'foto' && !preg_match(self::FOTO_PATTERN, $v)) {
+                    $v = '';
+                }
                 $row[$k] = $v;
             }
-            if (implode('', $row) === '') {
-                continue; // casilla vacía
+            if (implode('', array_diff_key($row, ['foto' => 1])) === '') {
+                continue; // casilla vacía (una foto suelta no cuenta)
             }
             $n = count($out) + 1;
             foreach ($spec['cols'] as $k => [$label, $max, $req]) {
@@ -103,6 +109,9 @@ final class CountryContent
             $row = [];
             foreach (array_keys($spec['cols']) as $k) {
                 $row[$k] = is_string($b[$k] ?? null) ? $b[$k] : '';
+                if ($k === 'foto' && !preg_match(self::FOTO_PATTERN, $row[$k])) {
+                    $row[$k] = '';
+                }
             }
             $req = array_keys(array_filter($spec['cols'], static fn($c) => $c[2]));
             if (array_filter($req, static fn($k) => $row[$k] === '') !== []) {

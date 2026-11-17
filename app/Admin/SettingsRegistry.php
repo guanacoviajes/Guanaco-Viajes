@@ -48,12 +48,6 @@ final class SettingsRegistry
                 'home.como.kicker'       => $t('Cómo funciona: etiqueta pequeña', 'Cómo funciona'),
                 'home.como.titulo'       => $t('Cómo funciona: título', 'Cuéntanos tu idea.'),
                 'home.como.enfasis'      => $t('Cómo funciona: parte en cursiva', 'Del resto, nos encargamos.'),
-                'home.paso1.titulo'      => $t('Paso 1: título', 'Cuéntanos tu idea'),
-                'home.paso1.texto'       => $t('Paso 1: texto', 'Un destino, una inquietud o una simple intuición.'),
-                'home.paso2.titulo'      => $t('Paso 2: título', 'Diseñamos tu viaje a medida'),
-                'home.paso2.texto'       => $t('Paso 2: texto', 'Una propuesta pensada para ti, con espacio para lo inesperado.'),
-                'home.paso3.titulo'      => $t('Paso 3: título', 'Tú viajas'),
-                'home.paso3.texto'       => $t('Paso 3: texto', 'Y vuelves con historias.'),
                 'home.quien.kicker'      => $t('Quién está detrás: etiqueta pequeña', 'Quién está detrás'),
                 'home.quien.texto'       => $a('Quién está detrás: frase', '', 'Una o dos frases sobre ti.'),
                 'home.quien.boton'       => $t('Quién está detrás: texto del botón', 'Conoce nuestra historia'),
@@ -88,6 +82,8 @@ final class SettingsRegistry
                 'quienes.cierre'         => $t('Cierre: texto', 'Viaja con curiosidad. Muévete con libertad.'),
                 'quienes.cierre.enfasis' => $t('Cierre: parte en cursiva', 'Vuelve con historias.'),
                 'quienes.boton'          => $t('Cierre: texto del botón', 'Cuéntanos tu viaje'),
+                'quienes.foto2'          => ['Segunda foto (a la derecha del segundo texto)', 'image', '', 'Sale a la derecha del segundo bloque de texto, en formato vertical 4:5. La primera foto es «Tu foto viajando» de la página de inicio. Si la dejas vacía, ese bloque va solo con texto.', false],
+                'quienes.foto2.alt'      => $t('Segunda foto: descripción', '', 'Describe lo que se ve (ayuda a la accesibilidad y a los buscadores). Si la dejas vacía se usa «Daniel Conti viajando».'),
             ]],
             'paginas' => ['title' => 'Títulos de Destinos, Contacto y Blog', 'intro' => '', 'items' => [
                 'destinos.titulo'   => $t('Destinos: título', 'Elige por dónde'),
@@ -104,6 +100,10 @@ final class SettingsRegistry
             'formulario' => ['title' => 'Primer paso del formulario', 'intro' => 'La pregunta que se ve en la home y en las fichas de país.', 'items' => [
                 'form.paso1.pregunta' => $t('Pregunta', '¿A dónde te gustaría ir?'),
                 'form.paso1.ayuda'    => $t('Ayuda', 'Puedes elegir más de uno.'),
+            ]],
+            'paises' => ['title' => 'Fichas de país', 'intro' => 'Textos que se repiten en la página de todos los países. Las zonas, las preguntas y las fotos de cada país se editan en «Destinos».', 'items' => [
+                'pais.zonas.titulo'    => $t('Zonas: título', 'Zonas y cuándo ir a {País}', 'Escribe {País} donde quieras que salga el nombre del país (saldrá en cursiva). Es el mismo para todos los países.'),
+                'pais.zonas.subtitulo' => $a('Zonas: subtítulo', 'Elige las zonas que te apetezcan y nosotros las unimos en tu viaje.', 'Texto bajo el título. También admite {País}.'),
             ]],
             'seo' => ['title' => 'Buscadores (SEO) de las páginas principales', 'intro' => 'Lo que aparece en Google al buscar la web. Cada país, artículo y página tiene el suyo en su propia ficha. Consejo: título de 50 a 60 caracteres y descripción de 120 a 155; la expresión «viajes a medida» al principio de los más importantes.', 'items' => [
                 'seo.home.title'       => $t('Inicio · título', 'Viajes a medida por Sudamérica y Europa · Guanaco Viajes', '', true),
