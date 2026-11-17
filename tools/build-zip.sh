@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Genera el ZIP de instalación para Hostinger:  bash tools/build-zip.sh
-# Resultado: dist/guanaco-viajes-AAAA-MM-DD.zip  (sin contraseñas, sin pruebas, sin dependencias de desarrollo)
+# Resultado: dist/guanaco-viajes-AAAA-MM-DD-HHMM.zip  (la hora va en el nombre para no confundir versiones)  (sin contraseñas, sin pruebas, sin dependencias de desarrollo)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 OUT=dist
 STAGE=$(mktemp -d)
-NAME="guanaco-viajes-$(date +%F)"
+STAMP="$(date -u +%F-%H%M)"
+NAME="guanaco-viajes-$STAMP"
 trap 'rm -rf "$STAGE"' EXIT
 
 mkdir -p "$STAGE/app" "$STAGE/config" "$STAGE/database" "$STAGE/docs" "$STAGE/storage/logs" "$STAGE/storage/cache" "$STAGE/public_html"
@@ -37,6 +38,7 @@ cp database/.htaccess "$STAGE/database/"
 # Documentación
 cp docs/INSTALACION.md docs/ACTUALIZACIONES.md docs/SEO-Y-BLOG.md docs/REVISION-LEGAL-NADIDU.md docs/.htaccess "$STAGE/docs/"
 cp README.md comprobar.php "$STAGE/"
+printf "Guanaco Viajes · versión %s (UTC)\nCommit: %s\n" "$STAMP" "$(git rev-parse --short HEAD 2>/dev/null || echo desconocido)" > "$STAGE/VERSION.txt"
 # Carpetas de trabajo vacías pero protegidas
 cp storage/.htaccess "$STAGE/storage/"; touch "$STAGE/storage/logs/.gitkeep" "$STAGE/storage/cache/.gitkeep"
 # Carpeta pública (en Hostinger es public_html). Sin las fotos subidas durante el desarrollo.
