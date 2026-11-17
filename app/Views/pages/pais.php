@@ -11,12 +11,13 @@ $label = Countries::continentLabel($pais['continente']);
 $n = e($pais['nombre']);
 ?>
 <?= \App\Core\View::partial('partials/crumbs', ['items' => [['Destinos', '/destinos'], [$label, '/destinos/' . $pais['continente']], [$pais['nombre'], null]]]) ?>
-<header class="phero">
+<header class="phero phero-pais">
   <?= img($pais['foto'], $pais['foto_alt'], ['pos' => $pais['foto_pos'], 'eager' => true, 'sizes' => '100vw']) ?>
   <div class="blk">
     <div class="kick">Viajes a medida · <?= e($label) ?></div>
     <h1><?= e($pais['nombre']) ?></h1>
     <p><?= e($pais['resumen']) ?></p>
+    <a class="btn bm" href="#disena-tu-viaje">Diseñemos tu viaje a <?= $n ?></a>
   </div>
 </header>
 

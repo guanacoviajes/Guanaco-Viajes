@@ -6,7 +6,7 @@ $S = static fn(string $k, string $d = ''): string => Settings::get($k, $d);
 $titulo  = $titulo  ?? $S('home.como.titulo', 'Cuéntanos tu idea.');
 $enfasis = $enfasis ?? $S('home.como.enfasis', 'Del resto, nos encargamos.');
 ?>
-<section class="sec como" aria-labelledby="como-t">
+<section class="sec como" id="disena-tu-viaje" aria-labelledby="como-t">
   <div class="wrap grid2">
     <div>
       <div class="kick"><?= e($S('home.como.kicker', 'Cómo funciona')) ?></div>

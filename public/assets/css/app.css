@@ -773,3 +773,16 @@ section.sec-tipos{padding:72px 0 72px}
 @media (max-width:820px){
   .ideas-mas{text-align:left}
 }
+
+/* Ficha de país: cabecera con el cuadro de texto ~15 % más estrecho (tapa menos foto) y botón directo al formulario */
+.phero-pais .blk{width:min(595px,53vw);padding:30px 36px 32px var(--gut)}
+.phero-pais .blk h1{font-size:clamp(48px,6vw,82px);margin:12px 0 14px}
+.phero-pais .blk p{font-size:17px;line-height:1.5;max-width:none}
+.phero-pais .blk .btn{margin-top:20px;padding:14px 22px;font-size:14px}
+#disena-tu-viaje{scroll-margin-top:calc(var(--hdr-h) + 8px)}
+@media (max-width:820px){
+  .phero-pais .blk{width:100%;padding:28px var(--gut) 32px}
+  .phero-pais .blk h1{font-size:clamp(54px,7vw,96px);margin:16px 0 18px}
+  .phero-pais .blk p{font-size:19px;line-height:1.55}
+  .phero-pais .blk .btn{margin-top:22px;padding:17px 28px;font-size:15px}
+}
