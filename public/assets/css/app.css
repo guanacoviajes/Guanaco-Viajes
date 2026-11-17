@@ -818,3 +818,14 @@ section.sec-tipos{padding:72px 0 72px}
   .slide .blk .kick{font-size:10.5px}
   .slide .blk .btn.bm{padding:13px 22px;font-size:13.5px}
 }
+
+/* «Cómo funciona»: la mitad de aire alrededor de la franja oscura (arriba y abajo), en la home y en las fichas de país */
+.como{padding-top:52px;padding-bottom:52px}
+.sec-pais + .como{padding-top:52px}
+section:has(+ .como){padding-bottom:52px}
+.como + section{padding-top:52px}
+@media (max-width:820px){
+  .como,.sec-pais + .como{padding-top:32px;padding-bottom:32px}
+  section:has(+ .como){padding-bottom:32px}
+  .como + section{padding-top:32px}
+}
