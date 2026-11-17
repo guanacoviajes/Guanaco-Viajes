@@ -27,7 +27,7 @@ El blog **no compite** con las páginas de país: las alimenta. Cada artículo e
 - **Los de las páginas principales los puedes cambiar tú** en *Textos y ajustes → Buscadores (SEO)*. Los de cada país y artículo, en su propia ficha.
 
 **Datos estructurados (lo que entiende Google)**
-- En todas las páginas: la agencia (`TravelAgency`: nombre, logo, correo, teléfono, redes si las rellenas, fundador) y el sitio web.
+- En todas las páginas: la agencia (`TravelAgency`: nombre, logo, correo, teléfono, fundador y sus perfiles oficiales de Instagram, Facebook, X, Pinterest y TikTok) y el sitio web. El logo que se indica a Google es el de texto oscuro (`guanaco-completo-claro.svg`), que se ve sobre el fondo blanco de los resultados.
 - Viajes a medida: servicio ofrecido en Sudamérica y Europa.
 - Cada país: `TouristDestination`.
 - Cada artículo: `BlogPosting` con autor (Daniel Conti), fecha de publicación, fecha de modificación e imagen.

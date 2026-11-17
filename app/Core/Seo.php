@@ -51,13 +51,22 @@ final class Seo
     public static function siteNodes(): array
     {
         $base = self::base();
-        $same = [];
-        foreach (['social.instagram', 'social.facebook', 'social.x', 'social.tiktok'] as $k) {
+        // Perfiles oficiales (para Google). Si en el panel se escribe otra dirección para Instagram, Facebook o X,
+        // esa sustituye a la de aquí; Pinterest y TikTok van fijos.
+        $same = [
+            'social.instagram' => 'https://www.instagram.com/guanacoviajes/',
+            'social.facebook'  => 'https://www.facebook.com/people/Guanaco-Viajes/61596508418035/',
+            'social.x'         => 'https://x.com/guanacoviajes',
+            'pinterest'        => 'https://www.pinterest.com/guanacoviajes/',
+            'tiktok'           => 'https://www.tiktok.com/@guanacoviajes',
+        ];
+        foreach (['social.instagram', 'social.facebook', 'social.x'] as $k) {
             $u = Settings::get($k);
             if (preg_match('~^https://~i', $u)) {
-                $same[] = $u;
+                $same[$k] = $u;
             }
         }
+        $same = array_values($same);
         $org = [
             '@type'       => 'TravelAgency',
             '@id'         => $base . '/#organizacion',
