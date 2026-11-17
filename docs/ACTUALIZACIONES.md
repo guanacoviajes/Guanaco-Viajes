@@ -1,5 +1,7 @@
 # Actualizar la web en Hostinger (hPanel) · guía paso a paso
 
+> **Actualización de seguimiento (solo archivos, sin SQL):** la ficha de país pasó a tener un único bloque «Zonas y cuándo ir» (cada zona lleva su época) y se quitó el texto de entrada. **No hay que importar nada.** Se sube el ZIP (pasos 1 a 3) y se comprueba (paso 5). Archivos: `app/Services/CountryContent.php`, `app/Repositories/Countries.php`, `app/Controllers/DestinosController.php`, `app/Admin/CountriesController.php`, `app/Views/pages/pais.php`, `public_html/assets/css/app.css` y `public_html/assets/css/admin.css`. Lo que hubieras escrito en «Entrada» o en el antiguo «Cuándo ir» sigue guardado en la base de datos pero ya no se muestra: pasa la época a cada zona.
+
 Esta guía sirve para **cualquier actualización** y está escrita con la de **2026-11-17** (plantilla ampliada de las páginas de país y artículos con varios países) como ejemplo.
 
 > **Regla de oro:** no se toca nada sin las dos copias de seguridad hechas (base de datos y archivos). Con ellas, cualquier cosa se puede deshacer.
@@ -143,8 +145,8 @@ Recarga con `Ctrl+Shift+R` (y en el móvil, cierra y abre la pestaña).
 - [ ] El formulario de presupuesto se abre y funciona.
 
 **El panel**
-- [ ] *Destinos → Chile*: aparecen **Entrada, Zonas, Cuándo ir y Preguntas frecuentes**. Si en su lugar sale un aviso amarillo diciendo que faltan campos, el SQL no se importó: repite el paso 4.
-- [ ] Escribe una **zona de prueba** (nombre, descripción, días) y guarda. Abre la ficha pública de Chile: debe aparecer «Zonas para tu viaje a Chile» con la tarjeta, en el orden correcto (entrada → zonas → cuándo ir → preguntas → formulario → ideas → más destinos).
+- [ ] *Destinos → Chile*: aparecen **Zonas (con «Cuándo ir» en cada zona) y Preguntas frecuentes**. Si en su lugar sale un aviso amarillo diciendo que faltan campos, el SQL no se importó: repite el paso 4.
+- [ ] Escribe una **zona de prueba** (nombre, descripción, días) y guarda. Abre la ficha pública de Chile: debe aparecer «Zonas y cuándo ir a Chile» con la tarjeta, en el orden correcto (zonas → preguntas → formulario → ideas → más destinos).
 - [ ] Prueba una **pregunta frecuente**: se abre y se cierra con el ratón y con el teclado.
 - [ ] *Blog → un artículo*: marca **uno o dos países** (el primero que marques será el principal). Guarda y comprueba que el artículo aparece en «Ideas para tu viaje» de esa ficha.
 - [ ] Mira la web **en el móvil**: las zonas se deslizan hacia los lados y se ve asomar la siguiente tarjeta.
@@ -171,7 +173,7 @@ Con el Administrador de archivos: sube tu copia de archivos (el ZIP del paso 2),
 **La web anterior funciona perfectamente con el SQL ya importado**, así que no hace falta tocar la base de datos para esto.
 
 ### Nivel 2 · Deshacer también el SQL
-Solo si quieres dejar la base de datos exactamente como estaba. **Se pierde lo que hayas escrito en los campos nuevos** (entrada, zonas, cuándo ir, preguntas) y la relación de artículos con varios países. Los artículos conservan su país principal.
+Solo si quieres dejar la base de datos exactamente como estaba. **Se pierde lo que hayas escrito en los campos nuevos** (zonas, preguntas) y la relación de artículos con varios países. Los artículos conservan su país principal.
 - phpMyAdmin → tu base de datos → **Importar** → archivo `2026-11-17-paises-plantilla-VOLVER-ATRAS.sql`.
 - O por SSH: `mysql -u USUARIO_BD -p NOMBRE_BD < database/actualizaciones/2026-11-17-paises-plantilla-VOLVER-ATRAS.sql`
 

@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 /**
- * Contenido ampliado de la página de país: zonas, «cuándo ir» y preguntas frecuentes.
+ * Contenido ampliado de la página de país: zonas (cada una con su época recomendada) y preguntas frecuentes.
  * Se guarda como JSON en columnas de texto. Aquí se valida lo que llega del panel (con topes) y se lee de forma
  * tolerante lo guardado (si el JSON está roto o falta la columna, simplemente no hay contenido).
  */
 final class CountryContent
 {
     public const MAX_ZONAS = 5;
-    public const MAX_CUANDO = 4;
     public const MAX_FAQ = 6;
     public const ZONA_DESC_MAX = 120;
 
@@ -21,13 +20,9 @@ final class CountryContent
         return match ($list) {
             'zonas' => ['max' => self::MAX_ZONAS, 'singular' => 'zona', 'cols' => [
                 'nombre'      => ['Nombre de la zona', 60, true],
-                'descripcion' => ['Descripción breve', self::ZONA_DESC_MAX, false],
                 'dias'        => ['Días recomendados', 30, false],
-            ]],
-            'cuando_ir' => ['max' => self::MAX_CUANDO, 'singular' => 'bloque', 'cols' => [
-                'zona'  => ['Zona', 60, true],
-                'epoca' => ['Época recomendada', 80, true],
-                'nota'  => ['Nota breve', 160, false],
+                'descripcion' => ['Descripción breve', self::ZONA_DESC_MAX, false],
+                'epoca'       => ['Cuándo ir (época recomendada)', 80, false],
             ]],
             'faqs' => ['max' => self::MAX_FAQ, 'singular' => 'pregunta', 'cols' => [
                 'pregunta'  => ['Pregunta', 160, true],

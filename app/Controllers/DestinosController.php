@@ -49,7 +49,7 @@ final class DestinosController
         $schema = [[
             '@type'         => 'TouristDestination',
             'name'          => $pais['nombre'],
-            'description'   => Seo::clip($c['entrada'] !== '' ? $c['entrada'] : (string) $pais['resumen'], 300),
+            'description'   => Seo::clip((string) $pais['resumen'], 300),
             'url'           => Seo::base() . '/destinos/' . $pais['continente'] . '/' . $pais['slug'],
             'image'         => Seo::abs((string) $pais['foto']),
             'containedInPlace' => ['@type' => 'Continent', 'name' => Countries::continentLabel($pais['continente'])],

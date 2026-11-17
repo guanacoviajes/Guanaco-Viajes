@@ -15,7 +15,7 @@ final class CountryContentTest extends TestCase
             ['nombre' => '', 'descripcion' => '', 'dias' => ''],
         ]);
         $this->assertNull($err);
-        $this->assertSame([['nombre' => 'Norte', 'descripcion' => 'Desierto', 'dias' => '4-6 días']], $out);
+        $this->assertSame([['nombre' => 'Norte', 'dias' => '4-6 días', 'descripcion' => 'Desierto', 'epoca' => '']], $out);
     }
 
     public function testNothingFilledMeansNoContentAndNullInDatabase(): void
@@ -31,8 +31,6 @@ final class CountryContentTest extends TestCase
     {
         [, $err] = CountryContent::clean('zonas', [['nombre' => '', 'descripcion' => 'Solo descripción', 'dias' => '']]);
         $this->assertStringContainsString('falta «Nombre de la zona»', (string) $err);
-        [, $err] = CountryContent::clean('cuando_ir', [['zona' => 'Norte', 'epoca' => '', 'nota' => 'x']]);
-        $this->assertStringContainsString('falta «Época recomendada»', (string) $err);
         [, $err] = CountryContent::clean('faqs', [['pregunta' => '¿Algo?', 'respuesta' => '']]);
         $this->assertStringContainsString('falta «Respuesta»', (string) $err);
     }
@@ -48,13 +46,23 @@ final class CountryContentTest extends TestCase
         $this->assertCount(1, $ok2);
     }
 
+    public function testZoneSeasonIsOptionalAndCapped(): void
+    {
+        [$ok, $err] = CountryContent::clean('zonas', [['nombre' => 'Norte', 'epoca' => str_repeat('e', 80)]]);
+        $this->assertNull($err);
+        $this->assertSame('', $ok[0]['dias']);
+        [, $err] = CountryContent::clean('zonas', [['nombre' => 'Norte', 'epoca' => str_repeat('e', 81)]]);
+        $this->assertStringContainsString('máximo 80', (string) $err);
+        // un contenido guardado con la versión anterior (sin época) se sigue leyendo bien
+        $old = json_encode([['nombre' => 'Sur', 'descripcion' => 'Lagos', 'dias' => '5 días']]);
+        $this->assertSame('', CountryContent::decode('zonas', $old)[0]['epoca']);
+    }
+
     public function testMaximumNumberOfBlocksPerList(): void
     {
         $mk = static fn(int $n, array $row): array => array_fill(0, $n, $row);
         $this->assertNull(CountryContent::clean('zonas', $mk(5, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
         $this->assertNotNull(CountryContent::clean('zonas', $mk(6, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
-        $this->assertNull(CountryContent::clean('cuando_ir', $mk(4, ['zona' => 'Z', 'epoca' => 'E', 'nota' => '']))[1]);
-        $this->assertNotNull(CountryContent::clean('cuando_ir', $mk(5, ['zona' => 'Z', 'epoca' => 'E', 'nota' => '']))[1]);
         $this->assertNull(CountryContent::clean('faqs', $mk(6, ['pregunta' => 'P', 'respuesta' => 'R']))[1]);
         $this->assertNotNull(CountryContent::clean('faqs', $mk(7, ['pregunta' => 'P', 'respuesta' => 'R']))[1]);
     }
@@ -69,8 +77,8 @@ final class CountryContentTest extends TestCase
 
     public function testRoundTripThroughJson(): void
     {
-        $blocks = [['zona' => 'Norte', 'epoca' => 'Todo el año', 'nota' => 'Con «comillas» y ñ']];
-        $this->assertSame($blocks, CountryContent::decode('cuando_ir', CountryContent::encode($blocks)));
+        $blocks = [['nombre' => 'Norte', 'dias' => '4-6 días', 'descripcion' => 'Con «comillas» y ñ', 'epoca' => 'Todo el año']];
+        $this->assertSame($blocks, CountryContent::decode('zonas', CountryContent::encode($blocks)));
     }
 
     public function testDecodeIsTolerant(): void
@@ -80,7 +88,7 @@ final class CountryContentTest extends TestCase
         }
         // bloque sin lo obligatorio: no se enseña; campos de otro tipo: se ignoran
         $json = json_encode([['nombre' => '', 'descripcion' => 'x'], ['nombre' => 'Bien', 'descripcion' => 5, 'dias' => null]]);
-        $this->assertSame([['nombre' => 'Bien', 'descripcion' => '', 'dias' => '']], CountryContent::decode('zonas', $json));
+        $this->assertSame([['nombre' => 'Bien', 'dias' => '', 'descripcion' => '', 'epoca' => '']], CountryContent::decode('zonas', $json));
     }
 
     public function testDecodeNeverReturnsMoreThanTheMaximum(): void

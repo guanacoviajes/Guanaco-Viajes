@@ -43,16 +43,13 @@ final class Countries
     /**
      * Contenido ampliado de la ficha. Tolerante: si aún no existen las columnas (falta importar la actualización de la
      * base de datos) o están vacías, devuelve listas vacías y la sección simplemente no se muestra.
-     * @return array{entrada:string, zonas:list<array<string,string>>, cuando:list<array<string,string>>, faqs:list<array<string,string>>}
+     * @return array{zonas:list<array<string,string>>, faqs:list<array<string,string>>}
      */
     public static function content(array $pais): array
     {
-        $entrada = is_string($pais['entrada'] ?? null) ? trim($pais['entrada']) : '';
         return [
-            'entrada' => $entrada,
-            'zonas'   => CountryContent::decode('zonas', $pais['zonas'] ?? null),
-            'cuando'  => CountryContent::decode('cuando_ir', $pais['cuando_ir'] ?? null),
-            'faqs'    => CountryContent::decode('faqs', $pais['faqs'] ?? null),
+            'zonas' => CountryContent::decode('zonas', $pais['zonas'] ?? null),
+            'faqs'  => CountryContent::decode('faqs', $pais['faqs'] ?? null),
         ];
     }
 

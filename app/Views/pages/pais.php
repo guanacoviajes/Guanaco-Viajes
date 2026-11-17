@@ -1,7 +1,7 @@
 <?php
 /**
  * @var array $pais  @var array $galeria  @var list<array> $salidas  @var list<array> $posts  @var list<array> $otros
- * @var array $paises  @var array $c contenido ampliado  @var int $ideasTotal
+ * @var array $paises  @var array $c contenido ampliado (zonas, faqs)  @var int $ideasTotal
  */
 use App\Core\Text;
 use App\Repositories\Countries;
@@ -20,17 +20,8 @@ $n = e($pais['nombre']);
   </div>
 </header>
 
-<?php if ($c['entrada'] !== ''): ?>
-<!-- Entrada -->
-<section class="sec" aria-label="Presentación de <?= $n ?>">
-  <div class="wrap entrada">
-    <?php foreach (CountryContent::paragraphs($c['entrada']) as $par): ?><p><?= e($par) ?></p><?php endforeach; ?>
-  </div>
-</section>
-<?php endif; ?>
-
 <?php if (count($galeria) >= 2): ?>
-<section class="sec<?= $c['entrada'] !== '' ? ' sec-tight' : '' ?>" aria-labelledby="gal-t">
+<section class="sec" aria-labelledby="gal-t">
   <div class="wrap">
     <div class="kick">Galería</div>
     <h2 id="gal-t"><?= $n ?>, <em>en imágenes</em></h2>
@@ -44,11 +35,11 @@ $n = e($pais['nombre']);
 <?php endif; ?>
 
 <?php if ($c['zonas']): ?>
-<!-- Zonas -->
+<!-- Zonas y cuándo ir -->
 <section class="sec sec-tight" aria-labelledby="zon-t">
   <div class="wrap">
     <div class="kick">Zonas</div>
-    <h2 id="zon-t">Zonas para tu viaje a <em><?= $n ?></em></h2>
+    <h2 id="zon-t">Zonas y cuándo ir a <em><?= $n ?></em></h2>
     <p class="zon-intro">Elige las zonas que te apetezcan y nosotros las unimos en tu viaje.</p>
     <div class="zon-row" role="region" aria-label="Zonas de <?= $n ?>" tabindex="0" style="--n:<?= count($c['zonas']) ?>">
       <?php foreach ($c['zonas'] as $z): ?>
@@ -56,25 +47,7 @@ $n = e($pais['nombre']);
         <h3><?= e($z['nombre']) ?></h3>
         <?php if ($z['descripcion'] !== ''): ?><p class="zdesc"><?= e($z['descripcion']) ?></p><?php endif; ?>
         <?php if ($z['dias'] !== ''): ?><p class="zdias"><span class="sr-only">Días recomendados: </span><?= e($z['dias']) ?></p><?php endif; ?>
-      </article>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-
-<?php if ($c['cuando']): ?>
-<!-- Cuándo ir -->
-<section class="sec sec-tight" aria-labelledby="cuando-t">
-  <div class="wrap">
-    <div class="kick">Cuándo ir</div>
-    <h2 id="cuando-t">Cuándo ir a <em><?= $n ?></em></h2>
-    <div class="cuando">
-      <?php foreach ($c['cuando'] as $b): ?>
-      <article class="cu">
-        <h3><?= e($b['zona']) ?></h3>
-        <p class="epoca"><span class="sr-only">Época recomendada: </span><?= e($b['epoca']) ?></p>
-        <?php if ($b['nota'] !== ''): ?><p class="cnota"><?= e($b['nota']) ?></p><?php endif; ?>
+        <?php if ($z['epoca'] !== ''): ?><p class="zepoca"><span class="zlabel">Cuándo ir</span> <?= e($z['epoca']) ?></p><?php endif; ?>
       </article>
       <?php endforeach; ?>
     </div>

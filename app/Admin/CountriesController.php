@@ -19,7 +19,7 @@ final class CountriesController extends CrudController
             'create' => 'Añadir un destino', 'delete' => true, 'order' => "FIELD(continente,'sudamerica','europa'), orden, nombre", 'unique' => ['slug'],
             'intro' => 'Los países que aparecen en el menú, en la página de destinos, en las tarjetas y en el formulario de presupuesto.',
             'help' => 'Al guardar, el país aparece solo en el menú, en las tarjetas y en el formulario. <b>Para crear un destino nuevo solo necesitas</b> nombre, continente, resumen y una foto.'
-                . (Schema::hasColumn('countries', 'zonas') ? '' : '<br><b>Aviso:</b> faltan los campos de la plantilla ampliada (entrada, zonas, cuándo ir, preguntas). Importa la actualización de la base de datos <code>2026-11-17-paises-plantilla.sql</code> para activarlos. Mientras tanto, la web funciona con normalidad.'),
+                . (Schema::hasColumn('countries', 'zonas') ? '' : '<br><b>Aviso:</b> faltan los campos de la plantilla ampliada (zonas y preguntas frecuentes). Importa la actualización de la base de datos <code>2026-11-17-paises-plantilla.sql</code> para activarlos. Mientras tanto, la web funciona con normalidad.'),
             'deleteConfirm' => '¿Eliminar este destino? Las salidas y artículos que lo usan quedarán sin país. No se puede deshacer.',
             'deleteHint' => 'Si solo quieres ocultarlo temporalmente, desmarca «Publicado» en lugar de eliminarlo.',
             'viewUrl' => static fn(array $r): string => '/destinos/' . $r['continente'] . '/' . $r['slug'],
@@ -63,11 +63,8 @@ final class CountriesController extends CrudController
             return [];
         }
         return [
-            ['name' => 'entrada', 'label' => 'Entrada de la página (opcional)', 'type' => 'textarea', 'max' => 500, 'help' => 'Texto de apertura, 2 o 3 frases. Sale justo bajo la cabecera.'],
-            ['name' => 'zonas', 'type' => 'blocks', 'list' => 'zonas', 'noun' => 'zona', 'label' => 'Zonas (opcional, hasta 5)',
-                'help' => 'Cada zona sale como una tarjeta. Descripción de hasta 120 caracteres. Deja vacías las casillas que no uses.'],
-            ['name' => 'cuando_ir', 'type' => 'blocks', 'list' => 'cuando_ir', 'noun' => 'bloque', 'label' => 'Cuándo ir (opcional, hasta 4)',
-                'help' => 'Por zona: la época recomendada y una nota breve. Contrasta estos datos con una fuente fiable.'],
+            ['name' => 'zonas', 'type' => 'blocks', 'list' => 'zonas', 'noun' => 'zona', 'label' => 'Zonas y cuándo ir (opcional, hasta 5)',
+                'help' => 'Cada zona sale como una tarjeta con su nombre, descripción breve (máximo 120 caracteres), días recomendados y la mejor época para ir. Contrasta la época con una fuente fiable. Deja vacías las casillas que no uses.'],
             ['name' => 'faqs', 'type' => 'blocks', 'list' => 'faqs', 'noun' => 'pregunta', 'label' => 'Preguntas frecuentes (opcional, hasta 6)',
                 'help' => 'Se muestran desplegables y se envían también a Google. Para separar párrafos en una respuesta, deja una línea en blanco.'],
         ];
