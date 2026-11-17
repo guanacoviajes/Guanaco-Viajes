@@ -37,7 +37,7 @@ $n = e($pais['nombre']);
 
 <?php if ($c['zonas']): ?>
 <!-- Zonas y cuándo ir -->
-<section class="sec sec-tight" aria-labelledby="zon-t">
+<section class="sec sec-tight sec-pais" aria-labelledby="zon-t">
   <div class="wrap">
     <div class="kick">Zonas</div>
     <h2 id="zon-t">Zonas y cuándo ir a <em><?= $n ?></em></h2>
@@ -57,7 +57,7 @@ $n = e($pais['nombre']);
 <?php endif; ?>
 
 <?php if ($salidas): ?>
-<section class="sec sec-tight" aria-labelledby="sal-t">
+<section class="sec sec-tight sec-pais" aria-labelledby="sal-t">
   <div class="wrap">
     <div class="kick">Viajes en grupo</div>
     <h2 id="sal-t">Salidas a <em><?= $n ?></em></h2>
@@ -68,7 +68,7 @@ $n = e($pais['nombre']);
 
 <?php if ($c['faqs']): ?>
 <!-- Preguntas frecuentes -->
-<section class="sec sec-tight" aria-labelledby="faq-t">
+<section class="sec sec-tight sec-pais" aria-labelledby="faq-t">
   <div class="wrap faq-wrap">
     <div class="kick">Preguntas frecuentes</div>
     <h2 id="faq-t">Preguntas frecuentes sobre <em><?= $n ?></em></h2>

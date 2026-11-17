@@ -786,3 +786,13 @@ section.sec-tipos{padding:72px 0 72px}
   .phero-pais .blk p{font-size:19px;line-height:1.55}
   .phero-pais .blk .btn{margin-top:22px;padding:17px 28px;font-size:15px}
 }
+
+/* Ficha de país: ritmo vertical más compacto (≈ −40 %) y aire bajo la cabecera cuando no hay galería */
+.phero-pais + section{padding-top:62px}
+.sec-pais{padding-bottom:62px}
+.sec-pais + .como{padding-top:62px}
+@media (max-width:820px){
+  .phero-pais + section{padding-top:40px}
+  .sec-pais{padding-bottom:40px}
+  .sec-pais + .como{padding-top:40px}
+}
