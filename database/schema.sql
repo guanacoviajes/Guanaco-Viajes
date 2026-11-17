@@ -20,6 +20,10 @@ CREATE TABLE IF NOT EXISTS countries (
   continente  ENUM('sudamerica','europa') NOT NULL,
   orden       SMALLINT      NOT NULL DEFAULT 0,
   resumen     TEXT          NOT NULL,
+  entrada     TEXT          NULL,   -- texto de apertura de la página (2-3 frases)
+  zonas       TEXT          NULL,   -- JSON: [{nombre, descripcion, dias}] (máx. 5)
+  cuando_ir   TEXT          NULL,   -- JSON: [{zona, epoca, nota}] (máx. 4)
+  faqs        TEXT          NULL,   -- JSON: [{pregunta, respuesta}] (máx. 6)
   foto        VARCHAR(255)  NOT NULL DEFAULT '',
   foto_pos    VARCHAR(30)   NOT NULL DEFAULT '50% 50%',
   foto_alt    VARCHAR(200)  NOT NULL DEFAULT '',
@@ -100,6 +104,17 @@ CREATE TABLE IF NOT EXISTS posts (
   KEY idx_posts_pub (publicado, publicado_en),
   KEY idx_posts_country (country_id),
   CONSTRAINT fk_posts_country FOREIGN KEY (country_id) REFERENCES countries (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Países de cada artículo (el de menor «orden» es el principal; posts.country_id lo refleja)
+CREATE TABLE IF NOT EXISTS post_countries (
+  post_id     INT UNSIGNED NOT NULL,
+  country_id  INT UNSIGNED NOT NULL,
+  orden       TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (post_id, country_id),
+  KEY idx_pc_country (country_id),
+  CONSTRAINT fk_pc_post    FOREIGN KEY (post_id)    REFERENCES posts (id)     ON DELETE CASCADE,
+  CONSTRAINT fk_pc_country FOREIGN KEY (country_id) REFERENCES countries (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Opciones del paso «Tu idea» del formulario de presupuesto (editables)

@@ -1,12 +1,14 @@
 <?php
 /**
  * @var array $pais  @var array $galeria  @var list<array> $salidas  @var list<array> $posts  @var list<array> $otros
- * @var array $paises
+ * @var array $paises  @var array $c contenido ampliado  @var int $ideasTotal
  */
 use App\Core\Text;
 use App\Repositories\Countries;
+use App\Services\CountryContent;
 
 $label = Countries::continentLabel($pais['continente']);
+$n = e($pais['nombre']);
 ?>
 <?= \App\Core\View::partial('partials/crumbs', ['items' => [['Destinos', '/destinos'], [$label, '/destinos/' . $pais['continente']], [$pais['nombre'], null]]]) ?>
 <header class="phero">
@@ -18,14 +20,62 @@ $label = Countries::continentLabel($pais['continente']);
   </div>
 </header>
 
+<?php if ($c['entrada'] !== ''): ?>
+<!-- Entrada -->
+<section class="sec" aria-label="Presentación de <?= $n ?>">
+  <div class="wrap entrada">
+    <?php foreach (CountryContent::paragraphs($c['entrada']) as $par): ?><p><?= e($par) ?></p><?php endforeach; ?>
+  </div>
+</section>
+<?php endif; ?>
+
 <?php if (count($galeria) >= 2): ?>
-<section class="sec" aria-labelledby="gal-t">
+<section class="sec<?= $c['entrada'] !== '' ? ' sec-tight' : '' ?>" aria-labelledby="gal-t">
   <div class="wrap">
     <div class="kick">Galería</div>
-    <h2 id="gal-t"><?= e($pais['nombre']) ?>, <em>en imágenes</em></h2>
+    <h2 id="gal-t"><?= $n ?>, <em>en imágenes</em></h2>
     <div class="gal gal-<?= count($galeria) ?>">
       <?php foreach ($galeria as $g): ?>
       <figure><?= img($g['archivo'], $g['alt'], ['sizes' => '(max-width: 820px) 100vw, 50vw']) ?></figure>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if ($c['zonas']): ?>
+<!-- Zonas -->
+<section class="sec sec-tight" aria-labelledby="zon-t">
+  <div class="wrap">
+    <div class="kick">Zonas</div>
+    <h2 id="zon-t">Zonas para tu viaje a <em><?= $n ?></em></h2>
+    <p class="zon-intro">Elige las zonas que te apetezcan y nosotros las unimos en tu viaje.</p>
+    <div class="zon-row" role="region" aria-label="Zonas de <?= $n ?>" tabindex="0" style="--n:<?= count($c['zonas']) ?>">
+      <?php foreach ($c['zonas'] as $z): ?>
+      <article class="zona">
+        <h3><?= e($z['nombre']) ?></h3>
+        <?php if ($z['descripcion'] !== ''): ?><p class="zdesc"><?= e($z['descripcion']) ?></p><?php endif; ?>
+        <?php if ($z['dias'] !== ''): ?><p class="zdias"><span class="sr-only">Días recomendados: </span><?= e($z['dias']) ?></p><?php endif; ?>
+      </article>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if ($c['cuando']): ?>
+<!-- Cuándo ir -->
+<section class="sec sec-tight" aria-labelledby="cuando-t">
+  <div class="wrap">
+    <div class="kick">Cuándo ir</div>
+    <h2 id="cuando-t">Cuándo ir a <em><?= $n ?></em></h2>
+    <div class="cuando">
+      <?php foreach ($c['cuando'] as $b): ?>
+      <article class="cu">
+        <h3><?= e($b['zona']) ?></h3>
+        <p class="epoca"><span class="sr-only">Época recomendada: </span><?= e($b['epoca']) ?></p>
+        <?php if ($b['nota'] !== ''): ?><p class="cnota"><?= e($b['nota']) ?></p><?php endif; ?>
+      </article>
       <?php endforeach; ?>
     </div>
   </div>
@@ -36,18 +86,26 @@ $label = Countries::continentLabel($pais['continente']);
 <section class="sec sec-tight" aria-labelledby="sal-t">
   <div class="wrap">
     <div class="kick">Viajes en grupo</div>
-    <h2 id="sal-t">Salidas a <em><?= e($pais['nombre']) ?></em></h2>
+    <h2 id="sal-t">Salidas a <em><?= $n ?></em></h2>
     <?= \App\Core\View::partial('partials/salidas', ['salidas' => $salidas]) ?>
   </div>
 </section>
 <?php endif; ?>
 
-<?php if ($posts): ?>
-<section class="sec sec-tight" aria-labelledby="art-t">
-  <div class="wrap">
-    <div class="kick">Blog</div>
-    <h2 id="art-t">Historias de <em><?= e($pais['nombre']) ?></em></h2>
-    <?= \App\Core\View::partial('partials/post-grid', ['posts' => $posts]) ?>
+<?php if ($c['faqs']): ?>
+<!-- Preguntas frecuentes -->
+<section class="sec sec-tight" aria-labelledby="faq-t">
+  <div class="wrap faq-wrap">
+    <div class="kick">Preguntas frecuentes</div>
+    <h2 id="faq-t">Preguntas frecuentes sobre <em><?= $n ?></em></h2>
+    <div class="faq">
+      <?php foreach ($c['faqs'] as $f): ?>
+      <details>
+        <summary><?= e($f['pregunta']) ?></summary>
+        <div class="faq-a"><?php foreach (CountryContent::paragraphs($f['respuesta']) as $par): ?><p><?= e($par) ?></p><?php endforeach; ?></div>
+      </details>
+      <?php endforeach; ?>
+    </div>
   </div>
 </section>
 <?php endif; ?>
@@ -58,6 +116,20 @@ $label = Countries::continentLabel($pais['continente']);
     'titulo'  => 'Diseñemos tu viaje',
     'enfasis' => 'a ' . $pais['nombre'],
 ]) ?>
+
+<?php if ($posts): ?>
+<!-- Ideas para tu viaje -->
+<section class="sec sec-tight" aria-labelledby="ideas-t">
+  <div class="wrap">
+    <div class="kick">Blog</div>
+    <h2 id="ideas-t">Ideas para tu viaje a <em><?= $n ?></em></h2>
+    <?= \App\Core\View::partial('partials/post-grid', ['posts' => $posts, 'compact' => true]) ?>
+    <?php if ($ideasTotal > 3): ?>
+    <p class="ideas-mas"><a class="btn b2" href="/blog?pais=<?= e($pais['slug']) ?>">Ver todas las ideas sobre <?= $n ?></a></p>
+    <?php endif; ?>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php if ($otros): ?>
 <section class="sec" aria-labelledby="otros-t">

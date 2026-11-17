@@ -6,6 +6,7 @@ namespace App\Admin;
 use App\Core\Database;
 use App\Core\Http;
 use App\Core\Request;
+use App\Core\Schema;
 use App\Core\View;
 use App\Services\ImageService;
 
@@ -17,7 +18,8 @@ final class CountriesController extends CrudController
             'table' => 'countries', 'section' => 'destinos', 'path' => '/admin/destinos', 'singular' => 'destino', 'plural' => 'Destinos',
             'create' => 'Añadir un destino', 'delete' => true, 'order' => "FIELD(continente,'sudamerica','europa'), orden, nombre", 'unique' => ['slug'],
             'intro' => 'Los países que aparecen en el menú, en la página de destinos, en las tarjetas y en el formulario de presupuesto.',
-            'help' => 'Al guardar, el país aparece solo en el menú, en las tarjetas y en el formulario. <b>Para crear un destino nuevo solo necesitas</b> nombre, continente, resumen y una foto.',
+            'help' => 'Al guardar, el país aparece solo en el menú, en las tarjetas y en el formulario. <b>Para crear un destino nuevo solo necesitas</b> nombre, continente, resumen y una foto.'
+                . (Schema::hasColumn('countries', 'zonas') ? '' : '<br><b>Aviso:</b> faltan los campos de la plantilla ampliada (entrada, zonas, cuándo ir, preguntas). Importa la actualización de la base de datos <code>2026-11-17-paises-plantilla.sql</code> para activarlos. Mientras tanto, la web funciona con normalidad.'),
             'deleteConfirm' => '¿Eliminar este destino? Las salidas y artículos que lo usan quedarán sin país. No se puede deshacer.',
             'deleteHint' => 'Si solo quieres ocultarlo temporalmente, desmarca «Publicado» en lugar de eliminarlo.',
             'viewUrl' => static fn(array $r): string => '/destinos/' . $r['continente'] . '/' . $r['slug'],
@@ -44,12 +46,30 @@ final class CountriesController extends CrudController
                 'help' => 'Con un destino de Sudamérica, el formulario no ofrece «fin de semana largo».'],
             ['name' => 'orden', 'label' => 'Orden', 'type' => 'number', 'min' => 0, 'max' => 999, 'help' => 'Los números más bajos salen primero. El primero de cada continente se muestra ampliado.'],
             ['name' => 'resumen', 'label' => 'Resumen (genérico, sin rutas típicas)', 'type' => 'textarea', 'required' => true, 'max' => 600, 'help' => 'Unas 50 palabras de lo que se puede descubrir. Sin precios, fechas ni promesas.'],
+            ...self::pageFields(),
             ['name' => 'foto', 'label' => 'Foto principal', 'type' => 'image', 'required' => true],
             ['name' => 'foto_pos', 'label' => 'Encuadre de la foto', 'type' => 'pos'],
             ['name' => 'foto_alt', 'label' => 'Descripción de la foto (para accesibilidad y buscadores)', 'max' => 200, 'help' => 'Describe lo que se ve, por ejemplo: «Persona caminando junto a una laguna con volcanes al fondo».'],
             ['name' => 'seo_title', 'label' => 'Título para buscadores (opcional)', 'max' => 160, 'help' => 'Si lo dejas vacío se usa «Nombre · Viajes a medida · Guanaco Viajes».'],
             ['name' => 'seo_desc', 'label' => 'Descripción para buscadores (opcional)', 'type' => 'textarea', 'max' => 255, 'help' => 'Si lo dejas vacío se usa el resumen.'],
             ['name' => 'publicado', 'label' => 'Publicado (visible en la web)', 'type' => 'check'],
+        ];
+    }
+
+    /** Campos de la plantilla ampliada de la página de país. Solo existen si ya se importó la actualización de la base de datos. */
+    private static function pageFields(): array
+    {
+        if (!Schema::hasColumn('countries', 'zonas')) {
+            return [];
+        }
+        return [
+            ['name' => 'entrada', 'label' => 'Entrada de la página (opcional)', 'type' => 'textarea', 'max' => 500, 'help' => 'Texto de apertura, 2 o 3 frases. Sale justo bajo la cabecera.'],
+            ['name' => 'zonas', 'type' => 'blocks', 'list' => 'zonas', 'noun' => 'zona', 'label' => 'Zonas (opcional, hasta 5)',
+                'help' => 'Cada zona sale como una tarjeta. Descripción de hasta 120 caracteres. Deja vacías las casillas que no uses.'],
+            ['name' => 'cuando_ir', 'type' => 'blocks', 'list' => 'cuando_ir', 'noun' => 'bloque', 'label' => 'Cuándo ir (opcional, hasta 4)',
+                'help' => 'Por zona: la época recomendada y una nota breve. Contrasta estos datos con una fuente fiable.'],
+            ['name' => 'faqs', 'type' => 'blocks', 'list' => 'faqs', 'noun' => 'pregunta', 'label' => 'Preguntas frecuentes (opcional, hasta 6)',
+                'help' => 'Se muestran desplegables y se envían también a Google. Para separar párrafos en una respuesta, deja una línea en blanco.'],
         ];
     }
 

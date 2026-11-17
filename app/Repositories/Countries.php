@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Core\Database;
+use App\Services\CountryContent;
 
 final class Countries
 {
@@ -37,6 +38,22 @@ final class Countries
             'SELECT * FROM countries WHERE slug = ? AND publicado = 1',
             [$slug]
         );
+    }
+
+    /**
+     * Contenido ampliado de la ficha. Tolerante: si aún no existen las columnas (falta importar la actualización de la
+     * base de datos) o están vacías, devuelve listas vacías y la sección simplemente no se muestra.
+     * @return array{entrada:string, zonas:list<array<string,string>>, cuando:list<array<string,string>>, faqs:list<array<string,string>>}
+     */
+    public static function content(array $pais): array
+    {
+        $entrada = is_string($pais['entrada'] ?? null) ? trim($pais['entrada']) : '';
+        return [
+            'entrada' => $entrada,
+            'zonas'   => CountryContent::decode('zonas', $pais['zonas'] ?? null),
+            'cuando'  => CountryContent::decode('cuando_ir', $pais['cuando_ir'] ?? null),
+            'faqs'    => CountryContent::decode('faqs', $pais['faqs'] ?? null),
+        ];
     }
 
     /** @return list<array> otros países del mismo continente */

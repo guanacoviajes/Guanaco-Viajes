@@ -45,11 +45,25 @@ final class DestinosController
             Http::redirect('/destinos/' . $pais['continente'] . '/' . $pais['slug'], 301);
         }
         $id = (int) $pais['id'];
+        $c = Countries::content($pais);
+        $schema = [[
+            '@type'         => 'TouristDestination',
+            'name'          => $pais['nombre'],
+            'description'   => Seo::clip($c['entrada'] !== '' ? $c['entrada'] : (string) $pais['resumen'], 300),
+            'url'           => Seo::base() . '/destinos/' . $pais['continente'] . '/' . $pais['slug'],
+            'image'         => Seo::abs((string) $pais['foto']),
+            'containedInPlace' => ['@type' => 'Continent', 'name' => Countries::continentLabel($pais['continente'])],
+        ]];
+        if ($c['faqs'] !== []) {
+            $schema[] = Seo::faqPage($c['faqs']);
+        }
         echo View::render('pages/pais', [
             'pais'    => $pais,
             'galeria' => Countries::gallery($id),
             'salidas' => Departures::published($id),
+            'c'       => $c,
             'posts'   => Posts::page(1, 3, $id),
+            'ideasTotal' => Posts::count($id),
             'otros'   => Countries::others($pais['continente'], $id),
             'paises'  => Countries::byContinent(),
         ], [
@@ -57,14 +71,7 @@ final class DestinosController
             'description' => $pais['seo_desc'] ?: Seo::clip('Diseñamos tu viaje a medida a ' . $pais['nombre'] . '. ' . $pais['resumen'], 155),
             'og_image'    => $pais['foto'],
             'og_alt'      => $pais['foto_alt'],
-            'schema'      => [[
-                '@type'         => 'TouristDestination',
-                'name'          => $pais['nombre'],
-                'description'   => Seo::clip((string) $pais['resumen'], 300),
-                'url'           => Seo::base() . '/destinos/' . $pais['continente'] . '/' . $pais['slug'],
-                'image'         => Seo::abs((string) $pais['foto']),
-                'containedInPlace' => ['@type' => 'Continent', 'name' => Countries::continentLabel($pais['continente'])],
-            ]],
+            'schema'      => $schema,
         ]);
     }
 }

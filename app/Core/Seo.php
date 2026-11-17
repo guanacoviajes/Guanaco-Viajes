@@ -100,6 +100,23 @@ final class Seo
         ];
     }
 
+    /**
+     * Datos estructurados de preguntas frecuentes a partir de los campos del panel.
+     * @param list<array{pregunta:string,respuesta:string}> $faqs
+     * @return array<string,mixed>
+     */
+    public static function faqPage(array $faqs): array
+    {
+        return [
+            '@type'      => 'FAQPage',
+            'mainEntity' => array_map(static fn(array $f): array => [
+                '@type'          => 'Question',
+                'name'           => $f['pregunta'],
+                'acceptedAnswer' => ['@type' => 'Answer', 'text' => trim(preg_replace("/\n{2,}/", "\n", $f['respuesta']) ?? $f['respuesta'])],
+            ], $faqs),
+        ];
+    }
+
     /** Dirección del feed del blog. */
     public static function feedUrl(): string
     {

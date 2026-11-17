@@ -118,7 +118,7 @@ abstract class CrudController extends AdminController
             foreach (array_keys($_FILES) as $k) {
                 unset($keep[$k]);
             }
-            Flash::put('old_form', array_map(static fn($v) => is_string($v) ? $v : '', $keep));
+            Flash::put('old_form', array_map(static fn($v) => is_string($v) ? $v : (is_array($v) ? self::keepStrings($v) : ''), $keep));
             Flash::put('form_errors', $err);
             $this->flash('error', 'Revisa los campos marcados en rojo.');
             $this->redirect($back);
@@ -136,6 +136,20 @@ abstract class CrudController extends AdminController
         $this->afterSave($id, $data, $row, $r);
         $this->flash('ok', $row ? 'Cambios guardados.' : 'Creado correctamente.');
         $this->redirect($c['path'] . '/' . $id);
+    }
+
+    /** Conserva solo texto (y listas de texto) de lo enviado, para volver a rellenar el formulario tras un error. */
+    private static function keepStrings(array $a, int $depth = 0): array
+    {
+        $out = [];
+        foreach ($a as $k => $v) {
+            if (is_string($v)) {
+                $out[$k] = $v;
+            } elseif (is_array($v) && $depth < 2) {
+                $out[$k] = self::keepStrings($v, $depth + 1);
+            }
+        }
+        return $out;
     }
 
     public function destroy(Request $r, string $id): void

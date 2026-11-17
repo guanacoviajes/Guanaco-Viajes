@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Services\CountryContent;
 use App\Services\ImageService;
 
 /**
@@ -53,6 +54,10 @@ final class FormKit
         $attrs = (!empty($f['required']) ? ' required' : '') . ($err ? ' aria-invalid="true"' : '');
 
         switch ($type) {
+            case 'blocks':
+                return self::blocks($f, $val, $err);
+            case 'multicheck':
+                return self::multicheck($f, $val, $err);
             case 'check':
                 return '<label class="check"><input type="hidden" name="' . e($n) . '" value="0"><input type="checkbox" name="' . e($n) . '" value="1"' . ((string) $val === '1' ? ' checked' : '') . '> ' . e((string) $f['label']) . ($help ? " $help" : '') . '</label>';
             case 'textarea':
@@ -114,6 +119,72 @@ final class FormKit
         }
     }
 
+    /** Bloques repetibles de casillas fijas (zonas, cuándo ir, preguntas). Sin JavaScript se ven todas; con él, una a una. */
+    private static function blocks(array $f, mixed $val, ?string $err): string
+    {
+        $n = (string) $f['name'];
+        $list = (string) $f['list'];
+        $spec = CountryContent::spec($list);
+        $blocks = is_array($val) ? array_values($val) : CountryContent::decode($list, $val);
+        $textareas = ['descripcion' => 2, 'nota' => 2, 'respuesta' => 5];
+        $o = '<fieldset class="f blocks' . ($err ? ' err' : '') . '" data-blocks data-max="' . (int) $spec['max'] . '" data-noun="' . e((string) ($f['noun'] ?? $spec['singular'])) . '">';
+        $o .= '<legend><span>' . e((string) $f['label']) . '</span></legend>';
+        if (!empty($f['help'])) {
+            $o .= '<small>' . e((string) $f['help']) . '</small>';
+        }
+        for ($i = 0; $i < $spec['max']; $i++) {
+            $b = is_array($blocks[$i] ?? null) ? $blocks[$i] : [];
+            $filled = implode('', array_map(static fn($v) => is_string($v) ? $v : '', $b)) !== '';
+            $o .= '<div class="blk-slot" data-slot data-filled="' . ($filled ? '1' : '0') . '"><div class="blk-title">' . e(ucfirst((string) ($f['noun'] ?? $spec['singular']))) . ' ' . ($i + 1) . '</div><div class="blk-cols">';
+            foreach ($spec['cols'] as $k => [$label, $max, $req]) {
+                $id = 'f-' . $n . '-' . $i . '-' . $k;
+                $name = e($n) . '[' . $i . '][' . e($k) . ']';
+                $v = is_string($b[$k] ?? null) ? $b[$k] : '';
+                $count = ($k === 'descripcion') ? ' data-count="' . $max . '"' : '';
+                $o .= '<label class="f2 f2-' . e($k) . '" for="' . $id . '"><span>' . e($label) . ($req ? '' : ' <em>(opcional)</em>') . '</span>';
+                if (isset($textareas[$k])) {
+                    $o .= '<textarea id="' . $id . '" name="' . $name . '" rows="' . $textareas[$k] . '" maxlength="' . $max . '"' . $count . '>' . e($v) . '</textarea>';
+                } else {
+                    $o .= '<input id="' . $id . '" type="text" name="' . $name . '" value="' . e($v) . '" maxlength="' . $max . '"' . $count . '>';
+                }
+                $o .= '</label>';
+            }
+            $o .= '</div></div>';
+        }
+        $o .= '<button type="button" class="btn-add" data-add hidden>Añadir otra ' . e((string) ($f['noun'] ?? $spec['singular'])) . '</button>';
+        if ($err) {
+            $o .= '<span class="e" role="alert">' . e($err) . '</span>';
+        }
+        return $o . '</fieldset>';
+    }
+
+    /** Lista de casillas para elegir varios elementos; el primero que se marca es el principal. */
+    private static function multicheck(array $f, mixed $val, ?string $err): string
+    {
+        $n = (string) $f['name'];
+        $sel = array_values(array_unique(array_map('strval', is_array($val) ? $val : [])));
+        $o = '<fieldset class="f multicheck' . ($err ? ' err' : '') . '" data-multicheck data-name="' . e($n) . '">';
+        $o .= '<legend><span>' . e((string) $f['label']) . '</span></legend>';
+        if (!empty($f['help'])) {
+            $o .= '<small>' . e((string) $f['help']) . '</small>';
+        }
+        $o .= '<div class="mc-grid">';
+        foreach (($f['options'] ?? []) as $k => $label) {
+            $k = (string) $k;
+            $on = in_array($k, $sel, true);
+            $o .= '<label class="mc-item"><input type="checkbox" name="' . e($n) . '[]" value="' . e($k) . '"' . ($on ? ' checked' : '') . '> <span>' . e((string) $label) . '</span><b class="mc-main" hidden>Principal</b></label>';
+        }
+        $o .= '</div><div data-order>';
+        foreach ($sel as $k) {
+            $o .= '<input type="hidden" name="' . e($n) . '_orden[]" value="' . e($k) . '">';
+        }
+        $o .= '</div>';
+        if ($err) {
+            $o .= '<span class="e" role="alert">' . e($err) . '</span>';
+        }
+        return $o . '</fieldset>';
+    }
+
     /**
      * Valida y limpia lo enviado.
      * @param list<array<string,mixed>> $fields
@@ -135,6 +206,28 @@ final class FormKit
             $s = is_string($raw) ? trim($raw) : '';
 
             switch ($type) {
+                case 'blocks':
+                    [$list, $msg] = CountryContent::clean((string) $f['list'], $raw);
+                    if ($msg !== null) {
+                        $err[$n] = $msg;
+                    }
+                    $data[$n] = CountryContent::encode($list);
+                    break;
+                case 'multicheck':
+                    $valid = array_map('strval', array_keys($f['options'] ?? []));
+                    $checked = array_values(array_unique(array_filter(
+                        is_array($raw) ? array_map('strval', $raw) : [],
+                        static fn($v) => in_array($v, $valid, true)
+                    )));
+                    // Orden en que se marcaron (lo envía el JavaScript); sin JavaScript, el de la lista.
+                    $order = is_array($post[$n . '_orden'] ?? null) ? array_map('strval', $post[$n . '_orden']) : [];
+                    $first = array_values(array_unique(array_filter($order, static fn($v) => in_array($v, $checked, true))));
+                    $ids = array_merge($first, array_values(array_diff($checked, $first)));
+                    if ($req && $ids === []) {
+                        $err[$n] = "Elige al menos una opción en «{$label}».";
+                    }
+                    $data[$n] = array_map('intval', $ids);
+                    break;
                 case 'check':
                     $data[$n] = ($raw === '1') ? 1 : 0;
                     break;

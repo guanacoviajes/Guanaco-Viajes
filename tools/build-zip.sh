@@ -35,7 +35,7 @@ SQL
 cp database/.htaccess "$STAGE/database/"
 [ -d database/actualizaciones ] && cp -r database/actualizaciones "$STAGE/database/"
 # Documentación
-cp docs/INSTALACION.md docs/SEO-Y-BLOG.md docs/REVISION-LEGAL-NADIDU.md docs/.htaccess "$STAGE/docs/"
+cp docs/INSTALACION.md docs/ACTUALIZACIONES.md docs/SEO-Y-BLOG.md docs/REVISION-LEGAL-NADIDU.md docs/.htaccess "$STAGE/docs/"
 cp README.md comprobar.php "$STAGE/"
 # Carpetas de trabajo vacías pero protegidas
 cp storage/.htaccess "$STAGE/storage/"; touch "$STAGE/storage/logs/.gitkeep" "$STAGE/storage/cache/.gitkeep"

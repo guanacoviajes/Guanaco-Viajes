@@ -29,7 +29,8 @@ No incluye contraseñas, claves, archivos temporales, pruebas ni dependencias de
 
 ## Documentación
 
-- `docs/INSTALACION.md` · instalación, copias de seguridad, actualizaciones, problemas habituales.
+- `docs/INSTALACION.md` · instalación y problemas habituales.
+- `docs/ACTUALIZACIONES.md` · cómo actualizar la web paso a paso en hPanel: copias, SQL, archivos, comprobación y vuelta atrás.
 - `docs/SEO-Y-BLOG.md` · qué SEO lleva la web y cómo escribir artículos que la apoyen.
 - `docs/REVISION-LEGAL-NADIDU.md` · textos legales que debe revisar Nadidú antes de publicar.
 

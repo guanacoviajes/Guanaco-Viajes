@@ -59,6 +59,74 @@
     });
   });
 
+  /* bloques repetibles (zonas, cuándo ir, preguntas): con JavaScript se ve una casilla y un botón «Añadir otra» */
+  $$('[data-blocks]').forEach(function (set) {
+    var slots = $$('[data-slot]', set), add = $('[data-add]', set);
+    var lastFilled = -1;
+    slots.forEach(function (sl, i) { if (sl.getAttribute('data-filled') === '1') { lastFilled = i; } });
+    var visible = Math.max(1, lastFilled + 1);
+    function paint() {
+      slots.forEach(function (sl, i) { sl.hidden = i >= visible; });
+      if (add) { add.hidden = visible >= slots.length; }
+    }
+    if (add) {
+      add.addEventListener('click', function () {
+        if (visible < slots.length) {
+          visible += 1; paint();
+          var first = $('input,textarea', slots[visible - 1]);
+          if (first) { first.focus(); }
+        }
+      });
+    }
+    paint();
+  });
+
+  /* contador de caracteres junto a los campos con límite estricto */
+  $$('[data-count]').forEach(function (el) {
+    var max = parseInt(el.getAttribute('data-count'), 10) || 0;
+    var out = document.createElement('small');
+    out.className = 'counter'; out.setAttribute('aria-live', 'polite');
+    el.parentNode.appendChild(out);
+    function upd() {
+      var n = el.value.length;
+      out.textContent = n + ' / ' + max;
+      out.classList.toggle('over', n >= max);
+    }
+    el.addEventListener('input', upd); upd();
+  });
+
+  /* países de un artículo: se recuerda el orden en que se marcan; el primero es el principal */
+  $$('[data-multicheck]').forEach(function (set) {
+    var name = set.getAttribute('data-name');
+    var box = $('[data-order]', set);
+    var order = $$('input[type=hidden]', box).map(function (h) { return h.value; });
+    function paint() {
+      $$('.mc-item', set).forEach(function (lab) {
+        var inp = $('input[type=checkbox]', lab), badge = $('.mc-main', lab);
+        badge.hidden = !(inp.checked && order[0] === inp.value);
+      });
+    }
+    function write() {
+      while (box.firstChild) { box.removeChild(box.firstChild); }
+      order.forEach(function (v) {
+        var h = document.createElement('input');
+        h.type = 'hidden'; h.name = name + '_orden[]'; h.value = v; box.appendChild(h);
+      });
+      paint();
+    }
+    $$('input[type=checkbox]', set).forEach(function (inp) {
+      if (inp.checked && order.indexOf(inp.value) === -1) { order.push(inp.value); }
+      inp.addEventListener('change', function () {
+        var i = order.indexOf(inp.value);
+        if (inp.checked && i === -1) { order.push(inp.value); }
+        if (!inp.checked && i !== -1) { order.splice(i, 1); }
+        write();
+      });
+    });
+    order = order.filter(function (v) { var c = $('input[type=checkbox][value="' + v + '"]', set); return c && c.checked; });
+    write();
+  });
+
   /* evita el doble clic al guardar */
   $$('form[data-once]').forEach(function (f) {
     f.addEventListener('submit', function () {

@@ -52,6 +52,7 @@ final class BlogController
         $mod = date('c', (int) strtotime((string) ($post['updated_at'] ?: $post['created_at'])));
         echo View::render('pages/articulo', [
             'post'         => $post,
+            'paises'       => array_slice(Posts::countriesOf((int) $post['id']), 0, 3),
             'relacionados' => Posts::related((int) $post['id'], $post['country_id'] !== null ? (int) $post['country_id'] : null),
         ], [
             'title'       => $post['seo_title'] ?: ($post['titulo'] . ' · Guanaco Viajes'),

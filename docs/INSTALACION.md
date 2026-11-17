@@ -143,6 +143,7 @@ Debe terminar con **«0 fallos»**. Los avisos de `upload_max_filesize` y `post_
 - Descárgalas a tu ordenador con `scp -P 65002 u123456789@IP:copia-*.sql .`
 
 ### Actualizar la web
+> Guía completa y paso a paso para hPanel (copias, SQL, archivos, comprobación y cómo volver atrás): **`docs/ACTUALIZACIONES.md`**. Lo siguiente es el resumen.
 1. Haz la copia de la base de datos.
 2. Sube el ZIP nuevo a `~/domains/guanacoviajes.es/` y ejecuta `unzip -o guanaco-viajes-*.zip`. **No pisa** tu `config/config.php` (el ZIP no lo lleva), tus fotos subidas ni tu base de datos.
 3. Si la versión nueva trae cambios de base de datos, vendrá un archivo `database/actualizaciones/FECHA.sql` con instrucciones: se importa igual que en el paso 5, **sin tocar `instalacion.sql`**.
