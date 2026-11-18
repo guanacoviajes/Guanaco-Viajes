@@ -81,7 +81,7 @@ final class SettingsRegistry
                 'quienes.enfasis'        => $t('Titular: parte en cursiva', 'el guanaco.'),
                 'quienes.cierre'         => $t('Cierre: texto', 'Viaja con curiosidad. Muévete con libertad.'),
                 'quienes.cierre.enfasis' => $t('Cierre: parte en cursiva', 'Vuelve con historias.'),
-                'quienes.boton'          => $t('Cierre: texto del botón', 'Cuéntanos tu viaje'),
+                'quienes.boton'          => $t('Cierre: texto del botón', 'Cuéntanos tu idea'),
                 'quienes.foto2'          => ['Segunda foto (a la derecha del segundo texto)', 'image', '', 'Sale a la derecha del segundo bloque de texto, en formato vertical 4:5. La primera foto es «Tu foto viajando» de la página de inicio. Si la dejas vacía, ese bloque va solo con texto.', false],
                 'quienes.foto2.alt'      => $t('Segunda foto: descripción', '', 'Describe lo que se ve (ayuda a la accesibilidad y a los buscadores). Si la dejas vacía se usa «Daniel Conti viajando».'),
             ]],

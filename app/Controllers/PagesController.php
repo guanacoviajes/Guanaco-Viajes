@@ -67,6 +67,7 @@ final class PagesController
         echo View::render('pages/quienes', ['pagina' => $p], [
             'title'       => $p['seo_title'] ?: 'Quiénes somos · Guanaco Viajes',
             'description' => $p['seo_desc'] ?: 'Guanaco Viajes nace de viajar por Sudamérica y encontrarse con guanacos en los Andes: libertad, curiosidad y viajes pensados para ti.',
+            'franja'      => false,
         ]);
     }
 

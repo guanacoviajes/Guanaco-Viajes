@@ -829,3 +829,24 @@ section:has(+ .como){padding-bottom:52px}
   section:has(+ .como){padding-bottom:32px}
   .como + section{padding-top:32px}
 }
+
+/* Quiénes somos (rediseño): título centrado, fotos más bajas, texto mayor y justificado, cierre centrado y sin franja inferior */
+.qhero{text-align:center}
+.qhero .wrap{display:flex;flex-direction:column;align-items:center}
+.qhero h1{max-width:20ch;margin-left:auto;margin-right:auto}
+.qsec .split{align-items:center;gap:64px;grid-template-columns:.9fr 1.1fr}
+.qsec .split-inv{grid-template-columns:1.1fr .9fr}
+.qsec .split.sin-foto,.qsec .split-inv.sin-foto{grid-template-columns:1fr;max-width:760px}
+.qsec .foto-real{aspect-ratio:1/1}
+.qtext p{font-size:22px;line-height:1.7;max-width:none;text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.signoff{text-align:center}
+.signoff .wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
+.signoff p{margin:0}
+@media (max-width:1100px){.qtext p{font-size:20px}.qsec .split{gap:40px}}
+@media (max-width:820px){
+  .qsec .split,.qsec .split-inv{grid-template-columns:1fr;gap:28px}
+  .qsec .split-inv .foto-real{order:-1}
+  .qtext p{font-size:19px}
+  .signoff{padding:64px 0}
+}
+@media (max-width:600px){.qtext p{font-size:18px;text-align:left;hyphens:manual;-webkit-hyphens:manual}}

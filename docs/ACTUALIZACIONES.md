@@ -1,5 +1,7 @@
 # Actualizar la web en Hostinger (hPanel) · guía paso a paso
 
+> **Actualización «Quiénes somos» (solo archivos, sin SQL):** título centrado, fotos cuadradas, texto más grande y justificado (en móvil, alineado a la izquierda), cierre «Viaja con curiosidad…» centrado con botón y **sin la franja inferior** de esta página. El botón pasa a decir «Cuéntanos tu idea» salvo que hayas escrito otro texto en *Textos y ajustes → Quiénes somos → Cierre: texto del botón*. No hay que importar nada y tus textos y fotos no se tocan. Archivos: `app/Views/pages/quienes.php`, `app/Controllers/PagesController.php`, `app/Admin/SettingsRegistry.php` y `public_html/assets/css/app.css`.
+
 > **Actualización de diseño de noviembre (solo archivos, sin SQL):** foto en cada tarjeta de zona (máximo 4 zonas), título y subtítulo de las zonas editables, formulario sin los 3 pasos, «Quiénes somos» con foto + texto y texto + foto, texto de «Tipos de viaje» sin título repetido y carrusel más pequeño. **No hay nada que importar** y tus textos y fotos (que viven en la base de datos y en `uploads`) no se tocan: el ZIP solo cambia código, estilos y las fotos de ejemplo. Después de subirlo:
 > 1. *Destinos → Chile*: si tenías 5 zonas, la web ya solo enseña las 4 primeras. Al guardar el país desde el panel, la quinta («Patagonia chilena») se elimina para siempre.
 > 2. *Destinos → cada país → Zonas*: sube la foto de cada zona (opcional).
