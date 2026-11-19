@@ -850,3 +850,12 @@ section:has(+ .como){padding-bottom:52px}
   .signoff{padding:64px 0}
 }
 @media (max-width:600px){.qtext p{font-size:18px;text-align:left;hyphens:manual;-webkit-hyphens:manual}}
+
+/* Carril de destinos sin resumen: tarjetas iguales que se deslizan en una sola fila (Destinos, Viajes a medida y «Más destinos» de cada país) */
+.rail-sin-resumen .cards{height:auto}
+.rail-sin-resumen .card .ph{flex:none;aspect-ratio:3/4}
+.rail-sin-resumen .arr{top:150px}
+.rail-otros{margin-top:36px}
+@media (min-width:821px){
+  .rail-sin-resumen .card,.rail-sin-resumen .card:hover,.rail-sin-resumen .card:focus-visible{flex:0 0 clamp(200px,22%,290px)}
+}

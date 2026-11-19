@@ -12,5 +12,5 @@ $S = static fn(string $k, string $d = ''): string => Settings::get($k, $d);
   </div>
 </section>
 <section class="sec" style="padding-top:48px">
-  <div class="wrap"><?= \App\Core\View::partial('partials/destinos-rail', ['paises' => $paises, 'activo' => $activo]) ?></div>
+  <div class="wrap"><?= \App\Core\View::partial('partials/destinos-rail', ['paises' => $paises, 'activo' => $activo, 'resumen' => false]) ?></div>
 </section>

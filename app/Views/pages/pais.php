@@ -115,13 +115,18 @@ $zonSub    = (string) preg_replace_callback('/\{pa[ií]s\}/iu', static fn() => $
   <div class="wrap">
     <div class="kick">Sigue explorando</div>
     <h2 id="otros-t">Más destinos en <em><?= e($label) ?></em></h2>
-    <div class="minis">
-      <?php foreach ($otros as $o): ?>
-      <a class="mini" href="/destinos/<?= e($o['continente']) ?>/<?= e($o['slug']) ?>">
-        <span class="ph"><?= img($o['foto'], $o['foto_alt'], ['pos' => $o['foto_pos'], 'sizes' => '(max-width: 820px) 74vw, 25vw']) ?></span>
-        <h3><?= e($o['nombre']) ?></h3>
-      </a>
-      <?php endforeach; ?>
+    <div class="rail rail-sin-resumen rail-otros">
+      <button type="button" class="arr l hide" aria-label="Destinos anteriores"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="arr r hide" aria-label="Más destinos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="cards">
+        <?php foreach ($otros as $o): ?>
+        <a class="card" href="/destinos/<?= e($o['continente']) ?>/<?= e($o['slug']) ?>">
+          <span class="ph"><?= img($o['foto'], $o['foto_alt'], ['pos' => $o['foto_pos'], 'sizes' => '(max-width: 820px) 74vw, 22vw']) ?></span>
+          <span class="cn"><?= e($o['nombre']) ?></span>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
     </div>
   </div>
 </section>

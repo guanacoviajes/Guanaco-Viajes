@@ -35,7 +35,7 @@ $S = static fn(string $k, string $d = ''): string => Settings::get($k, $d);
   <div class="wrap">
     <div class="kick">Destinos</div>
     <h2 id="dest-t">Elige por dónde <em>empezar</em></h2>
-    <?= \App\Core\View::partial('partials/destinos-rail', ['paises' => $paises]) ?>
+    <?= \App\Core\View::partial('partials/destinos-rail', ['paises' => $paises, 'resumen' => false]) ?>
   </div>
 </section>
 
