@@ -32,6 +32,7 @@ final class PagesController
         $tipo = self::tipo('viajes-a-medida');
         echo View::render('pages/a-medida', ['tipo' => $tipo, 'paises' => Countries::byContinent()], [
             ...Seo::page('medida', 'Viajes personalizados a medida · Guanaco Viajes', 'Diseñamos viajes a medida por Sudamérica y Europa. Tú traes la idea, aunque sea solo una inquietud, y la convertimos en un viaje pensado para ti.'),
+            'franja'      => false,
             'og_image'    => $tipo['foto'],
             'og_alt'      => $tipo['foto_alt'],
             'schema'      => [[
@@ -56,6 +57,7 @@ final class PagesController
             'huecos'  => max(0, 3 - count($salidas)),
         ], [
             ...Seo::page('grupo', 'Viajes en grupo con personalidad · Guanaco Viajes', 'Salidas en grupo con propuestas diferentes, cuidadas y con personalidad, para compartir el camino con otras personas.'),
+            'franja'      => false,
             'og_image'    => $tipo['foto'],
             'og_alt'      => $tipo['foto_alt'],
         ]);
