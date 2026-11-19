@@ -10,7 +10,7 @@ namespace App\Services;
  */
 final class CountryContent
 {
-    public const MAX_ZONAS = 4;
+    public const MAX_ZONAS = 20; // tope técnico: PHP admite 20 archivos por envío (max_file_uploads)
     public const MAX_FAQ = 6;
     public const ZONA_DESC_MAX = 120;
     /** Forma de las rutas de las fotos que guarda el panel. */

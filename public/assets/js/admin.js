@@ -66,7 +66,11 @@
     slots.forEach(function (sl, i) { if (sl.getAttribute('data-filled') === '1') { lastFilled = i; } });
     var visible = Math.max(1, lastFilled + 1);
     function paint() {
-      slots.forEach(function (sl, i) { sl.hidden = i >= visible; });
+      slots.forEach(function (sl, i) {
+        sl.hidden = i >= visible;
+        // los huecos ocultos no se envían (así no se acumulan archivos vacíos en el envío)
+        $$('input,textarea', sl).forEach(function (el) { el.disabled = i >= visible; });
+      });
       if (add) { add.hidden = visible >= slots.length; }
     }
     if (add) {

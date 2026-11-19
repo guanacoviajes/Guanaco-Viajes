@@ -81,8 +81,8 @@ final class CountryContentTest extends TestCase
     public function testMaximumNumberOfBlocksPerList(): void
     {
         $mk = static fn(int $n, array $row): array => array_fill(0, $n, $row);
-        $this->assertNull(CountryContent::clean('zonas', $mk(4, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
-        $this->assertNotNull(CountryContent::clean('zonas', $mk(5, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
+        $this->assertNull(CountryContent::clean('zonas', $mk(20, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
+        $this->assertNotNull(CountryContent::clean('zonas', $mk(21,['nombre' => 'Z', 'descripcion' => '', 'dias' => '']))[1]);
         $this->assertNull(CountryContent::clean('faqs', $mk(6, ['pregunta' => 'P', 'respuesta' => 'R']))[1]);
         $this->assertNotNull(CountryContent::clean('faqs', $mk(7, ['pregunta' => 'P', 'respuesta' => 'R']))[1]);
     }
@@ -113,8 +113,8 @@ final class CountryContentTest extends TestCase
 
     public function testDecodeNeverReturnsMoreThanTheMaximum(): void
     {
-        $many = array_fill(0, 12, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']);
-        $this->assertCount(4, CountryContent::decode('zonas', json_encode($many)));
+        $many = array_fill(0, 25, ['nombre' => 'Z', 'descripcion' => '', 'dias' => '']);
+        $this->assertCount(20,CountryContent::decode('zonas', json_encode($many)));
     }
 
     public function testFaqPageStructuredData(): void

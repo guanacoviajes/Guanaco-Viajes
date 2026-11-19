@@ -866,3 +866,15 @@ section:has(+ .como){padding-bottom:52px}
   .rail-sin-resumen .card:hover .ph img,.rail-sin-resumen .card:focus-visible .ph img{transform:scale(1.07)}
 }
 @media (prefers-reduced-motion:reduce){.rail-sin-resumen .card .ph img{transition:none}.rail-sin-resumen .card:hover .ph img{transform:none}}
+
+/* Zonas del país: sin límite práctico; máximo 4 por fila y la última fila centrada */
+.zon-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:none}
+.zon-row .zona{flex:0 0 calc((100% - 3 * 16px) / 4);min-width:0}
+@media (max-width:1000px) and (min-width:641px){
+  .zon-row{overflow:visible;margin:32px 0 0;padding:0;scroll-snap-type:none}
+  .zon-row .zona{flex:0 0 calc((100% - 16px) / 2)}
+}
+@media (max-width:640px){
+  .zon-row{flex-wrap:nowrap;justify-content:flex-start}
+  .zon-row .zona{flex:0 0 min(72%,340px)}
+}

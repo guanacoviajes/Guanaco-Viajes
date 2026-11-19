@@ -63,7 +63,7 @@ final class CountriesController extends CrudController
             return [];
         }
         return [
-            ['name' => 'zonas', 'type' => 'blocks', 'list' => 'zonas', 'noun' => 'zona', 'label' => 'Zonas y cuándo ir (opcional, hasta 4)',
+            ['name' => 'zonas', 'type' => 'blocks', 'list' => 'zonas', 'noun' => 'zona', 'label' => 'Zonas y cuándo ir (opcional)',
                 'help' => 'Cada zona sale como una tarjeta con su foto (opcional), nombre, descripción breve (máximo 120 caracteres), días recomendados y la mejor época para ir. Contrasta la época con una fuente fiable. Deja vacías las casillas que no uses. El título y el subtítulo de este apartado se cambian en «Textos y ajustes → Fichas de país».'],
             ['name' => 'faqs', 'type' => 'blocks', 'list' => 'faqs', 'noun' => 'pregunta', 'label' => 'Preguntas frecuentes (opcional, hasta 6)',
                 'help' => 'Se muestran desplegables y se envían también a Google. Para separar párrafos en una respuesta, deja una línea en blanco.'],
