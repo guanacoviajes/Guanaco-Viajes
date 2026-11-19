@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin
+Disallow: /presupuesto/enviar
+Disallow: /presupuesto/gracias
+Disallow: /contacto/enviar
+
+Sitemap: https://guanacoviajes.es/sitemap.xml

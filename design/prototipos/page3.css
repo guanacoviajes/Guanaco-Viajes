@@ -1,0 +1,54 @@
+/* ===== formulario de presupuesto ===== */
+.pr{padding:56px 0 96px}
+.pr-grid{display:grid;grid-template-columns:320px 1fr;gap:88px;align-items:start}
+.pr-side h1{font:400 clamp(34px,3.6vw,50px)/1.08 var(--serif);letter-spacing:-.01em;margin:14px 0 18px}
+.pr-side h1 em{font-style:italic}
+.pr-side p{font:400 17px/1.6 var(--sans);opacity:.8;max-width:30ch}
+.vsteps{list-style:none;padding:0;margin:40px 0 0}
+.vsteps li{display:flex;gap:14px;align-items:center;padding:14px 0;border-top:1px solid rgba(31,45,40,.16);font:600 15px var(--sans);opacity:.45}
+.vsteps li:last-child{border-bottom:1px solid rgba(31,45,40,.16)}
+.vsteps li b{width:30px;height:30px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font:600 13px var(--sans)}
+.vsteps li.on{opacity:1}.vsteps li.on b{background:var(--carbon);color:var(--marfil);border-color:var(--carbon)}
+.vsteps li.done{opacity:.8}.vsteps li.done b{background:var(--terracota);border-color:var(--terracota);color:var(--carbon)}
+.pr-card{background:#fff;border-radius:4px;border:1px solid rgba(31,45,40,.12);padding:48px 52px 40px;min-height:520px;display:flex;flex-direction:column}
+.pr-card .seg{margin-bottom:10px}
+.pr-card .cnt{font:600 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-bottom:26px}
+.step{display:none;flex:1;animation:fade .4s ease}.step.on{display:block}
+.step .q{font:400 clamp(30px,3.2vw,42px)/1.12 var(--serif);letter-spacing:-.008em}
+.step .hint{font:500 15px var(--sans);opacity:.7;margin:10px 0 28px}
+.grp{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--acento);margin:22px 0 12px}
+.step .chips{gap:10px}
+.step .chip{cursor:pointer;background:#fff}
+.step .chip.on{background:var(--carbon)}
+.tg{display:flex;align-items:center;gap:14px;margin-top:30px;font:600 15px var(--sans);cursor:pointer}
+.tg i{width:48px;height:28px;border-radius:999px;background:rgba(31,45,40,.25);position:relative;transition:background .2s}
+.tg i:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s}
+.tg.on i{background:var(--carbon)}.tg.on i:after{left:23px}
+.cnt-row{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-top:1px solid rgba(31,45,40,.14)}
+.cnt-row:last-of-type{border-bottom:1px solid rgba(31,45,40,.14)}
+.cnt-row .l{font:600 17px var(--sans)}.cnt-row .l small{display:block;font:500 13px var(--sans);opacity:.65;margin-top:2px}
+.sp{display:flex;align-items:center;gap:18px}
+.sp button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--carbon);background:#fff;font:600 22px/1 var(--sans);cursor:pointer;color:var(--carbon)}
+.sp span{min-width:24px;text-align:center;font:400 28px var(--serif)}
+.ages{margin-top:20px}
+.fld .in input,.fld .in textarea{all:unset;width:100%;height:100%;font:400 16px var(--sans);color:var(--carbon)}
+.fld .in{color:var(--carbon)}
+.fld .in.ta{height:150px}.fld .in textarea{align-self:flex-start}
+.fld .in.bad{border-color:var(--acento)}
+.err{font:600 13px var(--sans);color:var(--acento);display:none}.err.on{display:block}
+.pr-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:26px;border-top:1px solid rgba(31,45,40,.12)}
+.pr-nav .back{font:600 15px var(--sans);background:none;border:0;cursor:pointer;color:var(--carbon);text-decoration:underline;text-underline-offset:4px;padding:10px 0}
+.pr-nav .back.hide{visibility:hidden}
+.thanks h2{font:400 clamp(36px,4.2vw,56px)/1.08 var(--serif);margin:10px 0 16px}
+.thanks h2 em{font-style:italic}
+.thanks p{font:400 18px/1.6 var(--sans);max-width:48ch;opacity:.85}
+.resumen{margin:30px 0;border-top:1px solid rgba(31,45,40,.16)}
+.resumen div{display:flex;gap:24px;padding:14px 0;border-bottom:1px solid rgba(31,45,40,.16);font:500 16px var(--sans)}
+.resumen dt{width:130px;font-weight:600;opacity:.7}
+@media (max-width:820px){
+  .pr{padding:28px 0 64px}.pr-grid{grid-template-columns:1fr;gap:24px}
+  .pr-side{display:none}
+  .pr-card{padding:28px 22px 24px;min-height:0;border-radius:3px}
+  .pr-m{display:block}
+}
+.pr-m{display:none;margin-bottom:6px}.pr-m h1{font:400 32px/1.1 var(--serif);margin:10px 0 6px}.pr-m h1 em{font-style:italic}
