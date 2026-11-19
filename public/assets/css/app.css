@@ -859,3 +859,10 @@ section:has(+ .como){padding-bottom:52px}
 @media (min-width:821px){
   .rail-sin-resumen .card,.rail-sin-resumen .card:hover,.rail-sin-resumen .card:focus-visible{flex:0 0 clamp(200px,22%,290px)}
 }
+
+/* Carril sin resumen: al pasar el cursor, la foto se amplía suavemente dentro de su marco (en todos los países y continentes) */
+.rail-sin-resumen .card .ph img{transition:transform .5s cubic-bezier(.3,.7,.2,1)}
+@media (hover:hover){
+  .rail-sin-resumen .card:hover .ph img,.rail-sin-resumen .card:focus-visible .ph img{transform:scale(1.07)}
+}
+@media (prefers-reduced-motion:reduce){.rail-sin-resumen .card .ph img{transition:none}.rail-sin-resumen .card:hover .ph img{transform:none}}
